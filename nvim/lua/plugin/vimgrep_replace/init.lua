@@ -10,8 +10,8 @@ function M.setup(opts)
   for group, option in pairs(state.get_options().highlight_group.win) do
     utils.set_highlight_groups(group, option)
   end
-  state.set_highlight_group()
 
+  state.set_highlight_group()
 
   state.set_options(opts.options or {})
   keymaps.setup_global_keymaps(opts)

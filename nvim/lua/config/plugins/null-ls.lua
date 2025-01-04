@@ -6,21 +6,12 @@ return {
       local null_ls = require("null-ls")
       local util = require("null-ls.utils")
 
-      -- Map local file paths to container paths
-      local function container_path(file)
-        local local_path = "/Users/wouter/work/fivex-8.x/html"
-        local docker_path = "/var/www/html"
-        local mapped_path = file:gsub("^" .. vim.pesc(local_path), docker_path)
-        return mapped_path
-      end
-
       -- Function to get phpcs configuration file
       local get_phpcs_config = function(params)
         local git_root = util.root_pattern(".git")(params.bufname)
         if git_root and vim.fn.filereadable(git_root .. "/html/phpcs.xml") == 1 then
           local config_path = git_root .. "/html/phpcs.xml"
-          local mapped_config_path = container_path(config_path)
-          return mapped_config_path
+          return config_path
         end
         return nil
       end
@@ -31,7 +22,6 @@ return {
           -- PHPCS Diagnostics
           null_ls.builtins.diagnostics.phpcs.with({
             method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-            command = "docker",
             args = function(params)
               local phpcs_config = get_phpcs_config(params)
               if not phpcs_config then
@@ -39,13 +29,11 @@ return {
                 return {}
               end
               return {
-                "exec",
-                "apache_prod_8.x",
-                "/var/www/html/vendor/bin/phpcs",
+                "/opt/homebrew/bin/phpcs",
                 "--standard=" .. phpcs_config,
                 "--report=json",
-                "--stdin-path=" .. container_path(params.bufname),
-                container_path(params.bufname),
+                "--stdin-path=" .. params.bufname,
+                params.bufname,
               }
             end,
             on_output = function(params)
@@ -54,7 +42,7 @@ return {
                 return {}
               end
               local diagnostics = {}
-              local current_file = container_path(params.bufname)
+              local current_file = params.bufname
               local file_diagnostics = json.files[current_file] or json.files["STDIN"]
               if not file_diagnostics or not file_diagnostics.messages then
                 print("No diagnostics for file:", current_file)
@@ -75,7 +63,6 @@ return {
           -- PHPCBF Formatting (On selected region)
           null_ls.builtins.formatting.phpcbf.with({
             method = null_ls.methods.FORMATTING,
-            command = "docker",
             args = function(params)
               local phpcs_config = get_phpcs_config(params)
               if not phpcs_config then
@@ -83,13 +70,11 @@ return {
                 return {}
               end
               return {
-                "exec",
-                "apache_prod_8.x",  -- Ensure this container name is correct
-                "/var/www/html/vendor/bin/phpcbf",
+                "/opt/homebrew/bin/phpcbf",
                 "--standard=" .. phpcs_config,
                 "--quiet",
-                "--stdin-path=" .. container_path(params.bufname),
-                container_path(params.bufname),
+                "--stdin-path=" .. params.bufname,
+                params.bufname,
               }
             end,
             runtime_condition = function()
