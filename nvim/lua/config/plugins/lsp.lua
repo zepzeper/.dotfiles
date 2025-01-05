@@ -65,6 +65,18 @@ return {
         vim.keymap.set("n", "<leader>e", vim.diagnostic.setloclist, opts)
       end)
 
+      local function getIncludePath()
+        -- Get the root directory dynamically
+        local root_dir = vim.fn.getcwd()
+
+        print("Root Directory: " .. root_dir)
+        -- Add the `vendor` directory to includePaths
+        return {
+          root_dir .. '/_ide-helper.php',
+          -- root_dir .. '/html/vendor/illuminate',
+        }
+      end
+
       -- Setup specific LSP servers with custom configurations
       lspconfig.intelephense.setup({
         cmd = { "node", "--max-old-space-size=4096", vim.fn.expand("~/.local/share/nvim/mason/bin/intelephense"), "--stdio" },
@@ -77,6 +89,16 @@ return {
         init_options = {
           licenseKey = vim.fn.expand("~/intelephense/license.txt"),
         },
+        settings = {
+          intelephense = {
+            environment = {
+              includePaths = getIncludePath()
+            },
+            files = {
+              maxSize = 10000000, -- Increase file size limit to 10 MB
+            },
+          }
+        }
       })
 
       lspconfig.rust_analyzer.setup({
