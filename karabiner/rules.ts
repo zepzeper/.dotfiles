@@ -1,6 +1,5 @@
 import fs from "fs";
 import { KarabinerRules } from "./types";
-import { createHyperSubLayers, app, open, rectangle } from "./utils";
 
 const rules: KarabinerRules[] = [
     // Define the Hyper key itself
@@ -29,18 +28,6 @@ const rules: KarabinerRules[] = [
             },
         ],
     },
-    ...createHyperSubLayers({
-        // o = "Open" applications
-        o: {
-            s: app("Safari"),
-            t: app("Alacritty"),
-            d: app("Tableplus"),
-            m: app("Spotify"),
-            v: app("Slack"),
-            n: app("Youtube Music"),
-            i: app("Notion")
-        },
-    }),
 ];
 
 fs.writeFileSync(

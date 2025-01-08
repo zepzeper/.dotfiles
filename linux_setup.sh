@@ -31,16 +31,16 @@ clone_dotfiles() {
 # Function to create symlinks for the dotfiles (tmux, zsh, and neovim)
 create_symlinks() {
     echo "Creating symlinks for dotfiles..."
-    
+
     # Symlink for .zshrc
     ln -s $HOME/.dotfiles/.zshrc $HOME/.zshrc
-    
+
     # Symlink for .tmux.conf
     ln -s $HOME/.dotfiles/.tmux.conf $HOME/.tmux.conf
-    
+
     # Symlink for Neovim config
     ln -s $HOME/.dotfiles/nvim $HOME/.config/nvim
-    
+
     echo "Symlinks created."
 }
 
@@ -70,7 +70,7 @@ install_vimplug() {
         echo "Installing Vim-Plug for Neovim..."
         curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim || { echo "Failed to install Vim-Plug"; exit 1; }
-        
+
         # Install plugins using Neovim
         nvim +PlugInstall +qall || { echo "Failed to install Neovim plugins"; exit 1; }
     else

@@ -3,13 +3,13 @@ return {
     "nvim-lualine/lualine.nvim",
     dependencies = { "kyazdani42/nvim-web-devicons", opt = true },
     config = function()
-      local tokyonight = require("lualine.themes.tokyonight")
+      local mellow = require("lualine.themes.mellow")
 
       require("lualine").setup({
         options = {
           icons_enabled = true,
-          theme = tokyonight,
-          component_separators = { left = "", right = "" },
+          theme = mellow,
+          component_separators = { left = "|", right = "|" },
           section_separators = { left = "", right = "" },
           disabled_filetypes = {
             statusline = {},
@@ -49,9 +49,9 @@ return {
                 end
                 return "  : " .. table.concat(client_names, ", ")
               end,
-              separator = "|",
             },
           },
+          lualine_y = { "encoding" },
           lualine_z = { "location" },
         },
         inactive_sections = {
