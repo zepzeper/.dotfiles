@@ -1,69 +1,58 @@
-local function custom_get_ivy(opts)
-  opts = opts or {}
-
-  local theme_opts = {
-    theme = "ivy",
-
-    layout_strategy = "bottom_pane",
-    layout_config = {
-      height = 50,
-    },
-
-    vimgrep_arguments = {
-        "rg",
-        "--no-heading",
-        "--with-filename",
-        "--line-number",
-        "--column",
-        "--smart-case",
-        "--ignore",
-        "--hidden", -- Include hidden files
-        "--glob", "!**/node_modules/*", -- Exclude 'node_modules' folder
-        "--glob", "!**/.git/*", -- Exclude '.git' folder
-        "--glob", "!**/vendor/*",-- Exclude vendor
-        "--glob", "!**/public/js/*/*", -- Exclude all subfolders inside 'public/js'
-        "--glob", "!**/public/css/*/*", -- Exclude all subfolders inside 'public/css'
-    },
-
-    border = true,
-    borderchars = {
-      prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
-      results = { " " },
-      preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-    },
-  }
-  if opts.layout_config and opts.layout_config.prompt_position == "bottom" then
-    theme_opts.borderchars = {
-      prompt = { " ", " ", "─", " ", " ", " ", "─", "─" },
-      results = { "─", " ", " ", " ", "─", "─", " ", " " },
-      preview = { "─", " ", "─", "│", "┬", "─", "─", "╰" },
-    }
-  end
-
-  return vim.tbl_deep_extend("force", theme_opts, opts)
-end
-
 return {
-  {
-    "nvim-telescope/telescope.nvim",
-    tag = "0.1.3",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      local builtin = require("telescope.builtin")
+    {
+        'nvim-telescope/telescope.nvim', tag = '0.1.5',
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "make"
+            },
+            "nvim-tree/nvim-web-devicons",
+        },
+        config = function()
+            local telescope = require("telescope")
+            local actions = require("telescope.actions")
 
-      require("telescope").setup({
-        defaults = custom_get_ivy(),
-      })
+            telescope.setup({
+                defaults = {
+                    path_display = { "truncate " },
+                    layout_config = {
+                        horizontal = {
+                            preview_cutoff = 0,
+                        },
+                    },
+                    mappings = {
+                        i = {
+                            ["<C-k>"] = actions.move_selection_previous, -- move to prev result
+                            ["<C-j>"] = actions.move_selection_next, -- move to next result
+                            ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+                        },
+                    },
+                },
+            })
 
-      -- Key mappings
-      vim.keymap.set("n", "<space>/", builtin.current_buffer_fuzzy_find)
-      vim.keymap.set("n", "<leader>vm", builtin.help_tags, { desc = "Show Help Tags" })
-      vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
-      vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Find Git Files" })
-      vim.keymap.set("n", "<leader>lg", function()
-        builtin.grep_string({ search = vim.fn.input("Grep > ") })
-      end, { desc = "Live Grep with Input" })
-    end,
-  },
+            telescope.load_extension("fzf")
+
+            -- set keymaps
+            local keymap = vim.keymap -- for conciseness
+
+            keymap.set("n", "<C-p>", "<cmd>Telescope find_files hidden=true no_ignore=true<cr>", { desc = "Fuzzy find files in cwd" })
+            keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
+            keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
+            keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
+        end
+    },
+    {
+        'nvim-telescope/telescope-ui-select.nvim',
+        config = function()
+            require("telescope").setup {
+                extensions = {
+                    ["ui-select"] = {
+                        require("telescope.themes").get_dropdown {}
+                    }
+                }
+            }
+            require("telescope").load_extension("ui-select")
+        end
+    },
 }
-

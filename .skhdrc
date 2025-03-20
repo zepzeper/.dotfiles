@@ -1,5 +1,5 @@
 # Focus Brave (Option + S)
-alt - s : open -a "Brave Browser"
+alt - s : open -a "Brave browser"
 
 # Focus Terminal (Option + T)
 alt - z : open -a "Alacritty"

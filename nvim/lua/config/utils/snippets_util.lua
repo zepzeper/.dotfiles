@@ -7,9 +7,7 @@ local c = ls.choice_node
 local snippets = {
   php = {
     -- Debug snippet
-    ls.parser.parse_snippet("debug", "echo json_encode($1, JSON_PRETTY_PRINT);"),
-    -- Return snippet
-    ls.parser.parse_snippet("return", "\\$this->returnJson($1);"),
+    ls.parser.parse_snippet("debug", "echo json_encode($1, JSON_PRETTY_PRINT);\ndie();"),
 
     -- Static function snippet with choice for visibility
     s("sfunc", {
@@ -18,11 +16,36 @@ local snippets = {
       i(4, "// static function body"), t({ "", "}" })
     }),
 
+    s("foreach", {
+      t("foreach ($"), i(1, "array"), t(" as $"), i(2, "key"), t(" => $"), i(3, "value"), t(") {"),
+      t({ "", "\t// loop body" }),
+      t({ "", "}" })
+    }),
+
+    s("__", {
+      t("public function __construct("), i(1, "$param"), t(") {"),
+      t({ "", "\t$this->param = $param;" }),
+      t({ "", "}" })
+    }),
+
+
+    s("commentblock", {
+      t("/**"),
+      t({ "", " * " }), i(1, "Description"), t({ "", " * " }),
+      t({ "", " * @param type $param" }),
+      t({ "", " * @return type" }),
+      t({ "", " */" })
+    }),
+
     -- Method snippet with choice for visibility
     s("func", {
       c(1, { t("public"), t("private"), t("protected") }),
       t(" function "), i(2, "functionName"), t("("), i(3, "parameters"), t({ ") {", "\t" }),
       i(4, "// method body"), t({ "", "}" })
+    }),
+
+    s("php", {
+      t("<?php")
     }),
 
     -- Ternary

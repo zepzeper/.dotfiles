@@ -11,7 +11,8 @@ set.softtabstop = 4
 set.shiftwidth = 4
 set.expandtab = true
 
-set.smartindent = true
+vim.opt.autoindent = true   -- Maintain indentation
+vim.opt.smartindent = true  -- Context-aware indentation
 
 set.wrap = false
 
@@ -20,7 +21,7 @@ set.backup = false
 set.undodir = os.getenv("HOME") .. "/.vim/undodir"
 set.undofile = true
 
-set.hlsearch = true
+set.hlsearch = false
 set.incsearch = true
 
 set.termguicolors = true

@@ -77,8 +77,6 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
-#
-# Example aliases
 alias zshconf="nvim ~/.dotfiles/.zshrc"
 alias ohmyzshconf="nvim ~/.oh-my-zsh"
 alias tmuxconf="nvim ~/.dotfiles/.tmux.conf"
@@ -91,13 +89,19 @@ alias vim="nvim"
 alias find="fd"
 alias grep="rg"
 
+# Macos cronjobs equalavents
+# Crontab -l ==> launchctl list
+
+
 export JAVA_HOME=$(/usr/libexec/java_home -v 19)
-export VIMRUNTIME=/opt/homebrew/Cellar/neovim/0.10.2_1/share/nvim/runtime
+VIMRUNTIME=$(dirname $(dirname $(readlink -f $(which nvim))))/share/nvim/runtime
 
 if [ -f ~/.dotfiles/.api_keys.env ]; then
     source ~/.dotfiles/.api_keys.env
 fi
 
+# Custom scripts folder
+export PATH="$PATH:$HOME/scripts"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -106,7 +110,6 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 export PATH=$PATH:/Users/wouter/.spicetify
-source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 bindkey '\t' autosuggest-accept
 
 export LIBTORCH=/usr/local/lib/libtorch
@@ -120,3 +123,4 @@ eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
+export PATH="/usr/local/opt/avr-gcc@13/bin:$PATH"

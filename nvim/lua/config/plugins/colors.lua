@@ -3,8 +3,8 @@ local function apply_color(scheme)
   vim.cmd("colorscheme " .. scheme)
 
   -- Remove the background color to make it transparent
-  vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])  -- Set the background to transparent for Neovim
-  vim.cmd([[hi NormalNC guibg=NONE ctermbg=NONE]]) -- Ensure normal window transparency for other windows
+  --vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])   -- Set the background to transparent for Neovim
+  --vim.cmd([[hi NormalNC guibg=NONE ctermbg=NONE]]) -- Ensure normal window transparency for other windows
 end
 
 -- Define global functions for switching color schemes
@@ -15,6 +15,10 @@ end
 _G.mellow = function()
   apply_color("mellow")
   vim.g.mellow_transparent = true
+end
+
+_G.rose = function()
+  apply_color("rose")
 end
 
 return {
@@ -29,9 +33,12 @@ return {
   {
     "mellow-theme/mellow.nvim",
     config = function()
-      -- Default colorscheme
-      apply_color("mellow")
     end,
   },
+  {
+    "vague2k/vague.nvim",
+    config = function()
+      apply_color("vague")
+    end
+  },
 }
-

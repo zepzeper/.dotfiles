@@ -26,6 +26,21 @@ const rules: KarabinerRules[] = [
                 ],
                 type: "basic",
             },
+            {
+                description: "Right command -> Alt",
+                from: {
+                    key_code: "right_command",
+                    modifiers: {
+                        optional: ["any"],
+                    },
+                },
+                to: [
+                    {
+                        key_code: "left_option",
+                    },
+                ],
+                type: "basic",
+            },
         ],
     },
 ];

@@ -5,11 +5,21 @@ return {
       local ls = require("luasnip")
 
       -- Key mappings for expanding and navigating snippets.
-      vim.keymap.set({ "i" }, "<C-K>", function() ls.expand() end, { silent = true, desc = "Expand Snippet" })
-      vim.keymap.set({ "i", "s" }, "<C-L>", function() ls.jump(1) end,
-        { silent = true, desc = "Jump Forward in Snippet" })
-      vim.keymap.set({ "i", "s" }, "<C-J>", function() ls.jump(-1) end,
-        { silent = true, desc = "Jump Backward in Snippet" })
+      vim.keymap.set({ "i" }, "<C-b>", function() ls.expand() end, { silent = true, desc = "Expand Snippet" })
+
+      -- Jump forward in snippet (use <C-k>)
+      vim.keymap.set({ "i", "s" }, "<C-k>", function()
+        if ls.jumpable(1) then
+          ls.jump(1)
+        end
+      end, { silent = true, desc = "Jump Forward in Snippet" })
+
+      -- Jump backward in snippet (use <C-j>)
+      vim.keymap.set({ "i", "s" }, "<C-j>", function()
+        if ls.jumpable(-1) then
+          ls.jump(-1)
+        end
+      end, { silent = true, desc = "Jump Backward in Snippet" })
 
       vim.keymap.set({ "i", "s" }, "<C-E>", function()
         if ls.choice_active() then

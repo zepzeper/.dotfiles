@@ -1,0 +1,59 @@
+CONNECTED(00000003)
+---
+Certificate chain
+ 0 s:OU=PVE Cluster Node, O=Proxmox Virtual Environment, CN=pve
+   i:CN=Proxmox Virtual Environment, OU=623e00e0-77ff-4ac8-8973-12e19945bb16, O=PVE Cluster Manager CA
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Feb 26 19:53:14 2025 GMT; NotAfter: Feb 26 19:53:14 2027 GMT
+-----BEGIN CERTIFICATE-----
+MIIE3TCCAsWgAwIBAgIBATANBgkqhkiG9w0BAQsFADB2MSQwIgYDVQQDDBtQcm94
+bW94IFZpcnR1YWwgRW52aXJvbm1lbnQxLTArBgNVBAsMJDYyM2UwMGUwLTc3ZmYt
+NGFjOC04OTczLTEyZTE5OTQ1YmIxNjEfMB0GA1UECgwWUFZFIENsdXN0ZXIgTWFu
+YWdlciBDQTAeFw0yNTAyMjYxOTUzMTRaFw0yNzAyMjYxOTUzMTRaME8xGTAXBgNV
+BAsTEFBWRSBDbHVzdGVyIE5vZGUxJDAiBgNVBAoTG1Byb3htb3ggVmlydHVhbCBF
+bnZpcm9ubWVudDEMMAoGA1UEAxMDcHZlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+MIIBCgKCAQEAqkp7kiRXG0XOI/PQQksINhD7UyNaA1Ed+kQa0VRItLp6d/e00oeW
+OUh6X2NEyh5dBNUiz6aOvRv5c5jXhOEqn5EIstHTdZOuYvN93vU36ykMQ5p2PJDO
+TDLyYDrJD99FM9lq3CHKOlF20PAhYYNhZegQI568wZLzdd4YbvJJT3Pac/PEd2C3
+ukNijuvrgFkQnb/y6NVnmWY0Gau+rmYbx4tGOaRGOnGlUdgWSIddvEfl8xZhIlRl
+EVxNatls1L4uzYB1cOhMmzrAJbVDugrDgAdnT1UMOR0hFuLFAf1tcdKu2BOo6mmK
+aMhz5XK2fePiBSJma+dZLahljyasCZ3wswIDAQABo4GcMIGZMAkGA1UdEwQCMAAw
+EwYDVR0lBAwwCgYIKwYBBQUHAwEwNwYDVR0RBDAwLocEfwAAAYcQAAAAAAAAAAAA
+AAAAAAAAAYIJbG9jYWxob3N0hwTAqERkggNwdmUwHQYDVR0OBBYEFMErtFr/i5gC
+pCjHXS8dHe+JB2I2MB8GA1UdIwQYMBaAFA0Xm72oVDtn+zeibqogfj0QAh9jMA0G
+CSqGSIb3DQEBCwUAA4ICAQAEj1iSnbBBhBpR+mlPAgr5I52XhUwrU9YoR8n7tJok
+jmWSTsRgjtDnljpkZ2uk+XRAxDeTjJ3cBJRjR4FSGywPov51U23vJXSvdsj2jJMp
+z/ke95YlNmdbPLtnJSE/jbmnH4XuiSUOSrEDYEAIF4eGGEygTUe3nxq05T2DGVa+
+AM3+YCYrhRr7w66dbED1DpURUKloFrMUXAb4nw3Gf2Jsy0vRTAsXPvIc6MFu0eCc
+OE9PYRCZTMdhJf1tteTpuSkc29RSG8KylYyl3r4CQBaB+GbNI0DqRDnZmOGA3RBf
+Tl7iIrtp1Rt0IzfOsHu7Egk2mR6KLY6JxGmIHIyzfGy9Tjk7njOzKdaKnAkqndTY
+Obl9NFIjdFY1IoZBMJI9dGqJ5cHMp8hIlxdm9FvU5IFSw2JyOhbzcri9KxVqNajn
+1gqNSAwG6D4+h8p+sn9hBuZNN7xZ2IsCP/JNBPw4S/Fkv0ph92hkUEgZmOT40UlO
+Ou7wqwizqidb1mnqoJz6GfaCiUEgrAo3SWS6JUCif6k0qy4vRIRfEZf8KMbCH30I
+g4NjC6Nkubr/eHnEly3QklGt9o8Oxid60rF+B0+2jS22tm6zVFffGmzYeywRzWJq
+Ut93fNTKvfA0usroeKRxP+qscfgriVmg4asFl7WSxm5ydVSkDH2pYcafi5JF0UMM
+VQ==
+-----END CERTIFICATE-----
+---
+Server certificate
+subject=OU=PVE Cluster Node, O=Proxmox Virtual Environment, CN=pve
+issuer=CN=Proxmox Virtual Environment, OU=623e00e0-77ff-4ac8-8973-12e19945bb16, O=PVE Cluster Manager CA
+---
+No client certificate CA names sent
+Peer signing digest: SHA256
+Peer signature type: RSA-PSS
+Server Temp Key: X25519, 253 bits
+---
+SSL handshake has read 1805 bytes and written 382 bytes
+Verification error: unable to verify the first certificate
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+Protocol: TLSv1.3
+Server public key is 2048 bit
+This TLS version forbids renegotiation.
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 21 (unable to verify the first certificate)
+---

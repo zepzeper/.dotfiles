@@ -1,9 +1,18 @@
 live_config_reload: true
 
 # ~/.config/alacritty/alacritty.yml
+shell:
+  program: /bin/zsh  # Your shell
+  args:
+    - --login
 
+# Ensure terminal type matches tmux
 env:
-  TERM: xterm-256color
+  TERM: tmux-256color
+
+# Fix key interpretation for tmux/Vim
+key_bindings:
+  - { key: Y, mods: Control, chars: "\x1B[27;5;89~" }  # Prevent conflict with tmux prefix
 
 font:
   size: 14
@@ -45,59 +54,32 @@ window:
   startup_mode: Windowed
 
   # Background opacity
-  opacity: 0.85
+  opacity: .9
 
-#Colors (Mellow)
 colors:
   # Basic colors
   primary:
-    background: "#101010"
-    foreground: "#ffffff"
+    background: "#18191a"
+    foreground: "#cdcdcd"
 
   # Normal colors
   normal:
-    black: "#34302C"
-    red: "#BD8183"
-    green: "#78997A"
-    yellow: "#E49B5D"
-    blue: "#7F91B2"
-    magenta: "#B380B0"
-    cyan: "#7B9695"
-    white: "#C1A78E"
+    black: "#282830"       # line
+    red: "#d2788c"         # error
+    green: "#8faf77"       # plus
+    yellow: "#e6be8c"      # warning, delta
+    blue: "#7894ab"        # keyword
+    magenta: "#b9a3ba"     # parameter
+    cyan: "#8ca0dc"        # hint
+    white: "#c7c7d4"       # property
 
   # Bright colors
   bright:
-    black: "#867462"
-    red: "#D47766"
-    green: "#85B695"
-    yellow: "#EBC06D"
-    blue: "#A3A9CE"
-    magenta: "#CF9BC2"
-    cyan: "#89B3B6"
-    white: "#ECE1D7"
-
-# colors:
-#   primary:
-#     background: "#24283b"
-#     foreground: "#a9b1d6"
-#
-#   normal:
-#     black: "#32344a"
-#     blue: "#7aa2f7"
-#     cyan: "#449dab"
-#     green: "#9ece6a"
-#     magenta: "#ad8ee6"
-#     red: "#f7768e"
-#     white: "#9699a8"
-#     yellow: "#e0af68"
-#
-#   bright:
-#     black: "#444b6a"
-#     blue: "#7da6ff"
-#     cyan: "#0db9d7"
-#     green: "#b9f27c"
-#     magenta: "#bb9af7"
-#     red: "#ff7a93"
-#     white: "#acb0d0"
-#     yellow: "#ff9e64"
-#
+    black: "#646477"       # comment
+    red: "#be8c8c"         # func
+    green: "#deb896"       # string
+    yellow: "#d2a374"      # number
+    blue: "#bad1ce"        # builtin
+    magenta: "#b4b4ce"     # constant
+    cyan: "#96a3b2"        # operator
+    white: "#878787"       # floatBorder

@@ -1,6 +1,7 @@
 return {
   {
     "hkupty/iron.nvim",
+    ft = "python",
     config = function()
       require('iron.core').setup {
         config = {
