@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 languages=`echo "php lua nvim rust" | tr ' ' '\n'`
 

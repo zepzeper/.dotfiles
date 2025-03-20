@@ -1,44 +1,20 @@
--- Function to apply a colorscheme and handle recoloring
-local function apply_color(scheme)
-  vim.cmd("colorscheme " .. scheme)
-
-  -- Remove the background color to make it transparent
-  --vim.cmd([[hi Normal guibg=NONE ctermbg=NONE]])   -- Set the background to transparent for Neovim
-  --vim.cmd([[hi NormalNC guibg=NONE ctermbg=NONE]]) -- Ensure normal window transparency for other windows
-end
-
--- Define global functions for switching color schemes
-_G.tokyo = function()
-  apply_color("tokyonight")
-end
-
-_G.mellow = function()
-  apply_color("mellow")
-  vim.g.mellow_transparent = true
-end
-
-_G.rose = function()
-  apply_color("rose")
-end
-
 return {
-  -- Install the tokyonight theme
-  {
-    "folke/tokyonight.nvim",
-    config = function()
-    end,
-  },
-
-  -- Install the mellow theme
-  {
-    "mellow-theme/mellow.nvim",
-    config = function()
-    end,
-  },
-  {
-    "vague2k/vague.nvim",
-    config = function()
-      apply_color("vague")
-    end
-  },
+	{
+		"folke/tokyonight.nvim",
+		name = "tokyonight",
+		priority = 1000,
+		config = function()
+			vim.cmd([[colorscheme tokyonight-night]])
+		end,
+	},
+	{
+		"catppuccin/nvim",
+		name = "catppuccin",
+		priority = 1000,
+	},
+	{
+		"rose-pine/neovim",
+		name = "rose-pine",
+		priority = 1000,
+	},
 }

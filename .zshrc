@@ -70,13 +70,28 @@ CASE_SENSITIVE="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+# Oh-My-Zsh configuration
 plugins=(git)
-
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
+# Source Nix-managed plugins
+if [ -e /nix/store ]; then
+  # Find and source Nix-managed zsh plugins (use /usr/bin/find to avoid fd alias)
+  NIX_ZSH_AUTOSUGGESTIONS=$(/usr/bin/find /nix/store -path "*/share/zsh-autosuggestions/zsh-autosuggestions.zsh" | head -1)
+  NIX_ZSH_COMPLETIONS=$(/usr/bin/find /nix/store -path "*/share/zsh-completions/zsh-completions.plugin.zsh" | head -1)
 
-# export MANPATH="/usr/local/man:$MANPATH"
+  if [ -n "$NIX_ZSH_AUTOSUGGESTIONS" ]; then
+    source "$NIX_ZSH_AUTOSUGGESTIONS"
+  fi
+  if [ -n "$NIX_ZSH_COMPLETIONS" ]; then
+    source "$NIX_ZSH_COMPLETIONS"
+  fi
+  if [ -n "$NIX_POWERLEVEL10K" ]; then
+    source "$NIX_POWERLEVEL10K"
+  fi
+fi
+
+# User configuration
 alias zshconf="nvim ~/.dotfiles/.zshrc"
 alias ohmyzshconf="nvim ~/.oh-my-zsh"
 alias tmuxconf="nvim ~/.dotfiles/.tmux.conf"
@@ -89,13 +104,9 @@ alias vim="nvim"
 alias find="fd"
 alias grep="rg"
 
-# Macos cronjobs equalavents
-# Crontab -l ==> launchctl list
-
-
-export JAVA_HOME=$(/usr/libexec/java_home -v 19)
+# Environment variables
 VIMRUNTIME=$(dirname $(dirname $(readlink -f $(which nvim))))/share/nvim/runtime
-
+# API keys
 if [ -f ~/.dotfiles/.api_keys.env ]; then
     source ~/.dotfiles/.api_keys.env
 fi
@@ -103,24 +114,39 @@ fi
 # Custom scripts folder
 export PATH="$PATH:$HOME/scripts"
 
+# NVM setup (consider migrating to Nix-managed Node.js)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
+# Spicetify
 export PATH=$PATH:/Users/wouter/.spicetify
-bindkey '\t' autosuggest-accept
 
+# LibTorch configuration
 export LIBTORCH=/usr/local/lib/libtorch
 export DYLD_LIBRARY_PATH=$LIBTORCH/lib:$DYLD_LIBRARY_PATH
 export LIBTORCH_USE_PYTORCH=1
 export LIBTORCH_BYPASS_VERSION_CHECK=1
 
+# Pyenv setup (consider migrating to Nix-managed Python)
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
+# AVR GCC
 export PATH="/usr/local/opt/avr-gcc@13/bin:$PATH"
+
+# Nix path (add if not already in PATH)
+if [ -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+  source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+fi
+
+# Key bindings - IMPORTANT: must come after sourcing the autosuggestions plugin
+if [ -n "$NIX_ZSH_AUTOSUGGESTIONS" ]; then
+  bindkey '\t' autosuggest-accept
+fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
