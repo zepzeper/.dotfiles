@@ -3,7 +3,7 @@
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$( (find $HOME/work/ $HOME/personal $HOME/personal/rust -mindepth 1 -maxdepth 1 -type d; echo $HOME/.dotfiles; echo $HOME/Library/LaunchAgents) | fzf )
+    selected=$( (find $HOME/personal -mindepth 1 -maxdepth 1 -type d; echo $HOME/.dotfiles; echo $HOME/nix;) | fzf )
 fi
 
 if [[ -z $selected ]]; then
