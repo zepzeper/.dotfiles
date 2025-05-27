@@ -1,33 +1,54 @@
 local set = vim.opt;
+local opt = vim.opt -- for conciseness
 
 set.guicursor = ""
 
-set.nu = true
-set.relativenumber = true
+-- line numbers
+opt.relativenumber = true -- show relative line numbers
+opt.number = true         -- shows absolute line number on cursor line (when relative number is on)
 
--- Default tab settings (fallback if .editorconfig isn't applied)
-set.tabstop = 2
-set.softtabstop = 4
-set.shiftwidth = 4
-set.expandtab = true
+-- tabs & indentation
+opt.tabstop = 2       -- 2 spaces for tabs (prettier default)
+opt.shiftwidth = 2    -- 2 spaces for indent width
+opt.expandtab = true  -- expand tab to spaces
+opt.autoindent = true -- copy indent from current line when starting new one
 
-vim.opt.autoindent = true   -- Maintain indentation
-vim.opt.smartindent = true  -- Context-aware indentation
+-- line wrapping
+opt.wrap = false -- disable line wrapping
 
-set.wrap = false
+-- search settings
+opt.ignorecase = true -- ignore case when searching
+opt.smartcase = true  -- if you include mixed case in your search, assumes you want case-sensitive
 
-set.swapfile = false
-set.backup = false
-set.undodir = os.getenv("HOME") .. "/.vim/undodir"
-set.undofile = true
+-- cursor line
+opt.cursorline = true -- highlight the current cursor line
 
-set.hlsearch = false
-set.incsearch = true
+-- appearance
 
-set.termguicolors = true
+-- turn on termguicolors for nightfly colorscheme to work
+-- (have to use iterm2 or any other true color terminal)
+opt.termguicolors = true
+opt.background = "dark" -- colorschemes that can be light or dark will be made dark
+opt.signcolumn = "yes"  -- show sign column so that text doesn't shift
 
-set.scrolloff = 8
-set.signcolumn = "yes"
-set.isfname:append("@-@")
+-- backspace
+opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
 
-set.updatetime = 50
+-- clipboard
+opt.clipboard:append("unnamedplus") -- use system clipboard as default register
+
+-- split windows
+opt.splitright = true -- split vertical window to the right
+opt.splitbelow = true -- split horizontal window to the bottom
+
+-- turn off swapfile
+opt.swapfile = false
+opt.updatetime = 50
+
+opt.hlsearch = false
+opt.incsearch = true
+
+opt.scrolloff = 999
+opt.fillchars = { eob = " " }
+
+vim.g.python3_host_prog = "/Users/marco/.asdf/shims/python"

@@ -1,84 +1,99 @@
--- Lazy load dap and dapui
 return {
-  {
-    'mfussenegger/nvim-dap',
-    dependencies = {
-      "nvim-neotest/nvim-nio"
-    },
-    config = function()
-      local dap = require('dap')
+	"mfussenegger/nvim-dap-python",
+	ft = { "python", "javascript" },
+	dependencies = {
+		"mfussenegger/nvim-dap",
+		"rcarriga/nvim-dap-ui",
+		"nvim-neotest/nvim-nio",
+		"theHamsta/nvim-dap-virtual-text",
+	},
+	config = function()
+		require("dapui").setup({
+			layouts = {
+				{
+					elements = {
+						{
+							id = "scopes",
+							size = 0.3,
+						},
+						{
+							id = "breakpoints",
+							size = 0.3,
+						},
+						{
+							id = "repl",
+							size = 0.4,
+						},
+					},
+					position = "right",
+					size = 60,
+				},
+			},
+		})
+		local dap = require("dap")
+		local dapui = require("dapui")
+		local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
+		require("dap-python").setup(path)
+		require("nvim-dap-virtual-text").setup({})
 
-      dap.adapters.php = {
-        type = "executable",
-        command = "node",
-        args = { os.getenv("HOME") .. "/vscode-php-debug/out/phpDebug.js" }
-      }
+		-- JavaScript setup
+		dap.adapters["pwa-node"] = {
+			type = "server",
+			host = "localhost",
+			port = "${port}",
+			executable = {
+				command = "js-debug-adapter",
+				args = { "${port}" },
+			}
+		}
 
-      dap.configurations.php = {
-        {
-          type = "php",
-          request = "launch",
-          name = "Listen for Xdebug",
-          port = 9003,
-          pathMappings = {
-            ["/var/www/html/src"] = "${workspaceFolder}/src"
-          },
-          skipFiles = {
-            "**/vendor/*",
-            "**/composer/*",
-            "**/Composer/*",
-            "**/*.min.js"
-          },
-          log = true,
-          xdebugSettings = {
-            max_children= 256,
-            max_data= 1024,
-            max_depth= 5
-          }
-        }
-      }
+		dap.configurations.javascript = {
+			{
+				type = "pwa-node",
+				request = "attach",
+				name = "Attach to Port",
+				port = 9229,
+				cwd = "${workspaceFolder}",
+				sourceMaps = true,
+				resolveSourceMapLocations = {
+					"${workspaceFolder}/**",
+					"!**/node_modules/**"
+				},
+				skipFiles = {
+					"<node_internals>/**",
+					"**/node_modules/**"
+				}
+			}
+		}
 
-      vim.fn.sign_define('DapBreakpoint', { text='⚑', texthl='Breakpoint', numhl='Breakpoint' })
+		-- evaluate var under cursor
+		vim.keymap.set("n", "<leader>de", function()
+			require("dapui").eval(nil, { enter = true })
+		end, { desc = "Evaluate variable under cursor" })
 
-      vim.keymap.set('n', '<Leader>co', function() dap.continue() end)
-      vim.keymap.set('n', '<Leader>so', function() dap.step_over() end)
-      vim.keymap.set('n', '<Leader>si', function() dap.step_into() end)
-      vim.keymap.set('n', '<Leader>rl', function() dap.run_last() end)
-      vim.keymap.set('n', '<Leader>q', function() dap.disconnect({ terminateDebugger = true }) end)
+		vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+		vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Debugger Continue " })
+		vim.keymap.set("n", "<F8>", dap.continue, { desc = "Debugger Continue " })
+		vim.keymap.set("n", "<F9>", dap.step_into, { desc = "Debugger Step Into" })
+		vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Debugger Step Over" })
+		vim.keymap.set("n", "<F11>", dap.step_out, { desc = "Debugger Step Out" })
+		vim.keymap.set("n", "<leader>dx", dap.terminate, { desc = "Terminate debugger" })
 
-      vim.keymap.set('n', '<Leader>b', function() dap.toggle_breakpoint() end)
-    end
-  },
-  {
-    'rcarriga/nvim-dap-ui',
-    config = function()
-      local ui = require('dapui')
-      ui.setup()
+		vim.keymap.set("n", "<leader>dt", function()
+			require("dapui").toggle()
+		end, { desc = "Toggle debugger UI" })
 
-      vim.keymap.set({'n', 'v'}, '<Leader>do', function()
-        ui.open()
-      end)
-
-      vim.keymap.set({'n', 'v'}, '<Leader>dc', function()
-        ui.close()
-      end)
-    end
-  },
-  {
-    'nvim-telescope/telescope.nvim',
-    dependencies = {'mfussenegger/nvim-dap'},
-    config = function()
-      vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end)
-
-      vim.keymap.set('n', '<Leader>df', function()
-        local widgets = require('dap.ui.widgets')
-        widgets.centered_float(widgets.frames)
-      end)
-
-      vim.keymap.set('n', '<Leader>ds', function()
-        local widgets = require('dap.ui.widgets')
-        widgets.centered_float(widgets.scopes)
-      end)
-    end
-  }
+		dap.listeners.before.attach.dapui_config = function()
+			dapui.open()
+		end
+		dap.listeners.before.launch.dapui_config = function()
+			dapui.open()
+		end
+		dap.listeners.before.event_terminated.dapui_config = function()
+			dapui.close()
+		end
+		dap.listeners.before.event_exited.dapui_config = function()
+			dapui.close()
+		end
+	end,
 }

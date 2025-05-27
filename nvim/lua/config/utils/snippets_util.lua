@@ -71,29 +71,29 @@ return {
     -- errnil
     s("err", {
       t("if err != nil {"),
-      i("$0"),  -- This positions the cursor here
+      i("$0"), -- This positions the cursor here
       t("}")
     }),
 
     -- Function declaration
     s("fn", {
       t("func "), i(1, "name"), t("("), i(2), t(") "), i(3, "returnType"), t(" {"),
-      t({"", "\t"}), i(0),
-      t({"", "}"})
+      t({ "", "\t" }), i(0),
+      t({ "", "}" })
     }),
 
     -- Struct definition
     s("struct", {
       t("type "), i(1, "Name"), t(" struct {"),
-      t({"", "\t"}), i(0),
-      t({"", "}"})
+      t({ "", "\t" }), i(0),
+      t({ "", "}" })
     }),
 
     -- Interface definition
     s("interface", {
       t("type "), i(1, "Name"), t(" interface {"),
-      t({"", "\t"}), i(0),
-      t({"", "}"})
+      t({ "", "\t" }), i(0),
+      t({ "", "}" })
     }),
   }
 }

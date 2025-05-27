@@ -17,8 +17,8 @@ vim.g.maplocalleader = "\\"
 
 require("lazy").setup({
   spec = {
-    { "folke/tokyonight.nvim",  config = function() vim.cmd.colorscheme "tokyonight" end },
     { import = "config.plugins" },
+    { import = "config.plugins.lsp" }
   },
   change_detection = {
     -- automatically check for config file changes and reload the ui

@@ -1,73 +1,26 @@
-[bell]
-animation = "EaseOutExpo"
-duration = 0
-
-[colors]
-draw_bold_text_with_bright_colors = true
-
-[cursor]
-blink_interval = 500
-blink_timeout = 5
-unfocused_hollow = false
-
-[cursor.style]
-blinking = "Off"
-shape = "Block"
+[general]
+import = ["~/.dotfiles/alacritty/themes/rose-pine.toml.toml"]
 
 [env]
-TERM = "xterm-256color"
+  TERM = "xterm-256color"
+[window]
+  padding.x= 9
+  padding.y= 8
 
-[font]
-size = 18
+  decorations = "Buttonless"
+  dynamic_padding = true
+  startup_mode = "Maximized"
+  blur = true
 
-[font.bold]
-family = "JetBrainsMono Nerd Font"
-style = "Bold"
+  opacity = 0.6
 
-[font.glyph_offset]
-x = 0
-y = 0
-
-[font.italic]
-family = "JetBrainsMono Nerd Font"
-
-[font.normal]
-family = "JetBrainsMono Nerd Font"
-style = "Regular"
-
-[font.offset]
-x = 0
-y = 0
-
-[mouse]
-hide_when_typing = true
-
-[[mouse.bindings]]
-action = "PasteSelection"
-mouse = "Middle"
-
-[selection]
-semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+  option_as_alt = "Both"
 
 [terminal.shell]
 program = "/bin/zsh"
 
-[window]
-decorations = "none"
-dynamic_title = true
-option_as_alt = "Both"
-startup_mode = "Maximized"
 
-[window.dimensions]
-columns = 160
-lines = 80
-
-[window.padding]
-x = 5
-y = 15
-
-[general]
-live_config_reload = true
-import = [
-  "~/.dotfiles/alacritty/themes/rose-pine.toml"
-]
+[font]
+normal = {family = "JetBrainsMono Nerd Font Mono"}
+size = 12
+offset = {x = 0, y = 0}
