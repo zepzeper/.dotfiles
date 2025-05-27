@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Specify the wallpaper directory
 WALLPAPER_DIR="$HOME/personal/walls/"

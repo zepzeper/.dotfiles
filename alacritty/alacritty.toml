@@ -1,5 +1,5 @@
 [general]
-import = ["~/.dotfiles/alacritty/themes/rose-pine.toml.toml"]
+import = ["~/.dotfiles/alacritty/themes/ash.toml"]
 
 [env]
   TERM = "xterm-256color"
@@ -12,13 +12,9 @@ import = ["~/.dotfiles/alacritty/themes/rose-pine.toml.toml"]
   startup_mode = "Maximized"
   blur = true
 
-  opacity = 0.6
+  opacity = 0.9
 
   option_as_alt = "Both"
-
-[terminal.shell]
-program = "/bin/zsh"
-
 
 [font]
 normal = {family = "JetBrainsMono Nerd Font Mono"}

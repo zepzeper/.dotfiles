@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 # Replace with your actual snippets file path if different
 snippets="$HOME/scripts/snippets.json"
 

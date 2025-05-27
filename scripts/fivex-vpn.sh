@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 
 if [[ $# -eq 1 ]]; then
     # If an argument is passed, use it as the VPN name
