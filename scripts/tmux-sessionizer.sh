@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/run/current-system/sw/bin/zsh
 
 if [[ $# -eq 1 ]]; then
     selected=$1

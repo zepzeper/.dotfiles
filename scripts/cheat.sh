@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/run/current-system/sw/bin/zsh
 
 languages=`echo "php lua nvim rust" | tr ' ' '\n'`
 
