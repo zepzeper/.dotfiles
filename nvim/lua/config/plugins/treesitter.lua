@@ -11,6 +11,7 @@ return {
         -- enable indentation
         indent = { enable = true },
         ensure_installed = {
+          "html",
           "go",
           "gomod",
           "gosum",

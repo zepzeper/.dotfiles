@@ -24,28 +24,6 @@ return {
 
     mason_tool_installer.setup({
       ensure_installed = {
-        "prettier",
-        "stylua",
-        "ruff",
-        "lua-language-server",
-        "emmet-language-server",
-        "tailwindcss-language-server",
-
-        -- TypeScript/JavaScript
-        "ts_ls",
-
-        -- React/HTML/CSS/Tailwind
-        "html",
-        "cssls",
-
-        -- Lua (for Neovim config)
-        "lua_ls",
-
-        -- PHP
-        "intelephense",
-
-        -- Go
-        "gopls",
       },
     })
   end,

@@ -1,14 +1,3 @@
-local function getIncludePath()
-  -- Get the root directory dynamically
-  local root_dir = vim.fn.getcwd()
-
-  print("Root Directory: " .. root_dir)
-  -- Add the `vendor` directory to includePaths
-  return {
-    root_dir .. '/html/vendor/',
-  }
-end
-
 return {
   "neovim/nvim-lspconfig",
   event = { "BufReadPre", "BufNewFile" },
@@ -88,10 +77,36 @@ return {
     })
 
     -- configure js server
-    lspconfig["eslint"].setup({
+    lspconfig["ts_ls"].setup({
+      cmd = { "typescript-language-server", "--stdio" },
       capabilities = capabilities,
       on_attach = on_attach,
-      filetypes = {"js"}
+      filetypes = {"javascript", "typescript", "javascriptreact", "typescriptreact"},
+      root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git"),
+      settings = {
+        typescript = {
+          inlayHints = {
+            includeInlayParameterNameHints = 'all',
+            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayVariableTypeHints = true,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayEnumMemberValueHints = true,
+          }
+        },
+        javascript = {
+          inlayHints = {
+            includeInlayParameterNameHints = 'all',
+            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayVariableTypeHints = true,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayEnumMemberValueHints = true,
+          }
+        }
+      }
     })
 
     -- configure tailwindcss server
@@ -112,7 +127,7 @@ return {
     lspconfig.rust_analyzer.setup({
       capabilities = capabilities,
       on_attach = on_attach,
-      filetypes = {"rust"},
+      filetypes = { "rust" },
       settings = {
         ['rust-analyzer'] = {
           checkOnSave = {
@@ -129,7 +144,6 @@ return {
     })
 
     lspconfig["gopls"].setup({
-      cmd = { "/etc/profiles/per-user/zepzeper/bin/gopls" },
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {
@@ -157,87 +171,17 @@ return {
     })
 
     lspconfig["phpactor"].setup({
+      cmd = { "/etc/profiles/per-user/zepzeper/bin/phpactor", "language-server", "--stdio" },
       capabilities = capabilities,
       on_attach = on_attach,
-      filetypes = {"php"},
-      cmd = { "phpactor", "language-server", "--memory-limit=2G" },
-      -- Set explicit environment variables with exact paths
-      settings = {
-        phpactor = {
-          -- Enhance symbol provider
-          symbol = {
-            search_depth = 5
-          }
-        }
-      }
-    })
-
-    -- Enhanced Intelephense setup (more like PhpStorm)
-    lspconfig["intelephense"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      filetypes = {"php"},
-      -- Updated command to use a more reliable path method (like phpactor)
-      cmd = {
-        "node",
-        "--max-old-space-size=4096",
-        "/opt/homebrew/bin/intelephense", -- Use absolute Homebrew path for macOS
-        "--stdio"
-      },
-      -- Use simple root_dir pattern similar to phpactor
       root_dir = function(fname)
         return lspconfig.util.root_pattern("composer.json", ".git")(fname) or vim.fn.getcwd()
       end,
-      init_options = {
-        licenseKey = vim.fn.expand("~/intelephense/license.txt"),
-        clearCache = true,
-        storagePath = vim.fn.expand("~/.local/share/intelephense"),
-      },
+      filetypes = {"php"},
       settings = {
-        intelephense = {
-          environment = {
-            includePaths = getIncludePath()
-          },
-          files = {
-            maxSize = 10000000,
-            exclude = {
-              "**/.git/**",
-              "**/node_modules/**",
-              "**/vendor/**/*.test.php",
-            }
-          },
-          completion = {
-            insertUseDeclaration = true,
-            fullyQualifyGlobalConstantsAndFunctions = false,
-            triggerParameterHints = true,
-            maxItems = 100,
-          },
-          format = {
-            enable = true
-          },
-          diagnostics = {
-            enable = true,
-            run = "onType",
-          },
-          stubs = {
-            "apache", "bcmath", "bz2", "calendar", "com_dotnet", "Core",
-            "ctype", "curl", "date", "dba", "dom", "enchant", "exif",
-            "fileinfo", "filter", "fpm", "ftp", "gd", "gettext", "gmp",
-            "hash", "iconv", "imap", "intl", "json", "ldap", "libxml",
-            "mbstring", "meta", "mysqli", "oci8", "odbc", "openssl",
-            "pcntl", "pcre", "PDO", "pdo_ibm", "pdo_mysql", "pdo_pgsql",
-            "pdo_sqlite", "pgsql", "Phar", "posix", "pspell", "readline",
-            "reflection", "session", "shmop", "SimpleXML", "snmp", "soap",
-            "sockets", "sodium", "SPL", "sqlite3", "standard", "superglobals",
-            "sysvmsg", "sysvsem", "sysvshm", "tidy", "tokenizer", "xml",
-            "xmlreader", "xmlrpc", "xmlwriter", "xsl", "Zend OPcache",
-            "zip", "zlib"
-          },
-          telemetry = {
-            enable = false
-          },
-          phpdoc = {
-            useFullyQualifiedNames = false
+        phpactor = {
+          symbol = {
+            search_depth = 5
           }
         }
       }
