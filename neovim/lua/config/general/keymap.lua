@@ -34,11 +34,6 @@ vim.cmd("command! Q q")
 vim.cmd("command! X x")
 vim.cmd("command! Xa xa")
 
--- FullScreen
-vim.api.nvim_set_keymap('n', '<leader>fs', '<C-w>|', { noremap = true, silent = true })
--- ExitFullscreen
-vim.api.nvim_set_keymap('n', '<leader>rs', '<C-w>=', { noremap = true, silent = true })
-
 local del_qf_item = function()
   local items = vim.fn.getqflist()
   local line = vim.fn.line('.')
@@ -52,5 +47,8 @@ end
 vim.keymap.set("n", "dd", del_qf_item, { silent = true, buffer = true, desc = "Remove entry from QF" })
 vim.keymap.set("v", "D", del_qf_item, { silent = true, buffer = true, desc = "Remove entry from QF" })
 
-vim.opt.clipboard = "unnamedplus"
-vim.g.python3_host_prog = ''
+vim.keymap.set("n", "B", function()
+  local word = vim.fn.expand("<cword>")
+  local url = "https://www.php.net/manual-lookup.php?pattern=" .. word
+  vim.fn.jobstart({ "xdg-open", url }, { detach = true })
+end, { silent = true, desc = "Open PHP docs for word under cursor" })

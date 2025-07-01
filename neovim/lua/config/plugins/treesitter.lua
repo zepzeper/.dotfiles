@@ -5,13 +5,7 @@ return {
     build = ":TSUpdate",
     config = function()
       require("nvim-treesitter.configs").setup({
-        highlight = {
-          enable = true,
-        },
-        -- enable indentation
-        indent = { enable = true },
         ensure_installed = {
-          "html",
           "go",
           "gomod",
           "gosum",
@@ -28,15 +22,8 @@ return {
           "yaml",     -- for configs
           "markdown", -- good for docs and READMEs
         },
-        incremental_selection = {
-          enable = true,
-          keymaps = {
-            init_selection = "<C-S-space>",
-            node_incremental = "<C-S-space>",
-            scope_incremental = false,
-            node_decremental = "<bs>",
-          },
-        },
+        highlight = { enable = true },
+        indent = { enable = true, disable = { 'python' } },
       })
     end,
   }
