@@ -1,4 +1,9 @@
-require("config.lazy")
-require("config.general.keymap")
-require("config.general.options")
-require("config.general.autocommands")
+vim.g.mapleader = " "    
+
+require("core.lazy")
+require("core.lsp")
+
+require("config.keymaps")
+require("config.options")
+require("config.autocmd")
+require("config.health-check")

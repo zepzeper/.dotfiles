@@ -12,11 +12,11 @@ import = ["~/.dotfiles/alacritty/themes/rose-pine.toml"]
   startup_mode = "Maximized"
   blur = true
 
-  opacity = 1
+  opacity = 0.9
 
   option_as_alt = "Both"
 
 [font]
-normal = {family = "JetBrainsMono Nerd Font Mono"}
+normal = {family = "JetBrainsMono Nerd Font", style = "Bold"}
 size = 12
 offset = {x = 0, y = 0}

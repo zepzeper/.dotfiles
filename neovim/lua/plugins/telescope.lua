@@ -118,15 +118,6 @@ return {
     -- Additional optimized keymaps with better options
     local keymap = vim.keymap
     
-    -- Fast file finding with hidden files when needed
-    keymap.set("n", "<leader>fh", function()
-      require("telescope.builtin").find_files({
-        hidden = true,
-        no_ignore = true,
-        prompt_title = "All Files (including hidden)",
-      })
-    end, { desc = "Find all files (including hidden)" })
-    
     -- Project-wide search with better performance
     keymap.set("n", "<leader>fw", function()
       require("telescope.builtin").live_grep({
