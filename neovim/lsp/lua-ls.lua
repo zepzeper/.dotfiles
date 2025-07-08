@@ -29,6 +29,12 @@ return {
                 semicolon = "Disable",
                 arrayIndex = "Disable",
             },
+            workspace = {
+                userThirdParty = {
+                    os.getenv("HOME") .. "/.dotfiles/neovim/addons/love2d"
+                },
+                checkThirdParty = "Apply",
+            }
         },
     },
     capabilities = vim.tbl_deep_extend(

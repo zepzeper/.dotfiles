@@ -2,9 +2,9 @@
   "ipc": "on",
   "splash": false,
   "preload": [
-    "~/Wallpapers/wall-3.jpg"
+    "~/Wallpapers/wall-2.png"
   ],
   "wallpaper": [
-    ",~/Wallpapers/wall-3.jpg"
+    ",~/Wallpapers/wall-2.png"
   ]
 }

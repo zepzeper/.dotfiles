@@ -6,6 +6,7 @@ vim.lsp.enable({
     "ts-ls",
     "rust-analyzer",
     "intelephense",
+    "clangd",
     "tailwindcss",
     "html-ls",
     "css-ls",

@@ -117,25 +117,31 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
         -- Core LSP actions
-        map("n", "gl", vim.diagnostic.open_float, "Open Diagnostic Float")
+        map("n", "<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+
+        map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+
+        map("n", "gr", require('telescope.builtin').lsp_references, "[G]oto [R]eferences")
+
+        map("n", "gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementations")
+
+        map("n", "gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+
+        map("n", "gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+
+        map("n", "gO", require("telescope.builtin").lsp_document_symbols, "[G]oto [D]eclaration")
+
+        map("n", "gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definitions (Telescope)")
+
         map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
-        map("n", "gs", vim.lsp.buf.signature_help, "Signature Documentation")
-        map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
-        map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", "Goto Definition (Telescope)")
-        map("n", "gr", "<cmd>Telescope lsp_references<CR>", "Goto References (Telescope)")
-        map("n", "gi", "<cmd>Telescope lsp_implementations<CR>", "Goto Implementations (Telescope)")
-        map("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", "Goto Type Definitions (Telescope)")
-        map("n", "<leader>v", "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>", "Goto Definition (vsplit)")
 
         -- Diagnostic navigation
         map("n", "[d", vim.diagnostic.goto_prev, "Previous Diagnostic")
         map("n", "]d", vim.diagnostic.goto_next, "Next Diagnostic")
-        map("n", "<leader>e", vim.diagnostic.open_float, "Line Diagnostics")
-        map("n", "<leader>E", "<cmd>Telescope diagnostics bufnr=0<CR>", "Buffer Diagnostics (Telescope)")
 
-        -- Code actions, rename, etc.
-        map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code Action")
-        map("n", "<leader>rn", vim.lsp.buf.rename, "Rename Symbol")
+        map("n", "<leader>e", vim.diagnostic.open_float, "Line Diagnostics")
+
+        map("n", "<leader>E", require("telescope.builtin").diagnostics, "Buffer Diagnostics")
 
         local function client_supports_method(client, method, bufnr)
             if vim.fn.has 'nvim-0.11' == 1 then
@@ -171,7 +177,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 
         if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-            map('<leader>th', function()
+            map("n", '<leader>th', function()
                 vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
             end, '[T]oggle Inlay [H]ints')
         end

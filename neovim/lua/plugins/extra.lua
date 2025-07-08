@@ -11,10 +11,9 @@ return {
     },
   },
   {
-    "echasnovski/mini.icons",
-    enabled = true,
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
     opts = {},
-    lazy = true,
   },
   {
     "stevearc/dressing.nvim",
