@@ -1,8 +1,7 @@
 local blink = require("blink.cmp")
-
 return {
     cmd = { "vscode-css-language-server", "--stdio" },
-    filetypes = { "css", "scss", "less" },
+    filetypes = { "css", "scss", "less", "html" },
     root_markers = { "package.json", ".git" },
     settings = {
         css = { validate = true },

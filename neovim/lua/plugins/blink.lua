@@ -4,6 +4,7 @@ return {
    "saghen/blink.cmp",
     dependencies = {
       "rafamadriz/friendly-snippets",
+      'Exafunction/codeium.nvim',
     },
     version = "*",
     config = function()
@@ -20,16 +21,14 @@ return {
           nerd_font_variant = "normal",
         },
         sources = {
-          -- per_filetype = {
-          --     codecompanion = { "codecompanion" },
-          -- },
-          default = { "laravel", "lazydev", "lsp", "path", "snippets", "buffer" },
+          default = { "laravel", "lazydev", "lsp", "path", "snippets", "buffer", "codeium"},
           providers = {
             lazydev = {
               name = "LazyDev",
               module = "lazydev.integrations.blink",
               score_offset = 100,
             },
+            codeium = { name = 'Codeium', module = 'codeium.blink', async = true },
             laravel = {
               name = "Laravel",
               module = "laravel.blink_source",
@@ -75,7 +74,7 @@ return {
               winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc",
             },
             auto_show = true,
-            auto_show_delay_ms = 500,
+            auto_show_delay_ms = 0,
           },
         }
       })

@@ -58,10 +58,10 @@
     "$mod, G, exec, gimp",
     "$mod, Y, exec, zsh -c 'alacritty -e yazi'",
 
-	"$mod, S, exec, hyprshot -m output -o ~/captures/screenshots/",
-	"$mod, R, exec, /home/zepzeper/scripts/rec.sh",
-	"$mod SHIFT, S, exec, hyprshot -m window -o ~/captures/screenshots/",
-	"$mod CONTROL, S, exec, hyprshot -m region -o ~/captures/screenshots/",
+    "$mod, S, exec, hyprshot -m output -o ~/captures/screenshots/",
+    "$mod, R, exec, /home/zepzeper/scripts/rec.sh",
+    "$mod SHIFT, S, exec, hyprshot -m window -o ~/captures/screenshots/",
+    "$mod CONTROL, S, exec, hyprshot -m region -o ~/captures/screenshots/",
 
     "$mod, O, killactive",
     "$mod, F, fullscreen",

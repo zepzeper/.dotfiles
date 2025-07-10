@@ -1,5 +1,4 @@
 local blink = require("blink.cmp")
-
 return {
     cmd = { "vscode-html-language-server", "--stdio" },
     filetypes = {
