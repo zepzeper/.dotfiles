@@ -1,9 +1,9 @@
-#!/run/current-system/sw/bin/zsh
+#!/usr/bin/bash
 
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
-    selected=$( (find $HOME/personal $HOME/knowledge -mindepth 1 -maxdepth 1 -type d; echo $HOME/.dotfiles;) | fzf )
+    selected=$( (find $HOME/personal $HOME/work  -mindepth 1 -maxdepth 1 -type d) | fzf )
 fi
 
 if [[ -z $selected ]]; then

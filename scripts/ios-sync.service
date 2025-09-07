@@ -1,0 +1,13 @@
+[Unit]
+Description=iOS Project Sync to Mac
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h
+ExecStart=/home/zepzeper/personal/.dotfiles/scripts/rsync_mac.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
