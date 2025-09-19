@@ -7,6 +7,21 @@ o.laststatus = 3
 o.showmode = false
 
 o.clipboard = "unnamedplus"
+-- OSC 52 clipboard support for SSH
+if vim.env.SSH_TTY then
+  g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+    },
+    paste = {
+      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+    },
+  }
+end
+
 o.cursorline = true
 o.cursorlineopt = "number"
 o.relativenumber = true
