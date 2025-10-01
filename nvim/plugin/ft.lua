@@ -6,3 +6,13 @@ vim.filetype.add({
     ["*.envrc"] = "sh"
   }
 })
+
+vim.filetype.add({
+    extension = {
+        twig = "twig",
+    },
+    pattern = {
+        [".*%.twig"] = "twig",
+        [".*%.html%.twig"] = "html.twig",
+    },
+})
