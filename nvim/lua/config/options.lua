@@ -7,17 +7,17 @@ o.laststatus = 3
 o.showmode = false
 
 o.clipboard = "unnamedplus"
--- OSC 52 clipboard support for SSH
+-- Built-in OSC52 support (Neovim 0.10+)
 if vim.env.SSH_TTY then
   vim.g.clipboard = {
     name = 'OSC 52',
     copy = {
-      ['+'] = 'osc52#copy',
-      ['*'] = 'osc52#copy',
+      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
     },
     paste = {
-      ['+'] = 'osc52#paste',
-      ['*'] = 'osc52#paste',
+      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
     },
   }
 end
@@ -28,10 +28,16 @@ o.relativenumber = true
 
 -- Indenting
 o.expandtab = true
-o.shiftwidth = 2
+o.shiftwidth = 4
 o.smartindent = true
-o.tabstop = 2
-o.softtabstop = 2
+o.tabstop = 4
+o.softtabstop = 4
+o.linespace = 4
+vim.opt.smoothscroll = true
+vim.opt.termguicolors = true  -- Enable 24-bit RGB colors
+vim.opt.cursorline = true     -- Highlight current line
+vim.opt.signcolumn = "yes"    -- Always show sign column
+vim.opt.fillchars = { eob = " " }  -- Remove ~ from empty lines
 o.wrap = false
 
 opt.fillchars = { eob = " " }
