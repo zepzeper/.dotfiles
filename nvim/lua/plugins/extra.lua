@@ -39,15 +39,4 @@ return {
       })
     end,
   },
-  {
-    "numToStr/FTerm.nvim",
-    config = function()
-      vim.api.nvim_create_user_command('FTermToggle', function()
-        require('FTerm').toggle()
-      end, { bang = true })
-
-      vim.keymap.set('n', '<leader>tt', '<cmd>FTermToggle<CR>', { desc = 'Toggle terminal' })
-      vim.keymap.set('t', '<leader>tt', '<C-\\><C-n><cmd>FTermToggle<CR>', { desc = 'Toggle terminal (from terminal)' })
-    end
-  }
 }
