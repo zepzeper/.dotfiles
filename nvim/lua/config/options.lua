@@ -23,8 +23,9 @@ if vim.env.SSH_TTY then
 end
 
 o.cursorline = true
-o.cursorlineopt = "number"
-o.relativenumber = true
+o.cursorlineopt = "both" -- Changed from "number" to highlight full line
+o.relativenumber = true 
+o.number = true
 
 -- Indenting
 o.expandtab = true
@@ -34,10 +35,10 @@ o.tabstop = 4
 o.softtabstop = 4
 o.linespace = 4
 vim.opt.smoothscroll = true
-vim.opt.termguicolors = true  -- Enable 24-bit RGB colors
-vim.opt.cursorline = true     -- Highlight current line
-vim.opt.signcolumn = "yes"    -- Always show sign column
-vim.opt.fillchars = { eob = " " }  -- Remove ~ from empty lines
+vim.opt.termguicolors = true
+vim.opt.cursorline = true
+vim.opt.signcolumn = "yes"
+vim.opt.fillchars = { eob = " " }
 o.wrap = false
 
 opt.fillchars = { eob = " " }
@@ -61,3 +62,9 @@ o.undofile = true
 
 -- interval for writing swap file to disk, also used by gitsigns
 o.updatetime = 250
+
+-- Minimal UI improvements
+o.cmdheight = 1
+o.pumheight = 10 -- Limit completion menu height
+o.scrolloff = 8 -- Keep cursor centered
+o.sidescrolloff = 8

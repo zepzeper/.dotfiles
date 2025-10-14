@@ -1,3 +1,4 @@
+
 return {
   'projekt0n/github-nvim-theme',
   name = 'github-theme',
@@ -9,15 +10,20 @@ return {
         transparent = false,
         styles = {
           comments = 'italic',
-          keywords = 'italic,bold',
+          keywords = 'bold',
           types = 'NONE',
           functions = 'NONE',
           variables = 'NONE',
         },
       },
+      palettes = {
+        github_dark_dimmed = {
+          -- Keep GitHub's colors but make them more distinct
+        },
+      },
     })
     
-    vim.cmd('colorscheme github_dark_dimmed')
-    
+    -- Use github_dark instead of github_dark_dimmed for better contrast
+    vim.cmd('colorscheme github_dark')
   end,
 }
