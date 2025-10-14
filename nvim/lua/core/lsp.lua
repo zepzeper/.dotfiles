@@ -40,9 +40,18 @@ vim.diagnostic.config({
     },
 })
 
+-- PhpStorm-style documentation popup
+local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+    opts = opts or {}
+    opts.border = "rounded"
+    opts.max_width = 120
+    opts.max_height = 35
+    opts.stylize_markdown = true
+    return orig_util_open_floating_preview(contents, syntax, opts, ...)
+end
 
 -- Extras
-
 local function restart_lsp(bufnr)
     bufnr = bufnr or vim.api.nvim_get_current_buf()
     local clients = vim.lsp.get_clients({ bufnr = bufnr })
