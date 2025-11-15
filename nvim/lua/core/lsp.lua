@@ -12,6 +12,7 @@ vim.lsp.enable({
     "css-ls",
     "vue-ls",
     "twig-ls",
+    "python-ls",
 })
 
 -- LSP servers are automatically managed by Mason

@@ -12,6 +12,6 @@ return {
     -- Possible options are 'ui_select', 'telescope', and 'snacks'
   end,
   keys = {
-    { '<leader>sad', '<cmd>ApidocsOpen<cr>', desc = 'Search Api Doc' },
+    { '<leader>do', '<cmd>ApidocsOpen<cr>', desc = 'Search Api Doc' },
   },
 }

@@ -1,0 +1,16 @@
+general.import = ["~/personal/.dotfiles/config/alacritty/theme/rose-pine.toml"]
+
+[terminal]
+osc52 = "CopyPaste"
+
+[font]
+normal = { family = "JetBrainsMono Nerd Font Mono" }
+bold = { family = "JetBrainsMono Nerd Font Mono" }
+italic = { family = "JetBrainsMono Nerd Font Mono", style = "Normal" }
+size = 14
+
+[window]
+padding.x = 5
+padding.y = 14
+decorations = "None"
+opacity = 0.8

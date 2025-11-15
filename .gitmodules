@@ -1,6 +1,0 @@
-[submodule "nix"]
-    path = nix
-    url = https://github.com/zepzeper/nix.git
-[submodule "nixvim"]
-    path = nixvim
-    url = https://github.com/zepzeper/nixvim.git

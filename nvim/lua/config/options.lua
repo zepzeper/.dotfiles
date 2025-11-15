@@ -5,7 +5,6 @@ local g = vim.g
 -------------------------------------- options ------------------------------------------
 o.laststatus = 3
 o.showmode = false
-
 o.clipboard = "unnamedplus"
 -- Built-in OSC52 support (Neovim 0.10+)
 if vim.env.SSH_TTY then
@@ -22,49 +21,32 @@ if vim.env.SSH_TTY then
   }
 end
 
-o.cursorline = true
-o.cursorlineopt = "both" -- Changed from "number" to highlight full line
-o.relativenumber = true 
-o.number = true
+vim.opt.nu = true
+vim.opt.relativenumber = true
 
--- Indenting
-o.expandtab = true
-o.shiftwidth = 4
-o.smartindent = true
-o.tabstop = 4
-o.softtabstop = 4
-o.linespace = 4
-vim.opt.smoothscroll = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
+vim.opt.smartindent = true
+
+vim.opt.wrap = false
+
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undofile = true
+
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
+
 vim.opt.termguicolors = true
-vim.opt.cursorline = true
+
+vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
-vim.opt.fillchars = { eob = " " }
-o.wrap = false
+vim.opt.isfname:append("@-@")
 
-opt.fillchars = { eob = " " }
-o.ignorecase = true
-o.smartcase = true
-o.mouse = "a"
+vim.opt.updatetime = 50
 
--- Numbers
-o.number = true
-o.numberwidth = 2
-o.ruler = false
-
--- disable nvim intro
-opt.shortmess:append "sI"
-
-o.signcolumn = "yes"
-o.splitbelow = true
-o.splitright = true
-o.timeoutlen = 400
-o.undofile = true
-
--- interval for writing swap file to disk, also used by gitsigns
-o.updatetime = 250
-
--- Minimal UI improvements
-o.cmdheight = 1
-o.pumheight = 10 -- Limit completion menu height
-o.scrolloff = 8 -- Keep cursor centered
-o.sidescrolloff = 8
+vim.opt.colorcolumn = "90"

@@ -64,3 +64,11 @@ fi
 eval "$(starship init zsh)"
 
 export PATH=~/.npm-global/bin:$PATH
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+export PATH=$PATH:$HOME/go/bin
+
+. "$HOME/.local/share/../bin/env"

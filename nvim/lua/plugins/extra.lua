@@ -16,14 +16,6 @@ return {
     opts = {},
   },
   {
-    "stevearc/dressing.nvim",
-    dependencies = { "MunifTanjim/nui.nvim" },
-    opts = {},
-    config = function()
-      require("dressing").setup()
-    end,
-  },
-  {
     "numToStr/Comment.nvim",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {

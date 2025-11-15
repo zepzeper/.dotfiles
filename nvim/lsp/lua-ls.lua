@@ -31,7 +31,7 @@ return {
             },
             workspace = {
                 userThirdParty = {
-                    os.getenv("HOME") .. "/.dotfiles/neovim/addons/love2d"
+                    os.getenv("HOME") .. "/personal/.dotfiles/nvim/addons/love2d"
                 },
                 checkThirdParty = "Apply",
             }

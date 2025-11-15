@@ -1,15 +1,14 @@
 #!/usr/bin/bash
 
-languages=`echo "php lua nvim rust" | tr ' ' '\n'`
-
-selected=`printf "$languages" | fzf`
-
-read -p "query: " query
-
-if printf $languages | grep -qs $selected; then
-    tmux neww bash -c "curl cht.sh/$selected/`echo $query | tr ' ' '+'` & while [ : ]; do sleep 1; done"
-else
-    echo "not found"
+selected=`cat ~/personal/.dotfiles/scripts/resources/.tmux-cht-languages ~/personal/.dotfiles/scripts/resources/.tmux-cht-command | fzf`
+if [[ -z $selected ]]; then
+    exit 0
 fi
 
+read -p "Enter query: " query
 
+if grep -qs "$selected" ~/personal/.dotfiles/scripts/resources/.tmux-cht-languages; then
+    tmux neww bash -c "curl cht.sh/$selected/$query & while [ : ]; do sleep 1; done"
+else
+    tmux neww bash -c "curl -s cht.sh/$selected~$query | less"
+fi

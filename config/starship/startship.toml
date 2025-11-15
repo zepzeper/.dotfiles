@@ -1,0 +1,28 @@
+format = """
+$directory\
+$git_branch\
+$git_status"""
+
+add_newline = false
+
+[directory]
+truncation_length = 1
+read_only = ' 🔒'
+
+[git_branch]
+symbol = 'git'
+format = '[$symbol:\([$branch](bold red)\)](bold blue) '
+
+[git_status]
+format     = '[$all_status]($style)'
+ahead      = "⇡${count} "
+diverged   = "⇕⇡${ahead_count}⇣${behind_count} "
+behind     = "⇣${count} "
+conflicted = " "
+up_to_date = " "
+untracked  = "? "
+modified   = " "
+stashed    = ""
+staged     = ""
+renamed    = ""
+deleted    = ""

@@ -35,9 +35,3 @@ vim.cmd("command! X x")
 vim.cmd("command! Xa xa")
 
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-
-vim.keymap.set("n", "B", function()
-  local word = vim.fn.expand("<cword>")
-  local url = "https://www.php.net/manual-lookup.php?pattern=" .. word
-  vim.fn.jobstart({ "xdg-open", url }, { detach = true })
-end, { silent = true, desc = "Open PHP docs for word under cursor" })
