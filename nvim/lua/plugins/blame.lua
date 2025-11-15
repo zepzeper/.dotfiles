@@ -1,7 +1,7 @@
 return {
   {
     "FabijanZulj/blame.nvim",
-    lazy = false,
+    lazy = true,
     opts = {
       date_format = "%d.%m.%Y",
       virtual_style = "right_align",

@@ -16,8 +16,8 @@
     picker = { enabled = true },
     quickfile = { enabled = false },
     scope = { enabled = false },
-    scroll = { enabled = true },
-    statuscolumn = { enabled = true },
+    scroll = { enabled = false },
+    statuscolumn = { enabled = false },
     words = { enabled = true },
   },
   keys = {
