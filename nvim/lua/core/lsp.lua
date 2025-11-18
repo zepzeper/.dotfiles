@@ -5,7 +5,7 @@ vim.lsp.enable({
     "zls",
     "ts-ls",
     "rust-analyzer",
-    "intelephense",
+    "php-ls",
     "clangd",
     "tailwindcss",
     "html-ls",
