@@ -58,8 +58,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         map("n", "gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-        map("n", "gO", require("telescope.builtin").lsp_document_symbols, "[G]oto [D]eclaration")
-
         map("n", "gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definitions (Telescope)")
 
         map("n", "K", vim.lsp.buf.hover, "Hover Documentation")

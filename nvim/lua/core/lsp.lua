@@ -1,16 +1,11 @@
 vim.lsp.enable({
-    "sourcekit",
     "lua-ls",
     "gopls",
-    "zls",
     "ts-ls",
     "rust-analyzer",
     "php-ls",
     "clangd",
-    "tailwindcss",
     "html-ls",
-    "css-ls",
-    "vue-ls",
     "twig-ls",
     "python-ls",
 })
