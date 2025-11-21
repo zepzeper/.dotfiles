@@ -17,7 +17,7 @@ return {
 			desc = "Laravel: Open Laravel Picker",
 		},
 		{
-			"<c-g>",
+			"<leader>vf",
 			function()
 				Laravel.commands.run("view:finder")
 			end,
