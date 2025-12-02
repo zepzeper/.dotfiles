@@ -11,15 +11,20 @@ return {
 			settings = {
 				save_on_toggle = true,
 			},
+			menu = {
+				width = 60,
+				height = 10,
+				borderchars = { "─", " ", " ", " ", "─", "─", " ", " " },
+			},
 		})
 
 		-- REQUIRED
 		vim.keymap.set("n", "<leader>ha", function()
 			harpoon:list():add()
-		end)
+		end, { desc = "Add to harpoon" })
 		vim.keymap.set("n", "<C-e>", function()
 			harpoon.ui:toggle_quick_menu(harpoon:list())
-		end)
+		end, { desc = "Harpoon menu" })
 
 		vim.keymap.set("n", "<leader>1", function()
 			harpoon:list():select(1)

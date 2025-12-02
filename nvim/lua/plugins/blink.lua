@@ -11,7 +11,7 @@ return {
 				snippets = { preset = "luasnip" },
 				signature = { enabled = true },
 				appearance = {
-					use_nvim_cmp_as_default = true,
+					use_nvim_cmp_as_default = false, -- Disable nvim-cmp styling
 					nerd_font_variant = "mono",
 				},
 				sources = {
@@ -39,26 +39,34 @@ return {
 				},
 				completion = {
 					menu = {
-						border = nil, -- Change from "rounded"
-						scrollbar = true, -- Change from true
+						border = "single", -- Simple single-line border like Emacs
+						scrollbar = false, -- Cleaner without scrollbar
 						scrolloff = 1,
 						draw = {
 							columns = {
-								{ "kind_icon" },
+								{ "kind_icon", gap = 1 },
 								{ "label", "label_description", gap = 1 },
-								{ "kind" },
-								{ "source_name" },
+								{ "kind", gap = 1 },
 							},
+							-- Emacs-like compact layout
+							treesitter = { "lsp" },
 						},
+						-- More compact window like Emacs company-mode
+						winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:PmenuSel,Search:None",
 					},
 					documentation = {
 						window = {
-							sborder = nil, -- Change from "rounded"
-							scrollbar = true, -- Change from true
-							winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc",
+							border = "single", -- Match menu border style
+							scrollbar = false, -- Cleaner appearance
+							-- Emacs-like minimal styling
+							winhighlight = "Normal:Normal,FloatBorder:Normal,EndOfBuffer:Normal",
 						},
 						auto_show = true,
-						auto_show_delay_ms = 0,
+						auto_show_delay_ms = 100, -- Slight delay feels more natural
+					},
+					-- Show ghost text like Emacs inline completion
+					ghost_text = {
+						enabled = true,
 					},
 				},
 			})

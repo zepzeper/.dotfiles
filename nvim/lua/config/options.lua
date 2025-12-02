@@ -1,25 +1,9 @@
-local opt = vim.opt
 local o = vim.o
-local g = vim.g
 
 -------------------------------------- options ------------------------------------------
 o.laststatus = 3
 o.showmode = false
 o.clipboard = "unnamedplus"
--- Built-in OSC52 support (Neovim 0.10+)
-if vim.env.SSH_TTY then
-  vim.g.clipboard = {
-    name = 'OSC 52',
-    copy = {
-      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
-    },
-    paste = {
-      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
-    },
-  }
-end
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -30,7 +14,6 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 vim.opt.smartindent = true
-
 vim.opt.wrap = false
 
 vim.opt.swapfile = false
@@ -49,4 +32,4 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
-vim.opt.colorcolumn = "90"
+vim.opt.colorcolumn = "110"
