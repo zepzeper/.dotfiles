@@ -203,14 +203,16 @@ set +e
 # Define your stow packages explicitly
 # Adjust this list to match your actual package directories
 STOW_PACKAGES=(
-    "hypr"
-    "nvim"
-    "tmux"
-    "zsh"
-    "waybar"
-    "mako"
-    "starship"
+    "alacritty-stow"
+    "ghostty-stow"
+    "hypr-stow"
+    "kitty-stow"
+    "nvim-stow"
     "omarchy-stow"
+    "scripts-stow"
+    "starship-stow"
+    "tmux-stow"
+    "zsh-stow"
 )
 
 # Function to check if a package is correctly stowed
@@ -289,55 +291,35 @@ else
         stow -D -t "$HOME" "$pkg" 2>/dev/null || true
     done
     
-    # Check for conflicts before stowing
-    echo "  Checking for conflicts..."
-    packages_with_conflicts=()
+    # Check for conflicts and automatically resolve them
+    echo "  Checking for conflicts and removing existing targets..."
     for pkg in "${packages_to_stow[@]}"; do
         # Run stow in dry-run mode to detect conflicts
         conflict_output=$(stow -n -t "$HOME" "$pkg" 2>&1)
         
-        if echo "$conflict_output" | grep -q "existing target is neither"; then
-            packages_with_conflicts+=("$pkg")
-            echo ""
-            echo "    ⚠️  Conflicts found for $pkg:"
-            echo "$conflict_output" | grep "existing target" | sed 's/^/      /'
-            echo ""
+        if echo "$conflict_output" | grep -q "existing target"; then
+            echo "    Resolving conflicts for $pkg..."
+            
+            # Extract conflict paths from stow output
+            # Pattern: "WARNING! ... existing target <path> since ..."
+            conflicts=$(echo "$conflict_output" | grep -oP "existing target \K[^ ]+" | sort -u)
+            
+            for conflict in $conflicts; do
+                conflict_path="$HOME/$conflict"
+                
+                # Remove conflicting file/directory
+                if [ -e "$conflict_path" ] || [ -L "$conflict_path" ]; then
+                    if [ -d "$conflict_path" ] && [ ! -L "$conflict_path" ]; then
+                        echo "      Removing directory: $conflict"
+                        rm -rf "$conflict_path" 2>/dev/null || true
+                    elif [ -f "$conflict_path" ] || [ -L "$conflict_path" ]; then
+                        echo "      Removing file/symlink: $conflict"
+                        rm -f "$conflict_path" 2>/dev/null || true
+                    fi
+                fi
+            done
         fi
     done
-    
-    # If there are conflicts, give user options
-    if [ ${#packages_with_conflicts[@]} -gt 0 ]; then
-        echo "  Found conflicts in: ${packages_with_conflicts[*]}"
-        echo ""
-        echo "  To resolve conflicts, you can:"
-        echo "    1. Manually backup/remove conflicting files"
-        echo "    2. Use 'stow --adopt' to move existing files into stow package"
-        echo "    3. Skip conflicting packages for now"
-        echo ""
-        
-        if [ -t 0 ]; then
-            read -p "  Continue stowing non-conflicting packages? (Y/n) " -n 1 -r
-            echo
-            if [[ $REPLY =~ ^[Nn]$ ]]; then
-                echo "  Aborted by user"
-                set -e
-                exit 1
-            fi
-            
-            # Remove conflicting packages from the stow list
-            for conflict_pkg in "${packages_with_conflicts[@]}"; do
-                packages_to_stow=("${packages_to_stow[@]/$conflict_pkg}")
-            done
-            # Remove empty elements
-            packages_to_stow=("${packages_to_stow[@]}")
-        else
-            echo "  Skipping conflicting packages in non-interactive mode"
-            for conflict_pkg in "${packages_with_conflicts[@]}"; do
-                packages_to_stow=("${packages_to_stow[@]/$conflict_pkg}")
-            done
-            packages_to_stow=("${packages_to_stow[@]}")
-        fi
-    fi
     
     # Stow packages that don't have conflicts
     echo "  Creating symlinks..."
