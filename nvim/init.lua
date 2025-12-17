@@ -8,4 +8,5 @@ require("config.options")
 require("config.autocmd")
 require("config.health-check")
 require("config.ft")
--- require("config.transparency")
+
+-- vim.cmd.colorscheme("telemetry")

@@ -15,7 +15,7 @@ list_secrets() {
 
 get_secret() {
     local key="$1"
-    bong get "$SECRETS_FILE" "$key" -c | tail -n 1
+    bong get "$SECRETS_FILE" "$key" -c
 }
 
 main() {
@@ -28,6 +28,8 @@ main() {
 
     local secretkey
     secretkey=$(get_secret "$selection")
+
+    notify-send "Secret copied to clipboard!"
 }
 
 main "$@"

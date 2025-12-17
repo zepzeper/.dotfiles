@@ -1,63 +1,59 @@
 return {
-	"nvim-telescope/telescope.nvim",
-	tag = "v0.1.9",
-	dependencies = {
-		"nvim-lua/plenary.nvim",
-		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-	},
+	"ibhagwan/fzf-lua",
+	dependencies = { "nvim-tree/nvim-web-devicons" },
 	config = function()
-		require("telescope").setup({
-			defaults = {
-				file_ignore_patterns = { "dist/.*" },
-				layout_strategy = "bottom_pane",
-				layout_config = {
-					height = 32,
-				},
-				border = true,
-				borderchars = {
-					prompt = { "─", " ", " ", " ", "─", "─", " ", " " },
-					results = { " " },
-					preview = { " " },
-				},
-				prompt_prefix = "🔍 ",
-				selection_caret = "➤ ",
-				entry_prefix = "  ",
-				sorting_strategy = "ascending",
-				results_title = false,
-				prompt_title = false,
-				previewer = false,
-			},
-			pickers = {
-				find_files = {
-					hidden = true,
+		require("fzf-lua").setup({
+			-- Use the same bottom pane style you have with Telescope
+			winopts = {
+				height = 0.40,
+				width = 1.0,
+				row = 1.0,
+				col = 0.0,
+				border = "none",
+				preview = {
+					layout = "horizontal",
+					horizontal = "right:50%",
 				},
 			},
-			extensions = {
-				fzf = {
-					fuzzy = true,
-					override_generic_sorter = true,
-					override_file_sorter = true,
-					case_mode = "smart_case",
-				},
+			fzf_opts = {
+				["--layout"] = "reverse",
+				["--info"] = "inline",
 			},
 		})
-		require("telescope").load_extension("fzf")
 
-		vim.keymap.set("n", "<space>sg", require("telescope.builtin").live_grep, { desc = "Live grep" })
-		vim.keymap.set("n", "<space>fh", require("telescope.builtin").help_tags, { desc = "Help tags" })
-		vim.keymap.set("n", "<space>ff", require("telescope.builtin").find_files, { desc = "Find files" })
-		vim.keymap.set("n", "<space>fg", require("telescope.builtin").git_files, { desc = "Git files" })
-		vim.keymap.set(
-			"n",
-			"<space>fs",
-			require("telescope.builtin").current_buffer_fuzzy_find,
-			{ desc = "Current buffer fuzzy find" }
-		)
-		vim.keymap.set("n", "<space>fm", require("telescope.builtin").man_pages, { desc = "Man pages" })
-		vim.keymap.set("n", "<space>en", function()
-			require("telescope.builtin").find_files({
-				cwd = vim.fn.stdpath("config"),
-			})
+        local fzf = require("fzf-lua")
+        local kg_path = vim.fn.expand("~/knowledge-garden")
+
+		vim.keymap.set("n", "<leader>sf", fzf.files, { desc = "Find files" })
+		vim.keymap.set("n", "<C-p>", fzf.git_files, { desc = "Git files" })
+		vim.keymap.set("n", "<leader>lg", fzf.live_grep, { desc = "Live grep" })
+		vim.keymap.set("n", "<C-_>", fzf.blines, { desc = "Current buffer fuzzy find" })
+		vim.keymap.set("n", "<leader>fh", fzf.help_tags, { desc = "Help tags" })
+		vim.keymap.set("n", "<leader>fm", fzf.man_pages, { desc = "Man pages" })
+
+		-- Edit Neovim config
+		vim.keymap.set("n", "<leader>en", function()
+			fzf.files({ cwd = vim.fn.stdpath("config") })
 		end, { desc = "Edit Neovim config" })
+
+		-- Knowledge Garden keymaps
+		-- Quick note finder (fuzzy find by filename)
+		vim.keymap.set("n", "<leader>kf", function()
+			fzf.files({ 
+				cwd = kg_path,
+				prompt = "Notes> ",
+				file_ignore_patterns = { "^%.", "/%."},  -- Hide dotfiles and dot directories
+			})
+		end, { desc = "Find note" })
+		
+		-- Search note content (live grep)
+		vim.keymap.set("n", "<leader>ks", function()
+			fzf.live_grep({ 
+				cwd = kg_path,
+				prompt = "Search> ",
+				file_ignore_patterns = { "^%.", "/%."},
+			})
+		end, { desc = "Search notes" })
 	end,
 }
+

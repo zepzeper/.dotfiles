@@ -100,5 +100,3 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source ~/personal/.dotfiles/.zsh_profile
-export PATH="/home/zepzeper/.config/herd-lite/bin:$PATH"
-export PHP_INI_SCAN_DIR="/home/zepzeper/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"

@@ -47,28 +47,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- Core LSP actions
         map("n", "<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-
         map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-
-        map("n", "gr", require('telescope.builtin').lsp_references, "[G]oto [R]eferences")
-
-        map("n", "gi", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementations")
-
-        map("n", "gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-
+        map("n", "gr", require('fzf-lua').lsp_references, "[G]oto [R]eferences")
+        map("n", "gi", require("fzf-lua").lsp_implementations, "[G]oto [I]mplementations")
+        map("n", "gd", require("fzf-lua").lsp_definitions, "[G]oto [D]efinition")
         map("n", "gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-
-        map("n", "gt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definitions (Telescope)")
-
+        map("n", "gt", require("fzf-lua").lsp_typedefs, "[G]oto [T]ype Definitions")
         map("n", "K", vim.lsp.buf.hover, "Hover Documentation")
-
         -- Diagnostic navigation
         map("n", "[d", vim.diagnostic.goto_prev, "Previous Diagnostic")
         map("n", "]d", vim.diagnostic.goto_next, "Next Diagnostic")
-
         map("n", "<leader>e", vim.diagnostic.open_float, "Line Diagnostics")
-
-        map("n", "<leader>E", require("telescope.builtin").diagnostics, "Buffer Diagnostics")
+        map("n", "<leader>E", require("fzf-lua").diagnostics_document, "Buffer Diagnostics")
 
         local function client_supports_method(client, method, bufnr)
             if vim.fn.has 'nvim-0.11' == 1 then
@@ -116,4 +106,11 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function()
         pcall(vim.treesitter.start)
     end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.conceallevel = 2
+  end,
 })

@@ -1,75 +1,59 @@
 return {
-	{ "L3MON4D3/LuaSnip", keys = {} },
-	{
-		"saghen/blink.cmp",
-		dependencies = {
-			"rafamadriz/friendly-snippets",
-		},
-		version = "*",
-		config = function()
-			require("blink.cmp").setup({
-				snippets = { preset = "luasnip" },
-				signature = { enabled = true },
-				appearance = {
-					use_nvim_cmp_as_default = false, -- Disable nvim-cmp styling
-					nerd_font_variant = "mono",
-				},
-				sources = {
-					default = { "lazydev", "lsp", "path", "snippets", "buffer" },
-					providers = {
-						lazydev = {
-							name = "LazyDev",
-							module = "lazydev.integrations.blink",
-							score_offset = 100,
-						},
-						cmdline = {
-							min_keyword_length = 2,
-						},
-					},
-				},
-				keymap = {
-					["<C-f>"] = {},
-				},
-				cmdline = {
-					enabled = false,
-					completion = { menu = { auto_show = true } },
-					keymap = {
-						["<CR>"] = { "accept_and_enter", "fallback" },
-					},
-				},
-				completion = {
-					menu = {
-						border = "single", -- Simple single-line border like Emacs
-						scrollbar = false, -- Cleaner without scrollbar
-						scrolloff = 1,
-						draw = {
-							columns = {
-								{ "kind_icon", gap = 1 },
-								{ "label", "label_description", gap = 1 },
-								{ "kind", gap = 1 },
-							},
-							-- Emacs-like compact layout
-							treesitter = { "lsp" },
-						},
-						-- More compact window like Emacs company-mode
-						winhighlight = "Normal:Normal,FloatBorder:Normal,CursorLine:PmenuSel,Search:None",
-					},
-					documentation = {
-						window = {
-							border = "single", -- Match menu border style
-							scrollbar = false, -- Cleaner appearance
-							-- Emacs-like minimal styling
-							winhighlight = "Normal:Normal,FloatBorder:Normal,EndOfBuffer:Normal",
-						},
-						auto_show = true,
-						auto_show_delay_ms = 100, -- Slight delay feels more natural
-					},
-					-- Show ghost text like Emacs inline completion
-					ghost_text = {
-						enabled = true,
-					},
-				},
-			})
-		end,
-	},
+  "saghen/blink.cmp",
+  enabled = true,
+  event = { "InsertEnter", "BufReadPost" },
+  dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
+  build = "cargo build --release",
+
+  opts = {
+    snippets = {
+      preset = "luasnip",
+    },
+    cmdline = {
+      enabled = true,
+      completion = {
+        menu = { auto_show = true },
+        list = { selection = { preselect = false, auto_insert = true } },
+      },
+    },
+    sources = {
+        default = { "laravel", "lazydev", "lsp", "path", "snippets", "buffer" },
+        providers = {
+            luasnip = {
+                name = "LuaSnip",
+                module = "luasnip.blink_source",
+                score_offset = 95,
+            },
+            lazydev = {
+                name = "LazyDev",
+                module = "lazydev.integrations.blink",
+                score_offset = 80,
+            },
+            laravel = {
+                name = "Laravel",
+                module = "laravel.blink_source",
+                score_offset = 70,
+            },
+        },
+    },
+
+    keymap = {
+      preset = "enter",
+      ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+      ["<C-e>"] = { "hide", "fallback" },
+      ["<C-y>"] = { "select_and_accept" },
+
+      ["<C-j>"] = { "snippet_forward", "fallback" },
+      ["<C-k>"] = { "snippet_backward", "fallback" },
+
+      ["<Up>"] = { "select_prev", "fallback" },
+      ["<Down>"] = { "select_next", "fallback" },
+      ["<C-p>"] = { "select_prev", "fallback" },
+      ["<C-n>"] = { "select_next", "fallback" },
+
+      ["<C-b>"] = { "scroll_documentation_up", "fallback" },
+      ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+    },
+  },
+  opts_extend = { "sources.default" },
 }
