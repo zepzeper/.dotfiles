@@ -48,7 +48,7 @@ if [ -n "$PKGLIST_TO_USE" ]; then
     fi
     if [ -n "$packages_to_remove" ]; then
         echo ""
-        echo "  ⚠️  The following native packages are installed but not in $PKGLIST_TO_USE:"
+        echo "  ⚠️  The following native packages are installed but not in your package lists:"
         echo "$packages_to_remove" | head -20
         [ $(echo "$packages_to_remove" | wc -l) -gt 20 ] && echo "  ... and $(($(echo "$packages_to_remove" | wc -l) - 20)) more"
         echo ""
@@ -110,7 +110,7 @@ if [ -n "$AUR_TO_USE" ]; then
     fi
     if [ -n "$aur_to_remove" ]; then
         echo ""
-        echo "  ⚠️  The following AUR packages are installed but not in $AUR_TO_USE:"
+        echo "  ⚠️  The following AUR packages are installed but not in your package lists:"
         echo "$aur_to_remove" | head -20
         [ $(echo "$aur_to_remove" | wc -l) -gt 20 ] && echo "  ... and $(($(echo "$aur_to_remove" | wc -l) - 20)) more"
         echo ""
@@ -167,10 +167,10 @@ if [ -f "$PKGLIST" ] && [ -f "$FALLBACK_PKGLIST" ]; then
     (cat "$FALLBACK_PKGLIST" "$PKGLIST" | sort -u) | sudo pacman -S --needed - || true
 elif [ -f "$PKGLIST" ]; then
     echo "  Installing native packages ($PKGLIST)..."
-    sudo pacman -S --needed - < "$PKGLIST"
+    sudo pacman -S --needed - < "$PKGLIST" || true
 elif [ -f "$FALLBACK_PKGLIST" ]; then
     echo "  Installing native packages ($FALLBACK_PKGLIST)..."
-    sudo pacman -S --needed - < "$FALLBACK_PKGLIST"
+    sudo pacman -S --needed - < "$FALLBACK_PKGLIST" || true
 else
     echo "  ⚠️  No package list found for $ARCH"
 fi
@@ -183,10 +183,10 @@ if [ -f "$PKGLIST_AUR" ] && [ -f "$FALLBACK_PKGLIST_AUR" ]; then
     (cat "$FALLBACK_PKGLIST_AUR" "$PKGLIST_AUR" | sort -u) | yay -S --needed - || true
 elif [ -f "$PKGLIST_AUR" ]; then
     echo "  Installing AUR packages ($PKGLIST_AUR)..."
-    yay -S --needed - < "$PKGLIST_AUR"
+    yay -S --needed - < "$PKGLIST_AUR" || true
 elif [ -f "$FALLBACK_PKGLIST_AUR" ]; then
     echo "  Installing AUR packages ($FALLBACK_PKGLIST_AUR)..."
-    yay -S --needed - < "$FALLBACK_PKGLIST_AUR"
+    yay -S --needed - < "$FALLBACK_PKGLIST_AUR" || true
 fi
 
 echo ""
@@ -201,7 +201,6 @@ cd ~/personal/.dotfiles
 set +e
 
 # Define your stow packages explicitly
-# Adjust this list to match your actual package directories
 STOW_PACKAGES=(
     "alacritty-stow"
     "ghostty-stow"
@@ -215,150 +214,176 @@ STOW_PACKAGES=(
     "zsh-stow"
 )
 
-# Function to check if a package is correctly stowed
-is_stowed() {
+# Map each stow package to its specific target paths that should be managed
+# This prevents stow from touching other directories in .config, .local, etc.
+declare -A STOW_TARGETS
+STOW_TARGETS["alacritty-stow"]=".config/alacritty"
+STOW_TARGETS["ghostty-stow"]=".config/ghostty"
+STOW_TARGETS["hypr-stow"]=".config/hypr"
+STOW_TARGETS["kitty-stow"]=".config/kitty"
+STOW_TARGETS["nvim-stow"]=".config/nvim"
+STOW_TARGETS["omarchy-stow"]=".config/omarchy"
+STOW_TARGETS["scripts-stow"]=".local/bin"
+STOW_TARGETS["starship-stow"]=".config/starship"
+STOW_TARGETS["tmux-stow"]=".tmux.conf .tmux"
+STOW_TARGETS["zsh-stow"]=".zshrc .zshenv .zprofile .zsh"
+
+# Function to check if a stow package needs to be stowed
+needs_stowing() {
     local pkg=$1
-    local pkg_dir="$HOME/personal/.dotfiles/$pkg"
+    local targets="${STOW_TARGETS[$pkg]}"
     
-    # Check if package directory exists
-    [ ! -d "$pkg_dir" ] && return 1
-    
-    # Check if at least one file from the package is correctly symlinked
-    local found_correct_link=false
-    while IFS= read -r -d '' file; do
-        local rel_path="${file#$pkg_dir/}"
-        local target_path="$HOME/$rel_path"
+    for target in $targets; do
+        local target_path="$HOME/$target"
         
-        # Check if symlink exists and points to correct location
+        # If target doesn't exist, needs stowing
+        if [ ! -e "$target_path" ] && [ ! -L "$target_path" ]; then
+            return 0
+        fi
+        
+        # If target exists but is not a symlink, needs stowing
+        if [ -e "$target_path" ] && [ ! -L "$target_path" ]; then
+            return 0
+        fi
+        
+        # If target is a symlink but doesn't point to dotfiles, needs stowing
         if [ -L "$target_path" ]; then
-            local link_target="$(readlink "$target_path")"
-            # Resolve to absolute path for comparison
-            local link_dir="$(dirname "$target_path")"
-            local resolved=""
-            if [[ "$link_target" == /* ]]; then
-                # Absolute path
-                resolved="$link_target"
-            else
-                # Relative path
-                resolved="$(cd "$link_dir" && cd "$(dirname "$link_target")" 2>/dev/null && pwd)/$(basename "$link_target")"
-            fi
-            
-            if [ "$resolved" = "$file" ]; then
-                found_correct_link=true
-                break
+            link_target=$(readlink "$target_path")
+            if [[ ! "$link_target" =~ personal/.dotfiles/$pkg ]]; then
+                return 0
             fi
         fi
-    done < <(find "$pkg_dir" -type f -print0 2>/dev/null)
+    done
     
-    [ "$found_correct_link" = true ] && return 0 || return 1
+    return 1
 }
 
 # Check which packages need stowing
 packages_to_stow=()
+echo "  Checking stow status for each package..."
+
 for pkg in "${STOW_PACKAGES[@]}"; do
     if [ ! -d "$pkg" ]; then
-        echo "  ⚠️  Package directory not found: $pkg (skipping)"
+        echo "    ⚠️  Package directory not found: $pkg (skipping)"
         continue
     fi
     
-    # Skip architecture-specific packages if needed
-    if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
-        # Add any x86_64-only packages here to skip on ARM
-        case "$pkg" in
-            # example-x86-only-package)
-            #     echo "  Skipping $pkg (x86_64 only)"
-            #     continue
-            #     ;;
-            *)
-                ;;
-        esac
-    fi
-    
-    if ! is_stowed "$pkg"; then
+    if needs_stowing "$pkg"; then
+        echo "    ⚙️  $pkg needs stowing"
         packages_to_stow+=("$pkg")
+    else
+        echo "    ✓ $pkg already correctly stowed"
     fi
 done
 
 if [ ${#packages_to_stow[@]} -eq 0 ]; then
+    echo ""
     echo "  ✓ All packages are already correctly stowed"
     stowed_packages=()
 else
-    echo "  Packages needing stow: ${packages_to_stow[*]}"
+    echo ""
+    echo "  Packages to stow: ${packages_to_stow[*]}"
+    echo ""
     
-    # Unstow packages first to clean up old symlinks
-    echo "  Cleaning up existing symlinks..."
+    # Backup and remove only the specific targets for each package
+    BACKUP_DIR="$HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
+    needs_backup=false
+    
     for pkg in "${packages_to_stow[@]}"; do
+        echo "  Preparing $pkg..."
+        
+        # Unstow first if any symlinks exist
         stow -D -t "$HOME" "$pkg" 2>/dev/null || true
+        
+        # Get targets for this package
+        targets="${STOW_TARGETS[$pkg]}"
+        
+        for target in $targets; do
+            target_path="$HOME/$target"
+            
+            # Only backup if target exists and is NOT already a correct symlink
+            if [ -e "$target_path" ] || [ -L "$target_path" ]; then
+                # Check if it's already a correct symlink
+                is_correct_symlink=false
+                if [ -L "$target_path" ]; then
+                    link_target=$(readlink "$target_path")
+                    if [[ "$link_target" =~ personal/.dotfiles/$pkg ]]; then
+                        is_correct_symlink=true
+                    fi
+                fi
+                
+                # If not a correct symlink, back it up
+                if [ "$is_correct_symlink" = false ]; then
+                    if [ "$needs_backup" = false ]; then
+                        mkdir -p "$BACKUP_DIR"
+                        echo ""
+                        echo "  Created backup directory: $BACKUP_DIR"
+                        needs_backup=true
+                    fi
+                    
+                    backup_path="$BACKUP_DIR/$target"
+                    backup_dir=$(dirname "$backup_path")
+                    mkdir -p "$backup_dir"
+                    
+                    echo "    Backing up: $target"
+                    mv "$target_path" "$backup_path" 2>/dev/null || true
+                fi
+            fi
+        done
     done
     
-    # Check for conflicts and automatically resolve them
-    echo "  Checking for conflicts and removing existing targets..."
-    for pkg in "${packages_to_stow[@]}"; do
-        # Run stow in dry-run mode to detect conflicts
-        conflict_output=$(stow -n -t "$HOME" "$pkg" 2>&1)
+    # Special handling for omarchy-stow absolute symlinks
+    if [[ " ${packages_to_stow[@]} " =~ " omarchy-stow " ]]; then
+        echo ""
+        echo "  Special handling for omarchy-stow absolute symlinks..."
+        # These are runtime-generated symlinks that stow can't manage
+        rm -f "$HOME/.config/omarchy/current/background" 2>/dev/null || true
+        rm -f "$HOME/.config/omarchy/current/theme" 2>/dev/null || true
+        [ -d "$HOME/.config/omarchy/current" ] && rmdir "$HOME/.config/omarchy/current" 2>/dev/null || true
         
-        if echo "$conflict_output" | grep -q "existing target"; then
-            echo "    Resolving conflicts for $pkg..."
-            
-            # Extract conflict paths from stow output
-            # Pattern: "WARNING! ... existing target <path> since ..."
-            conflicts=$(echo "$conflict_output" | grep -oP "existing target \K[^ ]+" | sort -u)
-            
-            for conflict in $conflicts; do
-                conflict_path="$HOME/$conflict"
-                
-                # Remove conflicting file/directory
-                if [ -e "$conflict_path" ] || [ -L "$conflict_path" ]; then
-                    if [ -d "$conflict_path" ] && [ ! -L "$conflict_path" ]; then
-                        echo "      Removing directory: $conflict"
-                        rm -rf "$conflict_path" 2>/dev/null || true
-                    elif [ -f "$conflict_path" ] || [ -L "$conflict_path" ]; then
-                        echo "      Removing file/symlink: $conflict"
-                        rm -f "$conflict_path" 2>/dev/null || true
+        # Remove theme symlinks pointing to .local/share/omarchy
+        if [ -d "$HOME/.config/omarchy/themes" ]; then
+            for theme_link in "$HOME"/.config/omarchy/themes/*; do
+                if [ -L "$theme_link" ]; then
+                    link_target="$(readlink "$theme_link")"
+                    if [[ "$link_target" =~ \.local/share/omarchy/themes ]]; then
+                        echo "    Removing omarchy theme symlink: $(basename "$theme_link")"
+                        rm -f "$theme_link"
                     fi
                 fi
             done
         fi
-    done
+    fi
     
-    # Stow packages that don't have conflicts
+    # Now stow all packages
+    echo ""
     echo "  Creating symlinks..."
     successfully_stowed=()
+    
     for pkg in "${packages_to_stow[@]}"; do
-        # Skip empty elements
         [ -z "$pkg" ] && continue
         
         echo "    Stowing $pkg..."
-        if stow -v -t "$HOME" "$pkg" 2>&1 | tee /tmp/stow-$pkg.log | grep -v "WARNING.*absolute symlink"; then
-            # Check if stow actually succeeded (no errors in output)
-            if ! grep -q "ERROR\|existing target" /tmp/stow-$pkg.log; then
-                echo "      ✓ $pkg stowed successfully"
-                successfully_stowed+=("$pkg")
-            else
-                echo "      ✗ Failed to stow $pkg (check /tmp/stow-$pkg.log)"
-            fi
+        
+        # Stow the package
+        if stow -v -t "$HOME" "$pkg" 2>&1 | tee /tmp/stow-$pkg.log | grep -v "WARNING.*absolute symlink" | grep -q "LINK:"; then
+            echo "      ✓ $pkg stowed successfully"
+            successfully_stowed+=("$pkg")
+        elif ! grep -q "ERROR" /tmp/stow-$pkg.log; then
+            # No links created but also no errors (already stowed)
+            echo "      ✓ $pkg stowed successfully"
+            successfully_stowed+=("$pkg")
         else
             echo "      ✗ Failed to stow $pkg"
+            echo "         Check /tmp/stow-$pkg.log for details"
         fi
     done
     
     stowed_packages=("${successfully_stowed[@]}")
     
-    # Report on conflicting packages
-    if [ ${#packages_with_conflicts[@]} -gt 0 ]; then
+    if [ "$needs_backup" = true ]; then
         echo ""
-        echo "  ⚠️  The following packages were skipped due to conflicts:"
-        for pkg in "${packages_with_conflicts[@]}"; do
-            echo "      - $pkg"
-        done
-        echo ""
-        echo "  To manually fix conflicts, run:"
-        echo "      cd ~/personal/.dotfiles"
-        for pkg in "${packages_with_conflicts[@]}"; do
-            echo "      stow -n -v $pkg  # Check what conflicts"
-            echo "      # Resolve conflicts, then:"
-            echo "      stow $pkg"
-        done
+        echo "  📦 Backed up files to: $BACKUP_DIR"
     fi
 fi
 
@@ -380,19 +405,17 @@ if [ ${#stowed_packages[@]} -gt 0 ]; then
     
     for pkg in "${stowed_packages[@]}"; do
         case "$pkg" in
-            hypr)
+            hypr-stow)
                 needs_hypr_reload=true
                 ;;
-            tmux)
+            tmux-stow)
                 needs_tmux_reload=true
                 ;;
-            zsh)
+            zsh-stow)
                 needs_zsh_reload=true
                 ;;
-            waybar|omarchy-stow)
+            omarchy-stow)
                 needs_waybar_reload=true
-                ;;
-            mako|omarchy-stow)
                 needs_mako_reload=true
                 ;;
         esac
@@ -433,7 +456,7 @@ if [ ${#stowed_packages[@]} -gt 0 ]; then
     fi
     
     # Starship auto-reloads on next prompt
-    if printf '%s\n' "${stowed_packages[@]}" | grep -q "starship"; then
+    if printf '%s\n' "${stowed_packages[@]}" | grep -q "starship-stow"; then
         echo "  Starship will auto-reload on next prompt"
     fi
 else
