@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ~/.dotfiles
+cd ~/personal/.dotfiles
 
 # Update package lists
 pacman -Qqen > pkglist.txt
