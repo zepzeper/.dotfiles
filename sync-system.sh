@@ -50,6 +50,36 @@ stow -t "$HOME" */
 
 # Re-enable exit on error
 set -e
+echo ""
+echo "🔄 Reloading configurations..."
+sleep 5
+
+# Reload Hyprland
+echo "  Reloading Hyprland..."
+hyprctl reload 2>/dev/null || true
+
+# Reload tmux config
+echo "  Reloading tmux config..."
+tmux source-file ~/.tmux.conf 2>/dev/null || true
+
+# Starship auto-reloads on next prompt
+echo "  Starship will auto-reload on next prompt"
+
+# Reload waybar
+echo "  Reloading waybar..."
+pkill -SIGUSR2 waybar 2>/dev/null || true
+
+# Reload mako (notification daemon)
+echo "  Reloading mako..."
+makoctl reload 2>/dev/null || true
+
+# Reload zshrc (for current shell if running zsh)
+if [ -n "$ZSH_VERSION" ] || [ "$SHELL" = "/usr/bin/zsh" ] || [ "$SHELL" = "/bin/zsh" ]; then
+    echo "  Reloading .zshrc in current shell..."
+    source ~/.zshrc 2>/dev/null || true
+else
+    echo "  .zshrc will be loaded in new zsh sessions"
+fi
 
 echo ""
-echo "✅ System restored!"
+echo "✅ System restored and configurations reloaded!"

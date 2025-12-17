@@ -160,6 +160,7 @@ sof-firmware
 spotify
 starship
 steam
+stow
 stylua
 sushi
 swaybg
