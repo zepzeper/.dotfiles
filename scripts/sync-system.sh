@@ -2,18 +2,53 @@
 
 set -e  # Exit on error for package installation
 
+# Detect architecture
+ARCH=$(uname -m)
+if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+    echo "🐧 Detected: Linux ARM64 (aarch64)"
+elif [ "$ARCH" = "x86_64" ]; then
+    echo "🐧 Detected: Linux x86_64"
+else
+    echo "🐧 Detected: Linux ($ARCH)"
+fi
+
 echo "📦 Managing packages..."
 
 # Check for packages to remove (installed but not in list)
 echo "  Checking for packages to remove..."
 cd ~/personal/.dotfiles
 
-# Get list of packages that are installed but not in pkglist.txt
-if [ -f pkglist.txt ]; then
-    packages_to_remove=$(comm -23 <(pacman -Qqen | sort) <(sort pkglist.txt) 2>/dev/null || true)
+# Determine which package list to use for comparison
+if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+    COMPARE_PKGLIST="pkglist-aarch64.txt"
+    FALLBACK_COMPARE="pkglist.txt"
+else
+    COMPARE_PKGLIST="pkglist-x86_64.txt"
+    FALLBACK_COMPARE="pkglist.txt"
+fi
+
+# Get list of packages that are installed but not in package list
+# Combine architecture-specific and shared lists for comparison
+PKGLIST_TO_USE=""
+if [ -f "$COMPARE_PKGLIST" ] && [ -f "$FALLBACK_COMPARE" ]; then
+    # Merge both lists for comparison
+    PKGLIST_TO_USE="/tmp/pkglist-merged.txt"
+    (cat "$FALLBACK_COMPARE" "$COMPARE_PKGLIST" | sort -u) > "$PKGLIST_TO_USE"
+elif [ -f "$COMPARE_PKGLIST" ]; then
+    PKGLIST_TO_USE="$COMPARE_PKGLIST"
+elif [ -f "$FALLBACK_COMPARE" ]; then
+    PKGLIST_TO_USE="$FALLBACK_COMPARE"
+fi
+
+if [ -n "$PKGLIST_TO_USE" ]; then
+    packages_to_remove=$(comm -23 <(pacman -Qqen | sort) <(sort "$PKGLIST_TO_USE") 2>/dev/null || true)
+    # Clean up merged temp file if we created one
+    if [ "$PKGLIST_TO_USE" = "/tmp/pkglist-merged.txt" ]; then
+        rm -f "$PKGLIST_TO_USE"
+    fi
     if [ -n "$packages_to_remove" ]; then
         echo ""
-        echo "  ⚠️  The following native packages are installed but not in pkglist.txt:"
+        echo "  ⚠️  The following native packages are installed but not in $PKGLIST_TO_USE:"
         echo "$packages_to_remove" | head -20
         [ $(echo "$packages_to_remove" | wc -l) -gt 20 ] && echo "  ... and $(($(echo "$packages_to_remove" | wc -l) - 20)) more"
         echo ""
@@ -48,11 +83,34 @@ if [ -f pkglist.txt ]; then
 fi
 
 # Check for AUR packages to remove
-if [ -f pkglist-aur.txt ]; then
-    aur_to_remove=$(comm -23 <(pacman -Qqem | sort) <(sort pkglist-aur.txt) 2>/dev/null || true)
+if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+    COMPARE_AUR="pkglist-aur-aarch64.txt"
+    FALLBACK_AUR="pkglist-aur.txt"
+else
+    COMPARE_AUR="pkglist-aur-x86_64.txt"
+    FALLBACK_AUR="pkglist-aur.txt"
+fi
+
+AUR_TO_USE=""
+if [ -f "$COMPARE_AUR" ] && [ -f "$FALLBACK_AUR" ]; then
+    # Merge both lists for comparison
+    AUR_TO_USE="/tmp/pkglist-aur-merged.txt"
+    (cat "$FALLBACK_AUR" "$COMPARE_AUR" | sort -u) > "$AUR_TO_USE"
+elif [ -f "$COMPARE_AUR" ]; then
+    AUR_TO_USE="$COMPARE_AUR"
+elif [ -f "$FALLBACK_AUR" ]; then
+    AUR_TO_USE="$FALLBACK_AUR"
+fi
+
+if [ -n "$AUR_TO_USE" ]; then
+    aur_to_remove=$(comm -23 <(pacman -Qqem | sort) <(sort "$AUR_TO_USE") 2>/dev/null || true)
+    # Clean up merged temp file if we created one
+    if [ "$AUR_TO_USE" = "/tmp/pkglist-aur-merged.txt" ]; then
+        rm -f "$AUR_TO_USE"
+    fi
     if [ -n "$aur_to_remove" ]; then
         echo ""
-        echo "  ⚠️  The following AUR packages are installed but not in pkglist-aur.txt:"
+        echo "  ⚠️  The following AUR packages are installed but not in $AUR_TO_USE:"
         echo "$aur_to_remove" | head -20
         [ $(echo "$aur_to_remove" | wc -l) -gt 20 ] && echo "  ... and $(($(echo "$aur_to_remove" | wc -l) - 20)) more"
         echo ""
@@ -84,11 +142,52 @@ fi
 echo ""
 echo "  Installing/updating packages..."
 
+# Sync pacman database first
+echo "  Syncing package database..."
+sudo pacman -Sy
+
+# Determine which package lists to use based on architecture
+if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+    PKGLIST="pkglist-aarch64.txt"
+    PKGLIST_AUR="pkglist-aur-aarch64.txt"
+    FALLBACK_PKGLIST="pkglist.txt"
+    FALLBACK_PKGLIST_AUR="pkglist-aur.txt"
+else
+    PKGLIST="pkglist-x86_64.txt"
+    PKGLIST_AUR="pkglist-aur-x86_64.txt"
+    FALLBACK_PKGLIST="pkglist.txt"
+    FALLBACK_PKGLIST_AUR="pkglist-aur.txt"
+fi
+
 # Install native packages
-sudo pacman -S --needed - < pkglist.txt
+# Combine architecture-specific and shared lists if both exist
+if [ -f "$PKGLIST" ] && [ -f "$FALLBACK_PKGLIST" ]; then
+    echo "  Installing native packages ($PKGLIST + $FALLBACK_PKGLIST)..."
+    # Merge both lists, remove duplicates
+    (cat "$FALLBACK_PKGLIST" "$PKGLIST" | sort -u) | sudo pacman -S --needed - || true
+elif [ -f "$PKGLIST" ]; then
+    echo "  Installing native packages ($PKGLIST)..."
+    sudo pacman -S --needed - < "$PKGLIST"
+elif [ -f "$FALLBACK_PKGLIST" ]; then
+    echo "  Installing native packages ($FALLBACK_PKGLIST)..."
+    sudo pacman -S --needed - < "$FALLBACK_PKGLIST"
+else
+    echo "  ⚠️  No package list found for $ARCH"
+fi
 
 # Install AUR packages (requires AUR helper like yay or paru)
-yay -S --needed - < pkglist-aur.txt
+# Combine architecture-specific and shared lists if both exist
+if [ -f "$PKGLIST_AUR" ] && [ -f "$FALLBACK_PKGLIST_AUR" ]; then
+    echo "  Installing AUR packages ($PKGLIST_AUR + $FALLBACK_PKGLIST_AUR)..."
+    # Merge both lists, remove duplicates
+    (cat "$FALLBACK_PKGLIST_AUR" "$PKGLIST_AUR" | sort -u) | yay -S --needed - || true
+elif [ -f "$PKGLIST_AUR" ]; then
+    echo "  Installing AUR packages ($PKGLIST_AUR)..."
+    yay -S --needed - < "$PKGLIST_AUR"
+elif [ -f "$FALLBACK_PKGLIST_AUR" ]; then
+    echo "  Installing AUR packages ($FALLBACK_PKGLIST_AUR)..."
+    yay -S --needed - < "$FALLBACK_PKGLIST_AUR"
+fi
 
 echo ""
 echo "🔗 Installing GNU Stow (if needed)..."
@@ -129,9 +228,31 @@ check_stow_package() {
 }
 
 # Check which packages need to be stowed
+# Skip platform-specific packages
 packages_to_stow=()
 for pkg in */; do
     pkg_name=$(basename "$pkg")
+    
+    # Skip architecture-specific packages if needed
+    # For example, some packages might only work on x86_64
+    if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
+        # Skip x86_64-only packages on ARM
+        case "$pkg_name" in
+            # Add x86_64-only packages here if needed
+            *)
+                # Continue checking
+                ;;
+        esac
+    elif [ "$ARCH" = "x86_64" ]; then
+        # Skip ARM-only packages on x86_64 (if any)
+        case "$pkg_name" in
+            # Add ARM-only packages here if needed
+            *)
+                # Continue checking
+                ;;
+        esac
+    fi
+    
     if ! check_stow_package "$pkg_name"; then
         packages_to_stow+=("$pkg_name")
     fi
@@ -169,10 +290,44 @@ else
         fi
     done
     
+    # For packages with existing files, we need to adopt them first
+    # Check each package for conflicts and handle them
+    echo "  Handling existing files..."
+    for pkg in "${packages_to_stow[@]}"; do
+        # Check if stowing would cause conflicts
+        stow_output=$(stow -n -t "$HOME" "$pkg" 2>&1)
+        if echo "$stow_output" | grep -q "cannot stow.*over existing target"; then
+            echo "    Handling conflicts for $pkg..."
+            # Get list of conflicts from dry-run
+            conflicts=$(echo "$stow_output" | grep "cannot stow.*over existing target" | sed "s/.*existing target //" | sed "s/ since.*//" | sort -u)
+            for conflict in $conflicts; do
+                conflict_path="$HOME/$conflict"
+                # If it's a regular file, remove it (will be replaced by symlink)
+                if [ -f "$conflict_path" ] && [ ! -L "$conflict_path" ]; then
+                    echo "      Removing conflicting file: $conflict"
+                    rm -f "$conflict_path" 2>/dev/null || true
+                # If it's a directory, we might need to handle it differently
+                elif [ -d "$conflict_path" ] && [ ! -L "$conflict_path" ]; then
+                    # Check if directory is empty
+                    if [ -z "$(ls -A "$conflict_path" 2>/dev/null)" ]; then
+                        echo "      Removing empty directory: $conflict"
+                        rmdir "$conflict_path" 2>/dev/null || true
+                    else
+                        echo "      Warning: Directory $conflict exists and is not empty"
+                    fi
+                fi
+            done
+        fi
+    done
+    
     # Stow packages that need updating
     echo "  Creating symlinks..."
     for pkg in "${packages_to_stow[@]}"; do
-        stow -t "$HOME" "$pkg"
+        # Use --adopt as fallback, but filter out absolute symlink warnings (they're harmless)
+        stow --adopt -t "$HOME" "$pkg" 2>&1 | grep -v "WARNING.*absolute symlink" || {
+            # If adopt fails, try without adopt (conflicts should be resolved now)
+            stow -t "$HOME" "$pkg" 2>&1 | grep -v "WARNING.*absolute symlink" || true
+        }
     done
     
     # Store which packages were stowed for reload
