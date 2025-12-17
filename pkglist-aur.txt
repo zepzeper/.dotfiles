@@ -1,9 +1,1 @@
-cursor-appimage
-helium-browser-appimage
-nodejs-intelephense
-open-tv-bin
-piper-tts-bin
-swift-bin
-tableplus
-whisper.cpp
-zsh-vi-mode
+yay
