@@ -1,4 +1,1 @@
 helium-browser-bin
-nodejs-intelephense
-yay
-zsh-vi-mode

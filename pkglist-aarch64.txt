@@ -18,8 +18,8 @@ m1n1
 mesa-demos
 mesa-utils
 nano
-net-tools
 netctl
+net-tools
 networkmanager
 openssh
 sudo

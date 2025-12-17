@@ -290,9 +290,9 @@ else
         fi
     done
     
-    # For packages with existing files, we need to adopt them first
-    # Check each package for conflicts and handle them
-    echo "  Handling existing files..."
+    # For packages with existing files/directories, remove them before stowing
+    # This ensures clean symlink creation
+    echo "  Removing existing targets that conflict with stow..."
     for pkg in "${packages_to_stow[@]}"; do
         # Check if stowing would cause conflicts
         stow_output=$(stow -n -t "$HOME" "$pkg" 2>&1)
@@ -302,18 +302,22 @@ else
             conflicts=$(echo "$stow_output" | grep "cannot stow.*over existing target" | sed "s/.*existing target //" | sed "s/ since.*//" | sort -u)
             for conflict in $conflicts; do
                 conflict_path="$HOME/$conflict"
-                # If it's a regular file, remove it (will be replaced by symlink)
+                # If it's a regular file (not a symlink), remove it
                 if [ -f "$conflict_path" ] && [ ! -L "$conflict_path" ]; then
                     echo "      Removing conflicting file: $conflict"
                     rm -f "$conflict_path" 2>/dev/null || true
-                # If it's a directory, we might need to handle it differently
+                # If it's a directory (not a symlink), remove it recursively
+                # This allows stow to create the directory symlink and then symlink files inside
                 elif [ -d "$conflict_path" ] && [ ! -L "$conflict_path" ]; then
-                    # Check if directory is empty
-                    if [ -z "$(ls -A "$conflict_path" 2>/dev/null)" ]; then
-                        echo "      Removing empty directory: $conflict"
-                        rmdir "$conflict_path" 2>/dev/null || true
-                    else
-                        echo "      Warning: Directory $conflict exists and is not empty"
+                    echo "      Removing conflicting directory: $conflict"
+                    rm -rf "$conflict_path" 2>/dev/null || true
+                # If it's a symlink pointing to wrong location, remove it
+                elif [ -L "$conflict_path" ]; then
+                    link_target=$(readlink -f "$conflict_path" 2>/dev/null)
+                    # Check if symlink doesn't point to our stow package
+                    if ! echo "$link_target" | grep -q "\.dotfiles.*$pkg"; then
+                        echo "      Removing incorrect symlink: $conflict -> $link_target"
+                        rm -f "$conflict_path" 2>/dev/null || true
                     fi
                 fi
             done

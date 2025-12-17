@@ -21,10 +21,23 @@ pacman -Qqen > pkglist.txt
 pacman -Qqem > pkglist-aur.txt
 
 # Update architecture-specific package lists
+# Only include packages NOT in shared lists to maintain separation
 if [ "$ARCH_NAME" != "unknown" ]; then
-    echo "  Updating $ARCH_NAME-specific package lists..."
-    pacman -Qqen > "pkglist-${ARCH_NAME}.txt"
-    pacman -Qqem > "pkglist-aur-${ARCH_NAME}.txt"
+    echo "  Updating $ARCH_NAME-specific package lists (excluding shared packages)..."
+    
+    # Get all installed packages for this architecture
+    pacman -Qqen > "/tmp/all-${ARCH_NAME}-packages.txt"
+    pacman -Qqem > "/tmp/all-${ARCH_NAME}-aur.txt"
+    
+    # Filter out packages that are in shared lists
+    comm -23 <(sort "/tmp/all-${ARCH_NAME}-packages.txt") <(sort pkglist.txt) | sort > "pkglist-${ARCH_NAME}.txt"
+    comm -23 <(sort "/tmp/all-${ARCH_NAME}-aur.txt") <(sort pkglist-aur.txt) | sort > "pkglist-aur-${ARCH_NAME}.txt"
+    
+    # Clean up temp files
+    rm -f "/tmp/all-${ARCH_NAME}-packages.txt" "/tmp/all-${ARCH_NAME}-aur.txt"
+    
+    echo "    → $(wc -l < "pkglist-${ARCH_NAME}.txt") architecture-specific packages"
+    echo "    → $(wc -l < "pkglist-aur-${ARCH_NAME}.txt") architecture-specific AUR packages"
 fi
 
 # Check if there are changes
