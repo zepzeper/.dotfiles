@@ -2,6 +2,7 @@ ghostty-git
 helium-browser-bin
 nodejs-intelephense
 oh-my-zsh-git
+tableplus
 xdg-terminal-exec
 yay
 zsh-vi-mode

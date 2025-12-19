@@ -86,8 +86,10 @@ noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
 nss-mdns
+openai-codex
 openssh
 pamixer
+php
 plocate
 plymouth
 polkit-gnome
@@ -111,6 +113,7 @@ tree
 tree-sitter-cli
 ttf-cascadia-mono-nerd
 ttf-jetbrains-mono-nerd
+typescript-language-server
 uboot-asahi
 ufw
 uwsm
