@@ -1,8 +1,9 @@
-ghostty-git
-helium-browser-bin
+cursor-appimage
+helium-browser-appimage
 nodejs-intelephense
-oh-my-zsh-git
+open-tv-bin
+piper-tts-bin
+swift-bin
 tableplus
-xdg-terminal-exec
-yay
+whisper.cpp
 zsh-vi-mode
