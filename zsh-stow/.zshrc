@@ -99,7 +99,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source ~/personal/.dotfiles/.zsh_profile
+source $HOME/.zsh-profile
 
 # opencode
 export PATH=/home/zepzeper/.opencode/bin:$PATH

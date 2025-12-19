@@ -1,0 +1,14 @@
+VIM="nvim"
+
+CONFIG=$HOME/.config
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+bindkey "^R" fzf-history-search-backward
+
+bindkey -v
+bindkey -s ^f "$HOME/.local/bin/tmux-sessionizer.sh\n"
+
+export PATH="$(npm config get prefix)/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export BONG_PASSWORD=bong
