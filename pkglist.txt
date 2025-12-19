@@ -11,6 +11,7 @@ bolt
 brightnessctl
 btop
 btrfs-progs
+calibre
 clang
 cloudflared
 composer
