@@ -101,5 +101,9 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source $HOME/.zsh-profile
 
-# opencode
-export PATH=/home/zepzeper/.opencode/bin:$PATH
+# bun completions
+[ -s "/home/zepzeper/.bun/_bun" ] && source "/home/zepzeper/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

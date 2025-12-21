@@ -12,6 +12,7 @@ vim.lsp.enable({
     "html-ls",
     "twig-ls",
     "python-ls",
+    "zig-ls",
 })
 
 -- Diagnostics configuration

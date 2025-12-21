@@ -49,3 +49,5 @@ vim.cmd("command! X x")
 vim.cmd("command! Xa xa")
 
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+
+vim.keymap.set("n", "<leader>tt", ":belowright split | terminal<CR>")

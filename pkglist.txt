@@ -204,6 +204,8 @@ xournalpp
 yaru-icon-theme
 yay
 yt-dlp
+zig
+zls
 zoxide
 zram-generator
 zsh
