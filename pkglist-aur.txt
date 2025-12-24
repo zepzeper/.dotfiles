@@ -1,8 +1,10 @@
 cursor-appimage
 helium-browser-appimage
 nodejs-intelephense
+omarchy-styles
 open-tv-bin
 piper-tts-bin
+stockfish
 swift-bin
 tableplus
 whisper.cpp

@@ -5,3 +5,7 @@ config-file = ?"~/.config/omarchy/current/theme/ghostty-theme"
 font-family = "JetBrainsMonoNL Nerd Font Mono"
 font-style = Regular
 font-size = 12
+
+
+theme = dark:Rose Pine,light:Rose Pine Dawn
+# background-opacity = 0.8

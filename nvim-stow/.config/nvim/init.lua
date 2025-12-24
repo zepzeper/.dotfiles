@@ -9,6 +9,4 @@ require("config.autocmd")
 require("config.health-check")
 require("config.ft")
 
-vim.cmd('colorscheme wood')
-
 -- vim.cmd.colorscheme("telemetry")
