@@ -1,4 +1,5 @@
 cursor-appimage
+gtk2
 helium-browser-appimage
 nodejs-intelephense
 omarchy-styles
