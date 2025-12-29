@@ -2,7 +2,7 @@
 vim.keymap.set("n", "<C-c>", "<Nop>")
 
 -- Netrw
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Netrw file explorer" })
+vim.keymap.set("n", "<leader>pv", "<cmd>Oil<CR>", { desc = "Netrw file explorer" })
 
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>", { desc = "Source current file" })
 vim.keymap.set("n", "<space>x", ":.lua<CR>", { desc = "Execute line as Lua" })

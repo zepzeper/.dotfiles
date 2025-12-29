@@ -6,6 +6,15 @@ font-family = "JetBrainsMonoNL Nerd Font Mono"
 font-style = Regular
 font-size = 12
 
+# theme = dark:Rose Pine,light:Rose Pine Dawn
+# theme = 12-bit Rainbow
+theme = Rose Pine Moon
 
-theme = dark:Rose Pine,light:Rose Pine Dawn
-# background-opacity = 0.8
+# background-opacity = 0.95
+
+# what is a prefix?
+# keybind = ctrl+d=scroll_page_fractional:0.5
+# keybind = ctrl+u=scroll_page_fractional:-0.5
+
+# Disable Ctrl+Enter fullscreen keybind
+keybind = ctrl+enter=unbind
