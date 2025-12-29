@@ -21,8 +21,8 @@ return {
 			},
 		})
 
-        local fzf = require("fzf-lua")
-        local kg_path = vim.fn.expand("~/knowledge-garden")
+		local fzf = require("fzf-lua")
+		local kg_path = vim.fn.expand("~/knowledge-garden")
 
 		vim.keymap.set("n", "<leader>sf", fzf.files, { desc = "Find files" })
 		vim.keymap.set("n", "<C-p>", fzf.git_files, { desc = "Git files" })
@@ -39,21 +39,20 @@ return {
 		-- Knowledge Garden keymaps
 		-- Quick note finder (fuzzy find by filename)
 		vim.keymap.set("n", "<leader>kf", function()
-			fzf.files({ 
+			fzf.files({
 				cwd = kg_path,
 				prompt = "Notes> ",
-				file_ignore_patterns = { "^%.", "/%."},  -- Hide dotfiles and dot directories
+				file_ignore_patterns = { "^%.", "/%." }, -- Hide dotfiles and dot directories
 			})
 		end, { desc = "Find note" })
-		
+
 		-- Search note content (live grep)
 		vim.keymap.set("n", "<leader>ks", function()
-			fzf.live_grep({ 
+			fzf.live_grep({
 				cwd = kg_path,
 				prompt = "Search> ",
-				file_ignore_patterns = { "^%.", "/%."},
+				file_ignore_patterns = { "^%.", "/%." },
 			})
 		end, { desc = "Search notes" })
 	end,
 }
-
