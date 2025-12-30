@@ -6,12 +6,16 @@ if [[ $# -eq 1 ]]; then
 else
     selected=$(
         {
+            # Top-level personal + work (excluding playground)
             find "$HOME"/{personal,work} \
                 -mindepth 1 -maxdepth 1 -type d \
                 ! -path "$HOME/personal/playground"
-            printf '%s\n' "$HOME/personal/playground"
-        } | fzf
-    )
+
+                # Separate search INSIDE playground
+                find "$HOME/personal/playground" \
+                    -mindepth 1 -maxdepth 1 -type d
+                } | fzf
+            )
 fi
 
 # Exit if nothing selected
