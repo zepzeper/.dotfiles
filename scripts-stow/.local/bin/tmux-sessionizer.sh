@@ -4,7 +4,14 @@
 if [[ $# -eq 1 ]]; then
     selected="$1"
 else
-    selected=$(find "$HOME"/{personal,work} -mindepth 1 -maxdepth 1 -type d | fzf)
+    selected=$(
+        {
+            find "$HOME"/{personal,work} \
+                -mindepth 1 -maxdepth 1 -type d \
+                ! -path "$HOME/personal/playground"
+            printf '%s\n' "$HOME/personal/playground"
+        } | fzf
+    )
 fi
 
 # Exit if nothing selected
