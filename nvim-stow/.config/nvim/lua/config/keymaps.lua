@@ -2,7 +2,7 @@
 vim.keymap.set("n", "<C-c>", "<Nop>")
 
 -- Netrw
-vim.keymap.set("n", "<leader>pv", "<cmd>Oil<CR>", { desc = "Netrw file explorer" })
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Netrw file explorer" })
 
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>", { desc = "Source current file" })
 vim.keymap.set("n", "<space>x", ":.lua<CR>", { desc = "Execute line as Lua" })
@@ -39,8 +39,6 @@ vim.keymap.set("x", "<leader>p", '"_dP', { desc = "Paste without yanking" })
 -- Toggle highlighting search
 vim.keymap.set("n", "<leader>;h", ":set hlsearch!<CR>", { desc = "Toggle highlighting search" })
 
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to system clipboard" })
-
 -- :Wq, Xa, etc. remaps
 vim.cmd("command! Wq wq")
 vim.cmd("command! W w")
@@ -50,4 +48,17 @@ vim.cmd("command! Xa xa")
 
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
-vim.keymap.set("n", "<leader>tt", ":belowright split | terminal<CR>")
+
+vim.keymap.set("n", "<leader>rr", function() 
+    local plugin_name = "zemac"
+
+    for module_name, _ in pairs(package.loaded) do
+        if module_name:match("^" .. plugin_name) then
+            package.loaded[module_name] = nil
+        end
+    end
+
+    require("zemac").setup()
+
+    vim.notify("zemac reloaded", vim.log.levels.WARN)
+end) 

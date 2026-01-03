@@ -4,11 +4,13 @@ return {
 	event = { "InsertEnter", "BufReadPost" },
 	dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
 	build = "cargo build --release",
-
 	opts = {
 		snippets = {
 			preset = "luasnip",
 		},
+        signature = { 
+            enabled = true,
+        },
 		cmdline = {
 			enabled = true,
 			completion = {
@@ -17,7 +19,7 @@ return {
 			},
 		},
 		sources = {
-			default = { "laravel", "lazydev", "lsp", "path", "snippets", "buffer" },
+			default = { "lazydev", "lsp", "path", "snippets", "buffer" },
 			providers = {
 				luasnip = {
 					name = "LuaSnip",
@@ -28,11 +30,6 @@ return {
 					name = "LazyDev",
 					module = "lazydev.integrations.blink",
 					score_offset = 80,
-				},
-				laravel = {
-					name = "Laravel",
-					module = "laravel.blink_source",
-					score_offset = 70,
 				},
 			},
 		},

@@ -30,6 +30,9 @@ return {
                 arrayIndex = "Disable",
             },
             workspace = {
+                library = {
+                    vim.env.VIMRUNTIME,  -- This adds Neovim's Lua API definitions
+                },
                 userThirdParty = {
                     os.getenv("HOME") .. "/personal/.dotfiles/nvim/addons/love2d"
                 },

@@ -15,3 +15,4 @@ return {
         blink.get_lsp_capabilities()
     ),
 }
+
