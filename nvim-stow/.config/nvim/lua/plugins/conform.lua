@@ -8,6 +8,7 @@ return {
         javascript = { "prettier" },
         typescript = { "prettier" },
         php = { "php_cs_fixer" },
+        c = { "clang-format" },
       },
     })
     vim.keymap.set("n", "<leader>f", function()

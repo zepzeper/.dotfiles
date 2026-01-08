@@ -2,7 +2,19 @@ return {
 	"saghen/blink.cmp",
 	enabled = true,
 	event = { "InsertEnter", "BufReadPost" },
-	dependencies = { "L3MON4D3/LuaSnip", version = "v2.*" },
+	dependencies = {
+		{
+			"L3MON4D3/LuaSnip",
+			version = "v2.*",
+			config = function()
+				-- Disable default Tab/S-Tab mappings to prevent cursor jumping
+				require("luasnip").setup({
+					-- Prevent LuaSnip from setting up default keymaps
+					-- We use <C-j>/<C-k> via blink.cmp instead
+				})
+			end,
+		},
+	},
 	build = "cargo build --release",
 	opts = {
 		snippets = {
@@ -50,6 +62,10 @@ return {
 
 			["<C-b>"] = { "scroll_documentation_up", "fallback" },
 			["<C-f>"] = { "scroll_documentation_down", "fallback" },
+
+			-- Explicitly make Tab just insert a tab (no snippet jumping)
+			["<Tab>"] = { "fallback" },
+			["<S-Tab>"] = { "fallback" },
 		},
 	},
 	opts_extend = { "sources.default" },

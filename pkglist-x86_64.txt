@@ -1,0 +1,8 @@
+bear
+blender
+dotnet-runtime-9.0
+gamescope
+gdb
+glew
+raylib
+sdl2_ttf

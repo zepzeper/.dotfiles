@@ -1,5 +1,6 @@
 -- Map Ctrl-c in normal mode to not act like Esc
 vim.keymap.set("n", "<C-c>", "<Nop>")
+vim.keymap.set("n", "<C-z>", "<Nop>")
 
 -- Netrw
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Netrw file explorer" })
@@ -62,3 +63,14 @@ vim.keymap.set("n", "<leader>rr", function()
 
     vim.notify("zemac reloaded", vim.log.levels.WARN)
 end) 
+
+
+-- Open corresponding header file
+vim.keymap.set("n", "<leader>oh", function()
+  vim.cmd.edit(vim.fn.expand("%:r") .. ".h")
+end, { desc = "Open header file" })
+
+-- Open corresponding source file
+vim.keymap.set("n", "<leader>oc", function()
+  vim.cmd.edit(vim.fn.expand("%:r") .. ".c")
+end, { desc = "Open source file" })
