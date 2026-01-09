@@ -28,9 +28,6 @@ if [ "$ARCH_NAME" != "unknown" ]; then
     comm -23 <(sort "/tmp/all-${ARCH_NAME}-packages.txt") <(sort pkglist.txt) | sort > "pkglist-${ARCH_NAME}.txt"
     comm -23 <(sort "/tmp/all-${ARCH_NAME}-aur.txt") <(sort pkglist-aur.txt) | sort > "pkglist-aur-${ARCH_NAME}.txt"
     
-    # Clean up temp files
-    rm -f "/tmp/all-${ARCH_NAME}-packages.txt" "/tmp/all-${ARCH_NAME}-aur.txt"
-    
     echo "    → $(wc -l < "pkglist-${ARCH_NAME}.txt") architecture-specific packages"
     echo "    → $(wc -l < "pkglist-aur-${ARCH_NAME}.txt") architecture-specific AUR packages"
 fi
