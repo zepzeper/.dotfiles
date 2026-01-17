@@ -1,2 +1,0 @@
-clang-format-all-git
-obs-plugin-input-overlay-bin

@@ -19,6 +19,8 @@ return {
 				["--layout"] = "reverse",
 				["--info"] = "inline",
 			},
+            file_ignore_patterns = { "Feature files/", "node_modules/", ".git/" },
+
 		})
 
 		local fzf = require("fzf-lua")

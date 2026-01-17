@@ -8,6 +8,8 @@ bindkey "^R" fzf-history-search-backward
 bindkey -v
 bindkey -s ^f "$HOME/.local/bin/tmux-sessionizer.sh\n"
 
+export OMARCHY_PATH="$HOME/omarchy"
+
 export PATH=/home/zepzeper/.bun/bin
 export PATH=/home/zepzeper/.opencode/bin:$PATH
 export PATH="$(npm config get prefix)/bin:$PATH"

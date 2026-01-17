@@ -1,9 +1,0 @@
-[12:23:16 2025-12-24] FETCHING Version 2.42.7
-[12:23:16 2025-12-24] CREATING /home/zepzeper/.spicetify
-[12:23:16 2025-12-24] DOWNLOADING https://github.com/spicetify/cli/releases/download/v2.42.7/spicetify-2.42.7-linux-amd64.tar.gz
-[12:23:17 2025-12-24] EXTRACTING /home/zepzeper/.spicetify/spicetify.tar.gz
-[12:23:17 2025-12-24] SETTING EXECUTABLE PERMISSIONS TO /home/zepzeper/.spicetify/spicetify
-[12:23:17 2025-12-24] REMOVING /home/zepzeper/.spicetify/spicetify.tar.gz
-[12:23:17 2025-12-24] APPENDING /home/zepzeper/.spicetify to PATH in /home/zepzeper/.zshrc
-[12:23:17 2025-12-24] spicetify v2.42.7 was installed successfully to /home/zepzeper/.spicetify
-[12:23:17 2025-12-24] Run 'spicetify --help' to get started
