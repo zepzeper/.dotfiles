@@ -1,19 +1,42 @@
 {
   "reload_style_on_change": true,
-  "layer": "top",
-  "position": "top",
-  "spacing": 0,
-  "height": 26,
-  "modules-left": ["custom/omarchy", "hyprland/workspaces"],
-  "modules-center": ["clock", "custom/update", "custom/voxtype", "custom/screenrecording-indicator"],
-  "modules-right": [
-    "group/tray-expander",
-    "bluetooth",
-    "network",
-    "pulseaudio",
-    "cpu",
-    "battery"
-  ],
+  "bar/top": {
+    "layer": "top",
+    "position": "top",
+    "spacing": 0,
+    "height": 26,
+    "modules-left": [
+      "custom/omarchy"
+    ],
+    "modules-center": [
+      "clock"
+    ],
+    "modules-right": [
+      "group/tray-expander",
+      "pulseaudio",
+      "network",
+      "bluetooth"
+    ]
+  },
+  "bar/bottom": {
+    "layer": "bottom",
+    "position": "bottom",
+    "spacing": 0,
+    "height": 26,
+    "modules-left": [
+      "hyprland/workspaces"
+    ],
+    "modules-center": [
+      "custom/update",
+      "custom/voxtype",
+      "custom/screenrecording-indicator"
+    ],
+    "modules-right": [
+      "cpu",
+      "memory",
+      "gpu"
+    ]
+  },
   "hyprland/workspaces": {
     "on-click": "activate",
     "format": "{icon}",
@@ -53,10 +76,21 @@
     "signal": 7,
     "interval": 21600
   },
-
   "cpu": {
     "interval": 5,
     "format": "󰍛",
+    "on-click": "omarchy-launch-or-focus-tui btop",
+    "on-click-right": "alacritty"
+  },
+  "memory": {
+    "interval": 5,
+    "format": "󰍾",
+    "on-click": "omarchy-launch-or-focus-tui btop",
+    "on-click-right": "alacritty"
+  },
+  "gpu": {
+    "interval": 10,
+    "format": "󰢮",
     "on-click": "omarchy-launch-or-focus-tui btop",
     "on-click-right": "alacritty"
   },
@@ -65,47 +99,6 @@
     "format-alt": "{:L%d %B W%V %Y}",
     "tooltip": false,
     "on-click-right": "omarchy-launch-floating-terminal-with-presentation omarchy-tz-select"
-  },
-  "network": {
-    "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
-    "format": "{icon}",
-    "format-wifi": "{icon}",
-    "format-ethernet": "󰀂",
-    "format-disconnected": "󰤮",
-    "tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
-    "tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
-    "tooltip-format-disconnected": "Disconnected",
-    "interval": 3,
-    "spacing": 1,
-    "on-click": "omarchy-launch-wifi"
-  },
-  "battery": {
-    "format": "{capacity}% {icon}",
-    "format-discharging": "{icon}",
-    "format-charging": "{icon}",
-    "format-plugged": "",
-    "format-icons": {
-      "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
-      "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
-    },
-    "format-full": "󰂅",
-    "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
-    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
-    "interval": 5,
-    "on-click": "omarchy-menu power",
-    "states": {
-      "warning": 20,
-      "critical": 10
-    }
-  },
-  "bluetooth": {
-    "format": "",
-    "format-off": "󰂲",
-    "format-disabled": "󰂲",
-    "format-connected": "󰂱",
-    "format-no-controller": "",
-    "tooltip-format": "Devices connected: {num_connections}",
-    "on-click": "omarchy-launch-bluetooth"
   },
   "pulseaudio": {
     "format": "{icon}",
@@ -116,8 +109,35 @@
     "format-muted": "",
     "format-icons": {
       "headphone": "",
-      "default": ["", "", ""]
+      "default": [
+        "",
+        "",
+        ""
+      ]
     }
+  },
+  "network": {
+    "format-wifi": "",
+    "format-ethernet": "",
+    "format-disconnected": "",
+    "on-click": "nm-connection-editor",
+    "tooltip-format": "{ifname}: {ip4_address}",
+    "format-icons": {
+      "ethernet": "",
+      "wifi": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "bluetooth": {
+    "format": "",
+    "format-connected": "",
+    "format-disabled": "",
+    "on-click": "blueman-manager",
+    "tooltip-format": "{device_alias}"
   },
   "group/tray-expander": {
     "orientation": "inherit",
@@ -125,7 +145,10 @@
       "transition-duration": 600,
       "children-class": "tray-group-item"
     },
-    "modules": ["custom/expand-icon", "tray"]
+    "modules": [
+      "custom/expand-icon",
+      "tray"
+    ]
   },
   "custom/expand-icon": {
     "format": "",
