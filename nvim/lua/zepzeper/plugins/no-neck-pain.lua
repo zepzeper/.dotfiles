@@ -11,7 +11,6 @@ end
 function M.toggle()
     M.enabled = not M.enabled
     vim.cmd("NoNeckPain")
-    require("zepzeper.plugins.lualine").refresh_statusline()
 end
 
 return M

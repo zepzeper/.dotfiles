@@ -6,10 +6,7 @@ font-family = "JetBrainsMonoNL Nerd Font Mono"
 font-style = Regular
 font-size = 16
 
-# theme = dark:Rose Pine,light:Rose Pine Dawn
-# theme = Catppuccin Mocha
-theme = Nordfox
-background = #1E222A
+theme = dark:Rose Pine,light:Rose Pine Dawn
 
 # background-opacity = 0.85
 

@@ -39,36 +39,6 @@ return {
             require("zepzeper.plugins.telescope")
         end,
     },
-    {
-        "nvim-lualine/lualine.nvim",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-        lazy = false,
-        config = function()
-            require("zepzeper.plugins.lualine")
-        end,
-    },
-    {
-        -- This plugin has issues when lazy.
-        "lewis6991/gitsigns.nvim",
-        -- event = { "VeryLazy" },
-        config = function()
-            require("zepzeper.plugins.gitsigns")
-        end,
-        lazy = false,
-    },
-    {
-        "sindrets/diffview.nvim",
-        cmd = { "DiffviewClose", "DiffviewOpen" },
-        config = function()
-            require("zepzeper.plugins.diffview")
-        end,
-    },
-    {
-        "f-person/git-blame.nvim",
-        config = function()
-            require("zepzeper.plugins.git-blame")
-        end,
-    },
     -- Language.
     {
         "mfussenegger/nvim-lint",
@@ -115,7 +85,6 @@ return {
             },
         },
     },
-    -- Dependencies.
     {
         "nvim-tree/nvim-web-devicons",
         config = function()
@@ -127,30 +96,17 @@ return {
         "neovim/nvim-lspconfig",
         lazy = true,
     },
-
     -- Themes.
     {
-        "AlexvZyl/nordic.nvim",
-        lazy = false,
-        priority = 1000,
+        "rose-pine/neovim",
+        name = "rose-pine",
         config = function()
-            require("zepzeper.plugins.nordic")
-        end,
-    },
-
-    -- Bin (maybe to remove)
-    {
-        "folke/which-key.nvim",
-        event = { "VeryLazy" },
-        config = function()
-            require("zepzeper.plugins.which-key")
-        end,
+            vim.cmd("colorscheme rose-pine")
+        end
     },
     {
-        "NeogitOrg/neogit",
-        dependencies = { "nvim-lua/plenary.nvim", "sindrets/diffview.nvim" },
+        "tpope/vim-fugitive",
         config = function()
-            require("zepzeper.plugins.neogit")
         end,
     },
     {
@@ -166,4 +122,9 @@ return {
             require("zepzeper.plugins.zemac")
         end,
     },
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" }
+    }
 }

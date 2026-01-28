@@ -12,7 +12,7 @@ table.insert(shellcheck.args, "-x")
 L.linters_by_ft = {
     lua = { "luacheck" },
     go = { "golangcilint" },
-    cpp = { "cppcheck", "clangtidy" },
+    cpp = { "clangtidy" },
     bash = { "shellcheck" },
     sh = { "shellcheck" },
     ts = { "vscode-eslint-language-server" },

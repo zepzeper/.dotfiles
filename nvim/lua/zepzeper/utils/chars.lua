@@ -121,14 +121,14 @@ function M.get_border_chars(desc)
     end
 
     if desc == "lsp" then
-        if U.is_nordic() then
+        if U.is_rosepine() then
             return M.border_chars_outer_thin
         end
         return M.border_chars_round
     end
 
     -- Defaults
-    if U.is_nordic() then
+    if U.is_rosepine() then
         return M.border_chars_outer_thin
     end
     if U.is_tokyonight() then

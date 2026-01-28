@@ -45,7 +45,6 @@ function M.toggle_virtual_diagnostics()
         DiagnosticUnderlineError = { undercurl = not M.virtual_diagnostics },
         DiagnosticUnderlineWarn = { undercurl = not M.virtual_diagnostics },
     })
-    require("zepzeper.plugins.lualine").refresh_statusline()
 end
 
 -- Setup diags.
@@ -128,7 +127,6 @@ end
 M.format_enabled = false
 function M.toggle_format_enabled()
     M.format_enabled = not M.format_enabled
-    require("zepzeper.plugins.lualine").refresh_statusline()
 end
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
