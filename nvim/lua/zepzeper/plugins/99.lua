@@ -15,6 +15,36 @@ return {
                 print_on_error = true,
             },
 
+            --- A new feature that is centered around tags
+            completion = {
+                --- Defaults to .cursor/rules
+                -- I am going to disable these until i understand the
+                -- problem better.  Inside of cursor rules there is also
+                -- application rules, which means i need to apply these
+                -- differently
+                -- cursor_rules = "<custom path to cursor rules>"
+
+                --- A list of folders where you have your own SKILL.md
+                --- Expected format:
+                --- /path/to/dir/<skill_name>/SKILL.md
+                ---
+                --- Example:
+                --- Input Path:
+                --- "scratch/custom_rules/"
+                ---
+                --- Output Rules:
+                --- {path = "scratch/custom_rules/vim/SKILL.md", name = "vim"},
+                --- ... the other rules in that dir ...
+                ---
+                custom_rules = {
+                    "/home/zepzeper/personal/skills/typescript/SKILL.md",
+                },
+
+                --- What autocomplete do you use.  We currently only
+                --- support cmp right now
+                source = "cmp",
+            },
+
             --- WARNING: if you change cwd then this is likely broken
             --- ill likely fix this in a later change
             ---

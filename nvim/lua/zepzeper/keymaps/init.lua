@@ -86,6 +86,9 @@ function M.ninety_nine()
     keymap(v, "<leader>9s", function()
         require("99").stop_all_requests()
     end, default_settings)
+    keymap(v, "<leader>9fd", function()
+        require("99").fill_in_function()
+    end, default_settings)
 end
 
 function M.legacy()
