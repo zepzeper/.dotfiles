@@ -1,17 +1,47 @@
-VIM="nvim"
+# =========================
+# ~/.zshrc (corrected)
+# =========================
 
-CONFIG=$HOME/.config
+# -------------------------
+# PATH configuration
+# -------------------------
+# Build PATH with custom paths first (higher priority)
+export PATH="$HOME/.local/bin:$HOME/.bun/bin:$HOME/.opencode/bin:$HOME/.cargo/bin:$HOME/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-bindkey "^R" fzf-history-search-backward
+# Add npm global bin if npm exists
+if command -v npm >/dev/null 2>&1; then
+    NPM_PREFIX="$(npm config get prefix 2>/dev/null)"
+    [[ -n "$NPM_PREFIX" ]] && export PATH="$NPM_PREFIX/bin:$PATH"
+fi
 
+# -------------------------
+# Editor configuration
+# -------------------------
+export EDITOR="nvim"
+export VISUAL="nvim"
+
+# -------------------------
+# Custom config path
+# -------------------------
+export CONFIG="$HOME/.config"
+
+# -------------------------
+# Vi mode keybindings
+# -------------------------
 bindkey -v
+
+# Custom tmux sessionizer keybinding
 bindkey -s ^f "$HOME/.local/bin/tmux-sessionizer.sh\n"
 
-export PATH=/home/zepzeper/.bun/bin
-export PATH=/home/zepzeper/.opencode/bin:$PATH
-export PATH="$(npm config get prefix)/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export BONG_PASSWORD=bong
+# -------------------------
+# fzf setup
+# -------------------------
+if [[ -f ~/.fzf.zsh ]]; then
+    source ~/.fzf.zsh
+    # Ctrl-R for history search (fzf provides this automatically)
+fi
+
+# -------------------------
+# Custom environment variables
+# -------------------------
+export BONG_PASSWORD="bong"

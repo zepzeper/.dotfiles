@@ -52,7 +52,10 @@ return {
     },
     {
         "nvim-treesitter/nvim-treesitter",
-        dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+        dependencies = { 
+            "nvim-treesitter/nvim-treesitter-context",
+            "nvim-treesitter/nvim-treesitter-textobjects" 
+        },
         event = { "VeryLazy" },
         build = { ":TSUpdate" },
         config = function()
@@ -87,7 +90,7 @@ return {
     },
     {
         "nvim-tree/nvim-web-devicons",
-        config = function()
+    config = function()
             require("zepzeper.plugins.nvim-web-devicons")
         end,
     },
@@ -126,5 +129,11 @@ return {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
         dependencies = { "nvim-lua/plenary.nvim" }
+    },
+    {
+        "barrett-ruth/live-server.nvim",
+        build = "npm install -g live-server",
+        cmd = { "LiveServerStart", "LiveServerStop" },
+        config = true,
     }
 }
