@@ -17,6 +17,7 @@ function M.init()
     M.blame()
     M.ninety_nine()
     M.harpoon()
+    M.ex()
 
     -- Lazyload dependents:
     M.telescope()
@@ -197,17 +198,10 @@ function M.no_neck_pain()
 end
 
 
-function M.oil()
-    keymap(n, "<leader>pv", function()
-        require("zepzeper.keymaps.utils").toggle_oil()
+function M.ex()
+    keymap(n, "<leader>pv", function() 
+        vim.cmd("Ex")
     end)
-    require("oil").setup({
-        keymaps = {
-            ["<CR>"] = "actions.select",
-            ["-"] = "actions.parent",
-        },
-        use_default_keymaps = false,
-    })
 end
 
 function M.editing()

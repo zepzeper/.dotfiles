@@ -10,7 +10,7 @@ local shellcheck = L.linters.shellcheck
 table.insert(shellcheck.args, "-x")
 
 L.linters_by_ft = {
-    lua = { "luacheck" },
+    -- lua = { "luacheck" },
     go = { "golangcilint" },
     cpp = { "clangtidy" },
     bash = { "shellcheck" },

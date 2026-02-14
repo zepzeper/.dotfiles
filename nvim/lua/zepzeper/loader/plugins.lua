@@ -14,14 +14,6 @@ return {
         end,
     },
     {
-        "stevearc/oil.nvim",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-        config = function()
-            require("zepzeper.plugins.oil-nvim")
-        end,
-        lazy = false,
-    },
-    {
         "nvim-telescope/telescope.nvim",
         cmd = { "Telescope" },
         dependencies = {
@@ -101,10 +93,11 @@ return {
     },
     -- Themes.
     {
-        "rose-pine/neovim",
-        name = "rose-pine",
+        "vague-theme/vague.nvim",
+        lazy = false, -- make sure we load this during startup if it is your main colorscheme
+        priority = 1000, -- make sure to load this before all the other plugins
         config = function()
-            vim.cmd("colorscheme rose-pine")
+            vim.cmd("colorscheme vague")
         end
     },
     {
