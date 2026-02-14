@@ -1,6 +1,0 @@
-* {
-    bg-color: #1e1e2e;        /* Change background */
-    fg-color: #cdd6f4;        /* Change text */
-    selected-bg: #89b4fa;     /* Change selection */
-    border-color: #89b4fa;    /* Change border */
-}
