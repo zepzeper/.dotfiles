@@ -1,11 +1,16 @@
 * {
   all: unset;
+  border-radius: 0 !important;
 }
 
 * {
   font-family: monospace;
   font-size: 18px;
-  color: @text;
+  color: #cdd6f4;
+}
+
+window {
+  border-radius: 0 !important;
 }
 
 scrollbar {
@@ -21,20 +26,28 @@ scrollbar {
 }
 
 .box-wrapper {
-  background: alpha(@base, 0.95);
-  padding: 20px;
-  border: 2px solid @border;
+  background: #1e1e2e;
+  padding: 0;
+  border: 1px solid #45475a;
+  border-radius: 0 !important;
+  min-height: 0;
+  max-height: none;
 }
 
 .preview-box {
+  min-height: 0;
 }
 
 .box {
+  min-height: 0;
+  border-radius: 0 !important;
 }
 
 .search-container {
-  background: @base;
-  padding: 10px;
+  background: #1e1e2e;
+  padding: 8px;
+  border-bottom: 1px solid #45475a;
+  border-radius: 0 !important;
 }
 
 .input placeholder {
@@ -42,6 +55,8 @@ scrollbar {
 }
 
 .input {
+  padding: 4px;
+  border-radius: 0 !important;
 }
 
 .input:focus,
@@ -51,15 +66,20 @@ scrollbar {
 }
 
 .content-container {
+  min-height: 0;
 }
 
 .placeholder {
+  min-height: 0;
 }
 
 .scroll {
+  min-height: 0;
+  max-height: 400px;
 }
 
 .list {
+  min-height: 0;
 }
 
 child,
@@ -67,22 +87,24 @@ child > * {
 }
 
 child:hover .item-box {
+  background: rgba(69, 71, 90, 0.3);
 }
 
 child:selected .item-box {
+  background: #313244;
 }
 
 child:selected .item-box * {
-  color: @selected-text;
+  color: #cdd6f4;
 }
 
 .item-box {
-  padding-left: 14px;
+  padding: 8px 12px;
 }
 
 .item-text-box {
   all: unset;
-  padding: 14px 0;
+  padding: 0;
 }
 
 .item-text {
@@ -96,8 +118,7 @@ child:selected .item-box * {
 }
 
 .item-image {
-  margin-right: 14px;
-  -gtk-icon-transform: scale(0.9);
+  margin-right: 12px;
 }
 
 .current {
@@ -105,9 +126,10 @@ child:selected .item-box * {
 }
 
 .keybind-hints {
-  background: @background;
-  padding: 10px;
-  margin-top: 10px;
+  background: #1e1e2e;
+  padding: 8px;
+  margin: 0;
+  border-top: 1px solid #45475a;
 }
 
 .preview {
