@@ -16,7 +16,7 @@ vim.lsp.enable("jsonls")
 vim.lsp.enable("lua_ls")
 vim.lsp.enable("docker_compose_language_service")
 vim.lsp.enable("eslint")
-vim.lsp.enable("intelephense") -- Was php-ls
+vim.lsp.enable("phpactor") -- Was php-ls
 vim.lsp.enable("pyright")      -- Was python-ls
 vim.lsp.enable("zls")          -- Was zig-ls
 vim.lsp.enable("glslls")       -- Was glsl-ls
@@ -41,28 +41,11 @@ vim.lsp.config("docker_compose_language_service", {
     }),
 })
 
-local function get_intelephense_license()
-    local f = io.open(os.getenv("HOME") .. "/intelephense/licence.txt", "rb")
-    if f then
-        local content = f:read("*a")
-        f:close()
-        return string.gsub(content, "%s+", "")
-    end
-    return nil
-end
-
-vim.lsp.config("intelephense", {
+vim.lsp.config("phpactor", {
+    root_markers = { "composer.json", ".git" },
+    cmd = { "phpactor", "language-server" },
+    filetypes = { "php" },
     init_options = {
-        licenceKey = get_intelephense_license(),
-    },
-    settings = {
-        intelephense = {
-            files = {
-                exclude = {
-                    "_ide_helper.php",
-                    "_ide_helper_models.php",
-                },
-            },
-        },
+        ["language_server_phpstan.enabled"] = true,
     },
 })
