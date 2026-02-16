@@ -128,18 +128,6 @@ function M.link_hl(target, link)
     vim.api.nvim_set_hl(0, target, { link = link })
 end
 
-function M.is_rosepine()
-    return vim.g.colors_name == "rose-pine"
-end
-
-function M.is_tokyonight()
-    return vim.g.colors_name == "tokyonight"
-end
-
-function M.is_default()
-    return vim.g.colors_name == "default" or vim.g.colors_name == nil
-end
-
 function M.hl_group_rgb(group)
     return vim.api.nvim_get_hl(0, { name = group, link = false })
 end

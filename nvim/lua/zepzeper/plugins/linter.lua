@@ -1,8 +1,8 @@
 local L = require("lint")
 
--- local cpp_check = L.linters.cppcheck
--- table.insert(cpp_check.args, "--enable=information,warning")
--- table.insert(cpp_check.args, "--disable=warning")
+local cpp_check = L.linters.cppcheck
+table.insert(cpp_check.args, "--enable=information,warning")
+table.insert(cpp_check.args, "--disable=warning")
 -- local lua_check = L.linters.luacheck
 -- table.insert(lua_check.args, 1, "--enable=information,warning")
 
@@ -10,7 +10,7 @@ local shellcheck = L.linters.shellcheck
 table.insert(shellcheck.args, "-x")
 
 L.linters_by_ft = {
-    -- lua = { "luacheck" },
+    --lua = { "luacheck" },
     go = { "golangcilint" },
     cpp = { "clangtidy" },
     bash = { "shellcheck" },
