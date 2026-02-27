@@ -13,7 +13,6 @@ function M.init()
     M.editing()
     M.lsp()
     M.legacy() -- Keymaps migrated from old config
-    M.git()
     M.blame()
     M.ninety_nine()
     M.harpoon()
@@ -43,38 +42,6 @@ function M.harpoon()
     keymap("n", "<C-j>", function() list:select(2) end, { desc = "Harpoon file 2" })
     keymap("n", "<C-k>", function() list:select(3) end, { desc = "Harpoon file 3" })
     keymap("n", "<C-l>", function() list:select(4) end, { desc = "Harpoon file 4" })
-end
-
-function M.git()
-    -- global mappings
-    keymap("n", "<leader>gs", "<cmd>Git<CR>", { desc = "Git status" })
-
-    -- Diff mappings
-    keymap("n", "gu", "<cmd>diffget //2<CR>", { desc = "Diff get left" })
-    keymap("n", "gh", "<cmd>diffget //3<CR>", { desc = "Diff get right" })
-
-    -- Fugitive-only mappings
-    vim.api.nvim_create_autocmd("FileType", {
-        pattern = "fugitive",
-        callback = function(ev)
-            local opts = { buffer = ev.buf, desc = "Fugitive" }
-
-            keymap("n", "<leader>p", function()
-                vim.cmd.Git("push")
-            end, vim.tbl_extend("force", opts, { desc = "Git push" }))
-
-            keymap("n", "<leader>P", function()
-                vim.cmd.Git({ "pull", "--rebase" })
-            end, vim.tbl_extend("force", opts, { desc = "Git pull --rebase" }))
-
-            keymap(
-                "n",
-                "<leader>t",
-                ":Git push -u origin ",
-                vim.tbl_extend("force", opts, { desc = "Git push upstream" })
-            )
-        end,
-    })
 end
 
 function M.ninety_nine()

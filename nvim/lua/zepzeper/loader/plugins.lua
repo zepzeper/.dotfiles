@@ -101,9 +101,21 @@ return {
         end
     },
     {
-        "tpope/vim-fugitive",
-        config = function()
-        end,
+        "NeogitOrg/neogit",
+        lazy = true,
+        dependencies = {
+            "nvim-lua/plenary.nvim",         -- required
+
+            -- Only one of these is needed.
+            "sindrets/diffview.nvim",        -- optional
+
+            -- Only one of these is needed.
+            "nvim-telescope/telescope.nvim", -- optional
+        },
+        cmd = "Neogit",
+        keys = {
+            { "<leader>gs", "<cmd>Neogit<cr>", desc = "Show Neogit UI" }
+        }
     },
     {
         "ThePrimeagen/99",
@@ -128,5 +140,14 @@ return {
         build = "npm install -g live-server",
         cmd = { "LiveServerStart", "LiveServerStop" },
         config = true,
+    },
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },            -- if you use the mini.nvim suite
+        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
+        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+        ---@module 'render-markdown'
+        ---@type render.md.UserConfig
+        opts = {},
     }
 }
