@@ -1,39 +1,15 @@
-require("nvim-treesitter.config").setup({
-    modules = {},
-    ensure_installed = {},
-    ignore_install = {
-        "dockerfile",
-    },
-
+require("nvim-treesitter.configs").setup({
+    ensure_installed = { "lua", "go", "php", "typescript", "nix", "yaml"},
+    -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
     auto_install = true,
+    indent = {
+        enable = true,
+    },
+
     highlight = {
         enable = true,
-        additional_vim_regex_highlighting = false,
+        additional_vim_regex_highlighting = true,
     },
 
-    indent = { enable = true },
-
-    textobjects = {
-        select = { enable = true },
-        move = {
-            enable = true,
-            goto_next_start = {
-                ["]f"] = "@function.outer",
-                ["]c"] = "@class.outer",
-            },
-            goto_previous_start = {
-                ["[f"] = "@function.outer",
-                ["[c"] = "@class.outer",
-            },
-            goto_next_end = {
-                ["]F"] = "@function.outer",
-                ["]C"] = "@class.outer",
-            },
-            goto_previous_end = {
-                ["[F"] = "@function.outer",
-                ["[C"] = "@class.outer",
-            },
-        },
-    },
 })

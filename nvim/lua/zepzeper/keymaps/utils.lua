@@ -22,17 +22,4 @@ function M.toggle_diffview()
     end
 end
 
-function M.delete_buffer()
-    vim.cmd([[:bdelete]])
-end
-
-function M.toggle_oil()
-    local U = require("zepzeper.utils.neovim")
-    if U.current_buffer_filetype() == "oil" then
-        pcall(vim.api.nvim_command, "b#")
-    else
-        vim.cmd("Oil")
-    end
-end
-
 return M

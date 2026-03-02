@@ -14,7 +14,6 @@ function M.init()
     M.lsp()
     M.legacy() -- Keymaps migrated from old config
     M.blame()
-    M.ninety_nine()
     M.harpoon()
     M.ex()
 
@@ -42,21 +41,6 @@ function M.harpoon()
     keymap("n", "<C-j>", function() list:select(2) end, { desc = "Harpoon file 2" })
     keymap("n", "<C-k>", function() list:select(3) end, { desc = "Harpoon file 3" })
     keymap("n", "<C-l>", function() list:select(4) end, { desc = "Harpoon file 4" })
-end
-
-function M.ninety_nine()
-    keymap(n, "<leader>9f", function()
-        require("99").fill_in_function()
-    end, default_settings)
-    keymap(v, "<leader>9v", function()
-        require("99").visual()
-    end, default_settings)
-    keymap(v, "<leader>9s", function()
-        require("99").stop_all_requests()
-    end, default_settings)
-    keymap(v, "<leader>9fd", function()
-        require("99").fill_in_function()
-    end, default_settings)
 end
 
 function M.legacy()
@@ -99,17 +83,21 @@ function M.legacy()
     vim.cmd("command! X x")
     vim.cmd("command! Xa xa")
 
-    -- Reload zemac plugin
+    -- Reload zemac and bicycle plugins
     keymap(n, "<leader>rr", function()
-        local plugin_name = "zemac"
-        for module_name, _ in pairs(package.loaded) do
-            if module_name:match("^" .. plugin_name) then
-                package.loaded[module_name] = nil
+        local plugins = { "zemac", "bicycle" }
+
+        for _, plugin_name in ipairs(plugins) do
+            for module_name, _ in pairs(package.loaded) do
+                if module_name:match("^" .. plugin_name) then
+                    package.loaded[module_name] = nil
+                end
             end
+            require(plugin_name).setup()
         end
-        require("zemac").setup()
-        vim.notify("zemac reloaded", vim.log.levels.WARN)
-    end, { desc = "Reload zemac plugin" })
+
+        vim.notify("zemac and bicycle reloaded", vim.log.levels.WARN)
+    end, { desc = "Reload zemac and bicycle plugins" })
 
     -- Open corresponding header/source file
     keymap(n, "<leader>oh", function()

@@ -31,34 +31,22 @@ return {
             require("zepzeper.plugins.telescope")
         end,
     },
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" }
+    },
     -- Language.
     {
-        "mfussenegger/nvim-lint",
-        -- Does not make sense to have a linter without a LSP.
-        -- This will have to change if that ever happens.
-        -- event = { "LspAttach" },
-        lazy = false,
-        config = function()
-            require("zepzeper.plugins.linter")
-        end,
-    },
-    {
         "nvim-treesitter/nvim-treesitter",
+        branch = "master",
         dependencies = { 
             "nvim-treesitter/nvim-treesitter-context",
-            "nvim-treesitter/nvim-treesitter-textobjects" 
         },
-        event = { "VeryLazy" },
         build = { ":TSUpdate" },
         config = function()
             require("zepzeper.plugins.treesitter")
         end,
-    },
-    {
-        "folke/lazydev.nvim",
-        dependencies = { "Bilal2453/luvit-meta" },
-        ft = "lua",
-        event = { "LspAttach" },
     },
     {
         "hrsh7th/nvim-cmp",
@@ -82,7 +70,7 @@ return {
     },
     {
         "nvim-tree/nvim-web-devicons",
-    config = function()
+        config = function()
             require("zepzeper.plugins.nvim-web-devicons")
         end,
     },
@@ -93,13 +81,17 @@ return {
     },
     -- Themes.
     {
-        "vague-theme/vague.nvim",
-        lazy = false, -- make sure we load this during startup if it is your main colorscheme
-        priority = 1000, -- make sure to load this before all the other plugins
+        "nyoom-engineering/oxocarbon.nvim",
+        lazy = false,
+        priority = 1000,
         config = function()
-            vim.cmd("colorscheme vague")
+            vim.cmd.colorscheme("oxocarbon")
+
+            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
         end
     },
+    -- git
     {
         "NeogitOrg/neogit",
         lazy = true,
@@ -118,11 +110,22 @@ return {
         }
     },
     {
-        "ThePrimeagen/99",
-        config = function()
-            require("zepzeper.plugins.99")
-        end,
+        "f-person/git-blame.nvim",
+        event = "VeryLazy",
+        -- Because of the keys part, you will be lazy loading this plugin.
+        -- The plugin will only load once one of the keys is used.
+        -- If you want to load the plugin at startup, add something like event = "VeryLazy",
+        -- or lazy = false. One of both options will work.
+        opts = {
+            -- your configuration comes here
+            -- for example
+            enabled = true,  -- if you want to enable the plugin
+            message_template = " <summary> • <date> • <author> • <<sha>>", -- template for the blame message, check the Message template section for more options
+            date_format = "%m-%d-%Y %H:%M:%S", -- template for the date, check Date format section for more options
+            virtual_text_column = 1,  -- virtual text start column, check Start virtual text at column section for more options
+        },
     },
+    -- Personal
     {
         "zepzeper/zemac",
         dir = "~/personal/zemac",
@@ -131,10 +134,16 @@ return {
         end,
     },
     {
-        "ThePrimeagen/harpoon",
-        branch = "harpoon2",
-        dependencies = { "nvim-lua/plenary.nvim" }
+        "zepzeper/bicycle",
+        dir = "~/personal/bicycle",
+        name = "bicycle",
+        dev = true,
+        config = function()
+            require("zepzeper.plugins.bicycle")
+        end,
     },
+
+    -- Misc
     {
         "barrett-ruth/live-server.nvim",
         build = "npm install -g live-server",
