@@ -13,11 +13,8 @@ function M.init()
     M.editing()
     M.lsp()
     M.legacy() -- Keymaps migrated from old config
-    M.blame()
     M.harpoon()
     M.ex()
-
-    -- Lazyload dependents:
     M.telescope()
     M.no_neck_pain()
 end
@@ -144,10 +141,6 @@ function M.lsp()
     keymap("n", "<leader>e", vim.diagnostic.open_float, { desc = "Line Diagnostics" }) -- Alias to ge
 end
 
-function M.blame()
-    keymap("n", "<leader>b", "<cmd>Git blame<CR>", { desc = "Git blame (fugitive)" })
-end
-
 function M.no_neck_pain()
     keymap(n, "<leader>n", require("zepzeper.plugins.no-neck-pain").toggle, default_settings)
 end
@@ -160,10 +153,6 @@ function M.ex()
 end
 
 function M.editing()
-    keymap(i, "<Esc>", "<Esc>`^", default_settings)
-    keymap(ex_t, "<C-s>", function()
-        require("zepzeper.keymaps.utils").save_file()
-    end, default_settings)
     keymap(n, "<leader>v", function()
         require("zepzeper.keymaps.utils").toggle_diffview()
     end)
@@ -188,32 +177,9 @@ function M.telescope()
     end, { desc = "Man pages" })
 
     -- Edit Neovim config
-    keymap(n, "<leader>en", function()
+    keymap(n, "<leader>ec", function()
         require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
     end, { desc = "Edit Neovim config" })
-
-    -- Knowledge Garden keymaps
-    local kg_path = vim.fn.expand("~/knowledge-garden")
-    keymap(n, "<leader>kf", function()
-        require("telescope.builtin").find_files({
-            cwd = kg_path,
-            prompt_title = "Notes",
-        })
-    end, { desc = "Find note" })
-    keymap(n, "<leader>ks", function()
-        require("telescope.builtin").live_grep({
-            cwd = kg_path,
-            prompt_title = "Search notes",
-        })
-    end, { desc = "Search notes" })
-
-    -- Additional telescope keymaps
-    keymap(n, "z=", function()
-        require("telescope.builtin").spell_suggest({})
-    end)
-    keymap(n, "<leader>fk", function()
-        require("telescope.builtin").keymaps({})
-    end, { desc = "Keymaps" })
 
     keymap(n, "<C-n>", "<Cmd>Telescope buffers previewer=false<CR>", default_settings)
     keymap(n, "<leader>E", "<Cmd>Telescope diagnostics line_width=full bufnr=0<CR>", { desc = "Buffer diagnostics" })

@@ -10,9 +10,5 @@ theme = vague
 window-padding-x = 10
 window-padding-y = 5
 
-# what is a prefix?
-# keybind = ctrl+d=scroll_page_fractional:0.5
-# keybind = ctrl+u=scroll_page_fractional:-0.5
-
 # Disable Ctrl+Enter fullscreen keybind
 keybind = ctrl+enter=unbind
