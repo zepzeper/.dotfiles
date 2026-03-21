@@ -1,1 +1,1 @@
-vim.bo.filetype = "zsh"
+vim.bo.filetype = "bash"

@@ -1,46 +1,9 @@
 return {
-    {
-        "shortcuts/no-neck-pain.nvim",
-        cmd = { "NoNeckPain" },
-        config = function()
-            require("zepzeper.plugins.no-neck-pain").setup()
-        end,
-    },
-    {
-        "lukas-reineke/indent-blankline.nvim",
-        event = { "VeryLazy" },
-        config = function()
-            require("zepzeper.plugins.indent-blankline")
-        end,
-    },
-    {
-        "nvim-telescope/telescope.nvim",
-        cmd = { "Telescope" },
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-lua/popup.nvim",
-            {
-                -- Currently only using these enhancements with telescope.
-                "stevearc/quicker.nvim",
-                config = function()
-                    require("zepzeper.plugins.quicker")
-                end,
-            },
-        },
-        config = function()
-            require("zepzeper.plugins.telescope")
-        end,
-    },
-    {
-        "ThePrimeagen/harpoon",
-        branch = "harpoon2",
-        dependencies = { "nvim-lua/plenary.nvim" }
-    },
     -- Language.
     {
         "nvim-treesitter/nvim-treesitter",
         branch = "master",
-        dependencies = { 
+        dependencies = {
             "nvim-treesitter/nvim-treesitter-context",
         },
         build = { ":TSUpdate" },
@@ -69,26 +32,28 @@ return {
         },
     },
     {
-        "nvim-tree/nvim-web-devicons",
-        config = function()
-            require("zepzeper.plugins.nvim-web-devicons")
-        end,
-    },
-    {
         -- Loaded by the native config.
         "neovim/nvim-lspconfig",
         lazy = true,
     },
+    {
+        "alexpasmantier/tv.nvim",
+        config = function()
+            require("zepzeper.plugins.tv")
+        end,
+    },
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" }
+    },
     -- Themes.
     {
-        "nyoom-engineering/oxocarbon.nvim",
+        "vague-theme/vague.nvim",
         lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd.colorscheme("oxocarbon")
-
-            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+            vim.cmd.colorscheme("vague")
         end
     },
     -- git
@@ -97,12 +62,6 @@ return {
         lazy = true,
         dependencies = {
             "nvim-lua/plenary.nvim",         -- required
-
-            -- Only one of these is needed.
-            "sindrets/diffview.nvim",        -- optional
-
-            -- Only one of these is needed.
-            "nvim-telescope/telescope.nvim", -- optional
         },
         cmd = "Neogit",
         keys = {
@@ -142,21 +101,8 @@ return {
             require("zepzeper.plugins.bicycle")
         end,
     },
-
-    -- Misc
-    {
-        "barrett-ruth/live-server.nvim",
-        build = "npm install -g live-server",
-        cmd = { "LiveServerStart", "LiveServerStop" },
-        config = true,
-    },
     {
         'MeanderingProgrammer/render-markdown.nvim',
-        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.nvim' },            -- if you use the mini.nvim suite
-        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-mini/mini.icons' },        -- if you use standalone mini plugins
-        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-        ---@module 'render-markdown'
-        ---@type render.md.UserConfig
         opts = {},
     }
 }

@@ -12,7 +12,6 @@ vim.lsp.enable("cmake")
 vim.lsp.enable("html")
 vim.lsp.enable("jsonls")
 vim.lsp.enable("lua_ls")
-vim.lsp.enable("docker_compose_language_service")
 vim.lsp.enable("phpactor")     
 vim.lsp.enable("zls")          
 vim.lsp.enable("glslls")       
@@ -21,19 +20,6 @@ vim.lsp.enable("rnix-lsp")
 -- Override some of the configs.
 vim.lsp.config("cmake", {
     root_dir = LU.root_pattern("CMakeLists.txt"),
-})
-
-vim.lsp.config("dockerls", {
-    root_dir = LU.root_pattern({
-        "[dD]ockerfile*",
-    }),
-})
-
-vim.lsp.config("docker_compose_language_service", {
-    root_dir = LU.root_pattern({
-        "docker-compose.ya?ml",
-        "compose.ya?ml",
-    }),
 })
 
 vim.lsp.config("phpactor", {

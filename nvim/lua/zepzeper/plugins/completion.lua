@@ -1,51 +1,53 @@
 local CMP = require("cmp")
-local U = require("zepzeper.utils")
 
-require("zepzeper.plugins.nvim-cmp")
-require("luasnip.loaders.from_vscode").lazy_load()
+-- Format the completion menu. Yes, I am that pedantic.
+local function format(_, item)
+    local MAX_LABEL_WIDTH = 55
+    local function whitespace(max, len)
+        return (" "):rep(max - len)
+    end
 
--- Main.
-local sources = CMP.config.sources({
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
-    { name = "path" },
-})
-local snippet = {
-    expand = function(args)
-        require("luasnip").lsp_expand(args.body)
-    end,
+    -- Limit content width.
+    local content = item.abbr
+    if #content > MAX_LABEL_WIDTH then
+        item.abbr = vim.fn.strcharpart(content, 0, MAX_LABEL_WIDTH) .. "…"
+    else
+        item.abbr = content .. whitespace(MAX_LABEL_WIDTH, #content)
+    end
+
+    -- Remove gibberish.
+    item.menu = nil
+    return item
+end
+
+local formatting = {
+    fields = { "kind", "abbr" },
+    format = format,
 }
-CMP.setup({
-    sources = sources,
-    snippet = snippet,
-})
 
--- Cmdline.
-local cmdline_window = {
-    completion = {
-        winhighlight = "Normal:WhichKeyNormal,Search:None",
-        scrollbar = false,
-        border = "none",
-        col_offset = -2,
+local window = {
+    completion = CMP.config.window.bordered({
+        winhighlight = "Normal:Pmenu,FloatBorder:SpecialCmpBorder,Search:None",
+        scrollbar = true,
+        border = "rounded",
+        col_offset = -1,
         side_padding = 0,
-    },
-}
-local cmdline = {
-    window = cmdline_window,
-    mapping = CMP.mapping.preset.cmdline(),
-    sources = CMP.config.sources({
-        { name = "cmdline" },
-        { name = "path" },
+    }),
+    documentation = CMP.config.window.bordered({
+        winhighlight = "Normal:Pmenu,FloatBorder:SpecialCmpBorder,Search:None",
+        scrollbar = true,
+        border = "rounded",
     }),
 }
-CMP.setup.cmdline({ ":", ":!" }, cmdline)
 
--- Search.
-local search = {
-    window = cmdline_window,
-    mapping = CMP.mapping.preset.cmdline(),
-    sources = CMP.config.sources({ { name = "buffer" } }),
-}
-CMP.setup.cmdline({ "/", "?" }, search)
+window.documentation.max_height = 18
+window.documentation.max_width = 80
+window.documentation.side_padding = 1
 
-require("zepzeper.keymaps").completion()
+CMP.setup({
+    formatting = formatting,
+    window = window,
+    performance = {
+        debounce = 50,
+    },
+})

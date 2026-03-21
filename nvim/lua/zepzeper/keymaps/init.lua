@@ -14,8 +14,6 @@ function M.init()
     M.legacy() -- Keymaps migrated from old config
     M.harpoon()
     M.ex()
-    M.telescope()
-    M.no_neck_pain()
 end
 
 function M.harpoon()

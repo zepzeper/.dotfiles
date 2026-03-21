@@ -33,17 +33,6 @@ M.border_chars_inner_thin = { " ", "▁", " ", "▏", " ", "▔", " ", "▕" }
 M.border_chars_top_only_thin = { " ", M.top_thin, " ", " ", " ", " ", " ", " " }
 M.border_chars_top_only_normal = { "", M.horizontal_default, "", "", "", " ", "", "" }
 
--- Telscope chars.
-M.border_helix_telescope = { "─", "│", "─", "│", "┌", "┐", "┘", "└" }
-M.border_chars_outer_thick_telescope = { "▀", "▐", "▄", "▌", "▛", "▜", "▟", "▙" }
-M.border_chars_outer_thin_telescope = { "▔", "▕", "▁", "▏", "🭽", "🭾", "🭿", "🭼" }
-M.border_chars_telescope_default = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
-M.border_chars_telescope_prompt_thin = { "▔", "▕", " ", "▏", "🭽", "🭾", "▕", "▏" }
-M.border_chars_telescope_vert_preview_thin =
-    { " ", "▕", "▁", "▏", "▏", "▕", "🭿", "🭼" }
-M.border_chars_telescope_combine_top = { "─", "│", " ", "│", "╭", "╮", "│", "│" }
-M.border_chars_telescope_combine_bottom = { "─", "│", "─", "│", "├", "┤", "╯", "╰" }
-
 -- Icons.
 M.diagnostic_signs = {
     error = " ",
