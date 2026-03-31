@@ -1,5 +1,4 @@
 return {
-    -- Language.
     {
         "nvim-treesitter/nvim-treesitter",
         branch = "master",
@@ -18,6 +17,7 @@ return {
             require("zepzeper.plugins.completion")
         end,
         dependencies = {
+            'nvim-telescope/telescope.nvim',
             "hrsh7th/cmp-omni",
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-buffer",
