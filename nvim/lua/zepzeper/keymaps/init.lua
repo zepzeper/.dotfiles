@@ -6,10 +6,28 @@ local default_opts = { noremap = true, silent = true }
 
 local M = {}
 
-function M.editing()
-    -- Disable unwanted default bindings
-    keymap("n", "<C-c>", "<Nop>", default_opts)
-    keymap("n", "<C-z>", "<Nop>", default_opts)
+function M.init()
+    M.core() -- Keymaps migrated from old config
+    M.telescope()
+    M.lsp()
+    M.harpoon()
+end
+
+function M.core()
+    keymap(n, "<leader>pv", function()
+        vim.cmd("Ex")
+    end)
+    -- Disable Ctrl-c and Ctrl-z in normal mode
+    keymap(n, "<C-c>", "<Nop>", default_settings)
+    keymap(n, "<C-z>", "<Nop>", default_settings)
+
+    -- Source and execute Lua
+    keymap(n, "<space><space>x", "<cmd>source %<CR>", { desc = "Source current file" })
+    keymap(n, "<space>x", ":.lua<CR>", { desc = "Execute line as Lua" })
+
+    -- Jumping pages keeps cursor in the middle
+    vim.keymap.set("n", "<C-u>", "<C-u>zz")
+    vim.keymap.set("n", "<C-d>", "<C-d>zz")
 
     -- Keep cursor centered when jumping
     keymap("n", "<C-u>", "<C-u>zz", default_opts)
@@ -53,11 +71,41 @@ function M.lsp()
     keymap({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
     keymap("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol" })
 
-    -- Symbols (Telescope)
-    keymap("n", "<leader>ds", tb.lsp_document_symbols, { desc = "Document symbols" })
-    keymap("n", "<leader>ws", function()
-        tb.lsp_workspace_symbols({ query = vim.fn.input("Query: ") })
-    end, { desc = "Workspace symbols" })
+function M.telescope()
+    -- Matching old config style with <leader> prefixes
+    keymap(n, "<leader>sf", function()
+        require("telescope.builtin").find_files()
+    end, { desc = "Find files" })
+    keymap(n, "<C-p>", function()
+        require("telescope.builtin").git_files()
+    end, { desc = "Git files" })
+    keymap(n, "<leader>lg", function()
+        require("telescope.builtin").live_grep()
+    end, { desc = "Live grep" })
+    keymap(n, "<leader>fh", function()
+        require("telescope.builtin").help_tags({})
+    end, { desc = "Help tags" })
+    keymap(n, "<leader>fm", function()
+        require("telescope.builtin").man_pages({ sections = { "ALL" } })
+    end, { desc = "Man pages" })
+
+    -- Edit Neovim config
+    keymap(n, "<leader>ec", function()
+        require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+    end, { desc = "Edit Neovim config" })
+
+    keymap(n, "<C-n>", "<Cmd>Telescope buffers previewer=false<CR>", default_settings)
+    keymap(n, "<leader>E", "<Cmd>Telescope diagnostics line_width=full bufnr=0<CR>", { desc = "Buffer diagnostics" })
+
+    -- TODO: I don't want this to jump if there is only one entry.
+    keymap(n, "gr", "<Cmd>Telescope lsp_references<CR>", default_settings)
+    keymap(n, "gd", "<Cmd>Telescope lsp_definitions<CR>", default_settings)
+end
+
+function M.lsp()
+    keymap(n, "<leader>rn", function()
+        pcall(vim.lsp.buf.rename)
+    end, default_settings)
 
     -- Diagnostics navigation (keep fast native + your custom)
     keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
@@ -86,25 +134,6 @@ function M.lsp()
     keymap("n", "<leader>th", function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
     end, { desc = "Toggle inlay hints" })
-end
-
-function M.harpoon()
-    local harpoon = require("harpoon")
-    local list = harpoon:list()
-
-    keymap("n", "<leader>a", function()
-        list:add()
-    end, { desc = "Harpoon: add file" })
-
-    keymap("n", "<C-e>", function()
-        harpoon.ui:toggle_quick_menu(list)
-    end, { desc = "Harpoon: quick menu" })
-
-    -- Quick navigation to marked files
-    keymap("n", "<C-h>", function() list:select(1) end, { desc = "Harpoon: file 1" })
-    keymap("n", "<C-j>", function() list:select(2) end, { desc = "Harpoon: file 2" })
-    keymap("n", "<C-k>", function() list:select(3) end, { desc = "Harpoon: file 3" })
-    keymap("n", "<C-l>", function() list:select(4) end, { desc = "Harpoon: file 4" })
 end
 
 
@@ -189,4 +218,26 @@ function M.init()
     M.command_aliases()
 end
 
+function M.harpoon()
+    local harpoon = require("harpoon")
+    local list = harpoon:list()
+
+    -- Add file
+    keymap("n", "<leader>a", function()
+        list:add()
+    end, { desc = "Harpoon add file" })
+
+    -- Quick menu
+    keymap("n", "<C-e>", function()
+        harpoon.ui:toggle_quick_menu(list)
+    end, { desc = "Harpoon quick menu" })
+
+    -- Navigate to files
+    keymap("n", "<C-h>", function() list:select(1) end, { desc = "Harpoon file 1" })
+    keymap("n", "<C-j>", function() list:select(2) end, { desc = "Harpoon file 2" })
+    keymap("n", "<C-k>", function() list:select(3) end, { desc = "Harpoon file 3" })
+    keymap("n", "<C-l>", function() list:select(4) end, { desc = "Harpoon file 4" })
+end
+
 return M
+
