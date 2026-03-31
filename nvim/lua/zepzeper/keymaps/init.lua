@@ -9,35 +9,16 @@ local default_settings = { noremap = true, silent = true }
 local M = {}
 
 function M.init()
-    M.editing()
+    M.core() -- Keymaps migrated from old config
+    M.telescope()
     M.lsp()
-    M.legacy() -- Keymaps migrated from old config
     M.harpoon()
-    M.ex()
 end
 
-function M.harpoon()
-    local harpoon = require("harpoon")
-    local list = harpoon:list()
-
-    -- Add file
-    keymap("n", "<leader>a", function()
-        list:add()
-    end, { desc = "Harpoon add file" })
-
-    -- Quick menu
-    keymap("n", "<C-e>", function()
-        harpoon.ui:toggle_quick_menu(list)
-    end, { desc = "Harpoon quick menu" })
-
-    -- Navigate to files
-    keymap("n", "<C-h>", function() list:select(1) end, { desc = "Harpoon file 1" })
-    keymap("n", "<C-j>", function() list:select(2) end, { desc = "Harpoon file 2" })
-    keymap("n", "<C-k>", function() list:select(3) end, { desc = "Harpoon file 3" })
-    keymap("n", "<C-l>", function() list:select(4) end, { desc = "Harpoon file 4" })
-end
-
-function M.legacy()
+function M.core()
+    keymap(n, "<leader>pv", function()
+        vim.cmd("Ex")
+    end)
     -- Disable Ctrl-c and Ctrl-z in normal mode
     keymap(n, "<C-c>", "<Nop>", default_settings)
     keymap(n, "<C-z>", "<Nop>", default_settings)
@@ -102,6 +83,37 @@ function M.legacy()
     end, { desc = "Open source file" })
 end
 
+function M.telescope()
+    -- Matching old config style with <leader> prefixes
+    keymap(n, "<leader>sf", function()
+        require("telescope.builtin").find_files()
+    end, { desc = "Find files" })
+    keymap(n, "<C-p>", function()
+        require("telescope.builtin").git_files()
+    end, { desc = "Git files" })
+    keymap(n, "<leader>lg", function()
+        require("telescope.builtin").live_grep()
+    end, { desc = "Live grep" })
+    keymap(n, "<leader>fh", function()
+        require("telescope.builtin").help_tags({})
+    end, { desc = "Help tags" })
+    keymap(n, "<leader>fm", function()
+        require("telescope.builtin").man_pages({ sections = { "ALL" } })
+    end, { desc = "Man pages" })
+
+    -- Edit Neovim config
+    keymap(n, "<leader>ec", function()
+        require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+    end, { desc = "Edit Neovim config" })
+
+    keymap(n, "<C-n>", "<Cmd>Telescope buffers previewer=false<CR>", default_settings)
+    keymap(n, "<leader>E", "<Cmd>Telescope diagnostics line_width=full bufnr=0<CR>", { desc = "Buffer diagnostics" })
+
+    -- TODO: I don't want this to jump if there is only one entry.
+    keymap(n, "gr", "<Cmd>Telescope lsp_references<CR>", default_settings)
+    keymap(n, "gd", "<Cmd>Telescope lsp_definitions<CR>", default_settings)
+end
+
 function M.lsp()
     keymap(n, "<leader>rn", function()
         pcall(vim.lsp.buf.rename)
@@ -138,53 +150,6 @@ function M.lsp()
     keymap("n", "<leader>e", vim.diagnostic.open_float, { desc = "Line Diagnostics" }) -- Alias to ge
 end
 
-function M.no_neck_pain()
-    keymap(n, "<leader>n", require("zepzeper.plugins.no-neck-pain").toggle, default_settings)
-end
-
-
-function M.ex()
-    keymap(n, "<leader>pv", function() 
-        vim.cmd("Ex")
-    end)
-end
-
-function M.editing()
-    keymap(n, "<leader>v", function()
-        require("zepzeper.keymaps.utils").toggle_diffview()
-    end)
-end
-
-function M.telescope()
-    -- Matching old config style with <leader> prefixes
-    keymap(n, "<leader>sf", function()
-        require("telescope.builtin").find_files()
-    end, { desc = "Find files" })
-    keymap(n, "<C-p>", function()
-        require("telescope.builtin").git_files()
-    end, { desc = "Git files" })
-    keymap(n, "<leader>lg", function()
-        require("telescope.builtin").live_grep()
-    end, { desc = "Live grep" })
-    keymap(n, "<leader>fh", function()
-        require("telescope.builtin").help_tags({})
-    end, { desc = "Help tags" })
-    keymap(n, "<leader>fm", function()
-        require("telescope.builtin").man_pages({ sections = { "ALL" } })
-    end, { desc = "Man pages" })
-
-    -- Edit Neovim config
-    keymap(n, "<leader>ec", function()
-        require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
-    end, { desc = "Edit Neovim config" })
-
-    keymap(n, "<C-n>", "<Cmd>Telescope buffers previewer=false<CR>", default_settings)
-    keymap(n, "<leader>E", "<Cmd>Telescope diagnostics line_width=full bufnr=0<CR>", { desc = "Buffer diagnostics" })
-
-    -- TODO: I don't want this to jump if there is only one entry.
-    keymap(n, "gr", "<Cmd>Telescope lsp_references<CR>", default_settings)
-    keymap(n, "gd", "<Cmd>Telescope lsp_definitions<CR>", default_settings)
-end
 
 function M.completion()
     local cmp = require("cmp")
@@ -206,4 +171,26 @@ function M.completion()
     end, default_settings)
 end
 
+function M.harpoon()
+    local harpoon = require("harpoon")
+    local list = harpoon:list()
+
+    -- Add file
+    keymap("n", "<leader>a", function()
+        list:add()
+    end, { desc = "Harpoon add file" })
+
+    -- Quick menu
+    keymap("n", "<C-e>", function()
+        harpoon.ui:toggle_quick_menu(list)
+    end, { desc = "Harpoon quick menu" })
+
+    -- Navigate to files
+    keymap("n", "<C-h>", function() list:select(1) end, { desc = "Harpoon file 1" })
+    keymap("n", "<C-j>", function() list:select(2) end, { desc = "Harpoon file 2" })
+    keymap("n", "<C-k>", function() list:select(3) end, { desc = "Harpoon file 3" })
+    keymap("n", "<C-l>", function() list:select(4) end, { desc = "Harpoon file 4" })
+end
+
 return M
+

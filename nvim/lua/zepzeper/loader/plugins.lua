@@ -37,9 +37,14 @@ return {
         lazy = true,
     },
     {
-        "alexpasmantier/tv.nvim",
+        'nvim-telescope/telescope.nvim', version = '*',
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            -- optional but recommended
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+        },
         config = function()
-            require("zepzeper.plugins.tv")
+            require("zepzeper.plugins.telescope")
         end,
     },
     {
