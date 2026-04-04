@@ -12,9 +12,10 @@ function M.init()
     M.core() -- Keymaps migrated from old config
     M.telescope()
     M.lsp()
+    M.harpoon()
     M.quickfix()
     M.dev_utils()
-    M.harpoon()
+    M.command_aliases()
 end
 
 function M.core()
@@ -140,6 +141,28 @@ function M.completion()
     end, default_opts)
 end
 
+function M.harpoon()
+    local harpoon = require("harpoon")
+    local list = harpoon:list()
+
+    -- Add file
+    keymap(n, "<leader>a", function()
+        list:add()
+    end, { desc = "Harpoon add file" })
+
+    -- Quick menu
+    keymap(n, "<C-e>", function()
+        harpoon.ui:toggle_quick_menu(list)
+    end, { desc = "Harpoon quick menu" })
+
+    -- Navigate to files
+    keymap(n, "<C-h>", function() list:select(1) end, { desc = "Harpoon file 1" })
+    keymap(n, "<C-j>", function() list:select(2) end, { desc = "Harpoon file 2" })
+    keymap(n, "<C-k>", function() list:select(3) end, { desc = "Harpoon file 3" })
+    keymap(n, "<C-l>", function() list:select(4) end, { desc = "Harpoon file 4" })
+end
+
+
 function M.quickfix()
     keymap(n, "<C-c>c", ":cclose<CR>", { desc = "Close quickfix" })
     keymap(n, "<C-c>o", ":copen<CR>", { desc = "Open quickfix" })
@@ -182,27 +205,6 @@ function M.command_aliases()
     vim.cmd("command! Q q")
     vim.cmd("command! X x")
     vim.cmd("command! Xa xa")
-end
-
-function M.harpoon()
-    local harpoon = require("harpoon")
-    local list = harpoon:list()
-
-    -- Add file
-    keymap(n, "<leader>a", function()
-        list:add()
-    end, { desc = "Harpoon add file" })
-
-    -- Quick menu
-    keymap(n, "<C-e>", function()
-        harpoon.ui:toggle_quick_menu(list)
-    end, { desc = "Harpoon quick menu" })
-
-    -- Navigate to files
-    keymap(n, "<C-h>", function() list:select(1) end, { desc = "Harpoon file 1" })
-    keymap(n, "<C-j>", function() list:select(2) end, { desc = "Harpoon file 2" })
-    keymap(n, "<C-k>", function() list:select(3) end, { desc = "Harpoon file 3" })
-    keymap(n, "<C-l>", function() list:select(4) end, { desc = "Harpoon file 4" })
 end
 
 return M
