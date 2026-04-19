@@ -1,15 +1,14 @@
-require("nvim-treesitter.configs").setup({
-    ensure_installed = { "lua", "go", "php", "typescript", "nix", "yaml"},
-    -- Install parsers synchronously (only applied to `ensure_installed`)
-    sync_install = false,
+require("nvim-treesitter").setup({
     auto_install = true,
-    indent = {
-        enable = true,
-    },
-
     highlight = {
         enable = true,
-        additional_vim_regex_highlighting = true,
+        additional_vim_regex_highlighting = false
     },
+    indent = { enable = true },
+})
 
+vim.api.nvim_create_autocmd({'BufReadPost', 'BufNewFile'}, {
+    callback = function()
+        vim.treesitter.start()
+    end,
 })

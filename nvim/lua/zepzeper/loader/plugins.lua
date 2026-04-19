@@ -1,14 +1,14 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        branch = "master",
         dependencies = {
             "nvim-treesitter/nvim-treesitter-context",
         },
-        build = { ":TSUpdate" },
+        build = ":TSUpdate",
+        branch = "main",
         config = function()
             require("zepzeper.plugins.treesitter")
-        end,
+            end,
     },
     {
         "hrsh7th/nvim-cmp",
