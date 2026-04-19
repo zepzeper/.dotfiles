@@ -18,6 +18,7 @@ return {
         end,
         dependencies = {
             'nvim-telescope/telescope.nvim',
+            'hrsh7th/cmp-nvim-lsp-signature-help',
             "hrsh7th/cmp-omni",
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-buffer",
@@ -42,6 +43,7 @@ return {
             'nvim-lua/plenary.nvim',
             -- optional but recommended
             { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+            'nvim-telescope/telescope-ui-select.nvim',
         },
         config = function()
             require("zepzeper.plugins.telescope")
@@ -51,6 +53,9 @@ return {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
         dependencies = { "nvim-lua/plenary.nvim" }
+    },
+    {
+        "FabijanZulj/blame.nvim",
     },
     -- Themes.
     -- {

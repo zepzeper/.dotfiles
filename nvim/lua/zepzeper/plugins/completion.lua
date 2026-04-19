@@ -1,3 +1,5 @@
+vim.lsp.completion.enable(false)
+
 local CMP = require("cmp")
 
 -- Format the completion menu. Yes, I am that pedantic.
@@ -47,7 +49,18 @@ window.documentation.side_padding = 1
 CMP.setup({
     formatting = formatting,
     window = window,
+    mapping = {
+        ["<C-n>"] = CMP.mapping.select_next_item(),
+        ["<C-p>"] = CMP.mapping.select_prev_item(),
+        ["<C-y>"] = CMP.mapping.confirm({ select = true }),
+    },
     performance = {
         debounce = 50,
+    },
+    sources = {
+        { name = "nvim_lsp" },
+        { name = "nvim_lsp_signature_help" }, 
+        { name = "buffer" },
+        { name = "path" },
     },
 })

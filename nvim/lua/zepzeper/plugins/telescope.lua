@@ -23,10 +23,9 @@ local baseline = {
 
     layout_strategy = "horizontal",
     layout_config = {
-        anchor = "S",          -- bottom
-        height = 0.35,         -- 35% of screen
-        width = 1000,           -- full width
-        preview_width = 0.5,   -- half screen for preview
+        anchor = "S",
+        height = 0.35,
+        width = 1000,
         prompt_position = "top",
     },
 
@@ -45,14 +44,23 @@ local baseline = {
     preview = { treesitter = true },
 }
 
+local ui_select_theme = {
+    layout_strategy = "center",
+    layout_config = {},
+}
+
 
 ----------------------------------------------------------------------------------------------------
 --- Configure
 
 TS.setup({
     defaults = baseline,
+    extensions = {
+        ["ui-select"] = ui_select_theme,
+    },
 
     pickers = {
+        lsp_code_actions = baseline,
         -- Bottom small pickers
         oldfiles = baseline,
         find_files = baseline,
@@ -93,9 +101,10 @@ TS.setup({
             prompt_title = "Manpages",
             mappings = { i = { ["<CR>"] = actions.select_vertical } },
         }),
-
     },
 })
+
+TS.load_extension("ui-select")
 
 vim.api.nvim_create_autocmd("User", {
     pattern = "TelescopePreviewerLoaded",

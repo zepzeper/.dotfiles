@@ -93,9 +93,9 @@ function M.lsp()
     -- Diagnostics navigation (keep fast native + your custom)
     keymap(n, "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
     keymap(n, "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
-    vim.keymap.set("n", "<leader>ca", function()
-        require("telescope.builtin").lsp_code_actions()
-    end, { desc = "Code actions" })
+    keymap(n, "<leader>ca", function()
+        vim.lsp.buf.code_action()
+    end, default_opts)
 
     keymap(n, "[e", function()
         require("zepzeper.native.lsp").prev_diag()
@@ -152,6 +152,11 @@ function M.harpoon()
     keymap(n, "<leader>a", function()
         list:add()
     end, { desc = "Harpoon add file" })
+
+    -- Git blame
+    keymap(n, "<leader>gb", function()
+        require("blame").toggle()
+    end, { desc = "Git blame" })
 
     -- Quick menu
     keymap(n, "<C-e>", function()
