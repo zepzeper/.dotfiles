@@ -40,7 +40,7 @@ function M.core()
     keymap(v, "K", ":m '<-2<CR>gv=gv", default_opts)
 
     -- Paste without yanking in visual mode
-    keymap(n_i, "<leader>p", '"_dP', { desc = "Paste without yank" })
+    keymap(n, "<leader>p", '"_dP', { desc = "Paste without yank" })
 
     -- Toggle search highlighting
     keymap(n, "<leader>;h", ":set hlsearch!<CR>", { desc = "Toggle search highlight" })
