@@ -20,6 +20,7 @@ end
 
 function M.core()
     keymap(n, "<leader>pv", vim.cmd.Ex, { desc = "File explorer" })
+    keymap(n, "<leader>b", "<cmd>Blame<CR>", { desc = "Blame" })
     -- Disable Ctrl-c and Ctrl-z in normal mode
     keymap(n, "<C-c>", "<Nop>", default_opts)
     keymap(n, "<C-z>", "<Nop>", default_opts)
@@ -27,10 +28,6 @@ function M.core()
     -- Source and execute Lua
     keymap(n, "<space><space>x", "<cmd>source %<CR>", { desc = "Source current file" })
     keymap(n, "<space>x", ":.lua<CR>", { desc = "Execute line as Lua" })
-
-    -- Jumping pages keeps cursor in the middle
-    vim.keymap.set(n, "<C-u>", "<C-u>zz")
-    vim.keymap.set(n, "<C-d>", "<C-d>zz")
 
     -- Keep cursor centered when jumping
     keymap(n, "<C-u>", "<C-u>zz", default_opts)
@@ -65,6 +62,9 @@ function M.telescope()
     keymap(n, "<leader>lg", function()
         require("telescope.builtin").live_grep()
     end, { desc = "Live grep" })
+    keymap(n, "<leader>lw", function()
+        require("telescope.builtin").grep_string()
+    end, { desc = "Live grep" })
     keymap(n, "<leader>fh", function()
         require("telescope.builtin").help_tags({})
     end, { desc = "Help tags" })
@@ -83,6 +83,8 @@ function M.telescope()
     -- TODO: I don't want this to jump if there is only one entry.
     keymap(n, "gr", "<Cmd>Telescope lsp_references<CR>", default_opts)
     keymap(n, "gd", "<Cmd>Telescope lsp_definitions<CR>", default_opts)
+    keymap(n, "gi", "<Cmd>Telescope lsp_implementations<CR>", default_opts)
+    keymap(n, "gt", "<Cmd>Telescope lsp_type_definitions<CR>", default_opts)
 end
 
 function M.lsp()
