@@ -33,6 +33,24 @@ return {
         },
     },
     {
+        "mfussenegger/nvim-dap",
+        event = "VeryLazy",
+        dependencies = {
+            "rcarriga/nvim-dap-ui",
+            "nvim-neotest/nvim-nio",
+            {
+                "jay-babu/mason-nvim-dap.nvim",
+                dependencies = {
+                    "williamboman/mason.nvim",
+                },
+            },
+            "theHamsta/nvim-dap-virtual-text",
+        },
+        config = function()
+            require("zepzeper.plugins.dap")
+        end
+    },
+    {
         -- Loaded by the native config.
         "neovim/nvim-lspconfig",
         lazy = true,
