@@ -24,7 +24,7 @@ local baseline = {
     layout_strategy = "horizontal",
     layout_config = {
         anchor = "S",
-        height = 0.35,
+        height = 0.55,
         width = 1000,
         prompt_position = "top",
     },
@@ -105,6 +105,7 @@ TS.setup({
 })
 
 TS.load_extension("ui-select")
+TS.load_extension("fzf")
 
 vim.api.nvim_create_autocmd("User", {
     pattern = "TelescopePreviewerLoaded",

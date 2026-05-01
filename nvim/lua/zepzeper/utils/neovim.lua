@@ -68,14 +68,6 @@ function M.get_short_cwd()
     return vim.fn.fnamemodify(vim.fn.getcwd(), ":~")
 end
 
-function M.current_buffer_icon()
-    local c = M.current_buffer_filetype()
-    if c == "help" then
-        return "󰞋"
-    end
-    return require("nvim-web-devicons").get_icon_by_filetype(c)
-end
-
 function M.current_buffer_parent()
     local current_buffer = vim.api.nvim_get_current_buf()
     local current_file = vim.api.nvim_buf_get_name(current_buffer)
