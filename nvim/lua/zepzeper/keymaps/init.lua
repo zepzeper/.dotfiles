@@ -45,6 +45,7 @@ function M.core()
 
     -- Toggle search highlighting
     keymap(n, "<leader>;h", ":set hlsearch!<CR>", { desc = "Toggle search highlight" })
+    keymap(n, "<leader>ts", "<Cmd>TSContext toggle<CR>", default_opts)
 
     -- Diffview toggle
     keymap(n, "<leader>v", function()
@@ -78,14 +79,14 @@ function M.telescope()
         require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
     end, { desc = "Edit Neovim config" })
 
-    keymap(n, "<C-n>", "<Cmd>Telescope buffers previewer=false<CR>", default_opts)
+    keymap(n, "<C-n>", "<Cmd>Telescope buffers previewer=false<CR>", { desc = "Telescope buffers" })
     keymap(n, "<leader>E", "<Cmd>Telescope diagnostics line_width=full bufnr=0<CR>", { desc = "Buffer diagnostics" })
 
     -- TODO: I don't want this to jump if there is only one entry.
-    keymap(n, "gr", "<Cmd>Telescope lsp_references<CR>", default_opts)
-    keymap(n, "gd", "<Cmd>Telescope lsp_definitions<CR>", default_opts)
-    keymap(n, "gi", "<Cmd>Telescope lsp_implementations<CR>", default_opts)
-    keymap(n, "gt", "<Cmd>Telescope lsp_type_definitions<CR>", default_opts)
+    keymap(n, "gr", "<Cmd>Telescope lsp_references<CR>", { desc = "LSP references" })
+    keymap(n, "gd", "<Cmd>Telescope lsp_definitions<CR>", { desc = "LSP definitions" })
+    keymap(n, "gi", "<Cmd>Telescope lsp_implementations<CR>", { desc = "LSP implementations" })
+    keymap(n, "gt", "<Cmd>Telescope lsp_type_definitions<CR>", { desc = "LSP type definitions" })
 end
 
 function M.lsp()
@@ -117,7 +118,6 @@ function M.lsp()
     -- Diagnostic display
     keymap(n, "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic float" })
     keymap(n, "<leader>q", vim.diagnostic.setloclist, { desc = "Diagnostics to loclist" })
-    -- keymap(n, "<leader>dd", tb.diagnostics, { desc = "Diagnostics (Telescope)" })
 
     -- Toggle inlay hints
     keymap(n, "<leader>th", function()
@@ -182,14 +182,14 @@ function M.quickfix()
 end
 
 function M.dap()
-    keymap(n, '<F5>', function() require('dap').continue() end)
-    keymap(n, '<F6>', function() require('dap').step_over() end)
-    keymap(n, '<F7>', function() require('dap').step_into() end)
-    keymap(n, '<F8>', function() require('dap').step_out() end)
-    keymap(n, '<Leader>dt', function() require('dap').toggle_breakpoint() end)
-    keymap(n, '<Leader>dr', function() require('dap').repl.open() end)
-    keymap(n, '<Leader>dl', function() require('dap').run_last() end)
-    keymap(n, '<Leader>dc', function() require('dap').run_to_cursor() end)
+    keymap(n, '<F5>', function() require('dap').continue() end, { desc = "DAP continue" })
+    keymap(n, '<F6>', function() require('dap').step_over() end, { desc = "DAP step over" })
+    keymap(n, '<F7>', function() require('dap').step_into() end, { desc = "DAP step into" })
+    keymap(n, '<F8>', function() require('dap').step_out() end, { desc = "DAP step out" })
+    keymap(n, '<Leader>dt', function() require('dap').toggle_breakpoint() end, { desc = "DAP toggle breakpoint" })
+    keymap(n, '<Leader>dr', function() require('dap').repl.open() end, { desc = "DAP open REPL" })
+    keymap(n, '<Leader>dl', function() require('dap').run_last() end, { desc = "DAP run last" })
+    keymap(n, '<Leader>dc', function() require('dap').run_to_cursor() end, { desc = "DAP run to cursor" })
     -- vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
     --     require('dap.ui.widgets').hover()
     -- end)
@@ -199,11 +199,11 @@ function M.dap()
     keymap(n, '<Leader>df', function()
         local widgets = require('dap.ui.widgets')
         widgets.centered_float(widgets.frames)
-    end)
+    end, { desc = "DAP show frames" })
     keymap(n, '<Leader>ds', function()
         local widgets = require('dap.ui.widgets')
         widgets.centered_float(widgets.scopes)
-    end)
+    end, { desc = "DAP show scopes" })
 end
 
 function M.dev_utils()
