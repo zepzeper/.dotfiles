@@ -57,6 +57,12 @@ TS.setup({
     defaults = baseline,
     extensions = {
         ["ui-select"] = ui_select_theme,
+        fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = "smart_case",
+        }
     },
 
     pickers = {
@@ -86,7 +92,11 @@ TS.setup({
 
         buffers = U.merge(baseline, {
             ignore_current_buffer = true,
-            file_ignore_patters = { "\\." },
+            file_ignore_patterns = { 
+                "\\.",
+                "%.git/",
+                "node_modules/",
+            },
 
             on_complete = {
                 function(picker)
