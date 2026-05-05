@@ -55,7 +55,7 @@ end
 
 function M.telescope()
     -- Matching old config style with <leader> prefixes
-    keymap(n, "<leader>sf", function()
+    keymap(n, "<leader>ff", function()
         require("telescope.builtin").find_files()
     end, { desc = "Find files" })
     keymap(n, "<C-p>", function()
@@ -210,6 +210,7 @@ function M.dev_utils()
     -- Source and execute Lua code
     keymap(n, "<space><space>x", "<cmd>source %<CR>", { desc = "Source current file" })
     keymap(n, "<space>x", ":.lua<CR>", { desc = "Execute line as Lua" })
+    keymap(v, "<leader>s", ":Hypersonic<CR>", { desc = "Show regex explanation" })
 
     -- Reload custom plugins
     keymap(n, "<leader>rr", function()

@@ -119,7 +119,7 @@ return {
         "NeogitOrg/neogit",
         lazy = true,
         dependencies = {
-            "nvim-lua/plenary.nvim",         -- required
+            "nvim-lua/plenary.nvim", 
         },
         cmd = "Neogit",
         keys = {
@@ -127,11 +127,26 @@ return {
         }
     },
     {
-        "FabijanZulj/blame.nvim",
+        'FabijanZulj/blame.nvim',
         lazy = false,
         config = function()
             require('blame').setup {}
         end,
+    },
+    {
+        "jiaoshijie/undotree",
+        keys = {
+            { "<BS>u", "<cmd>lua require('undotree').toggle()<cr>" },
+        },
+    },
+    {
+        'tomiis4/Hypersonic.nvim',
+        event = "CmdlineEnter",
+        cmd = "Hypersonic",
+        config = function()
+            require('hypersonic').setup({
+            })
+        end
     },
     -- Personal
     -- {
