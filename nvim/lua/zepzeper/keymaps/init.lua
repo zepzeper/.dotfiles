@@ -14,6 +14,7 @@ function M.init()
     M.lsp()
     M.harpoon()
     M.quickfix()
+    M.tabs()
     M.dap()
     M.dev_utils()
     M.command_aliases()
@@ -179,6 +180,13 @@ function M.quickfix()
     keymap(n, "<C-c>o", ":copen<CR>", { desc = "Open quickfix" })
     keymap(n, "<C-c>n", ":cnext<CR>", { desc = "Next quickfix" })
     keymap(n, "<C-c>p", ":cprev<CR>", { desc = "Previous quickfix" })
+end
+
+function M.tabs()
+    keymap(n, "<C-t>c", ":tabclose<CR>", { desc = "Close tab" })
+    keymap(n, "<C-t>o", ":tabnew<CR>", { desc = "Open tab" })
+    keymap(n, "<C-t>n", ":tabnext<CR>", { desc = "Next tab" })
+    keymap(n, "<C-t>p", ":tabprevious<CR>", { desc = "Previous tab" })
 end
 
 function M.dap()
