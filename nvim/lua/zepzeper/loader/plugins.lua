@@ -168,6 +168,12 @@ return {
     --     end,
     -- },
     {
+        "vzze/cmdline.nvim",
+        config = function()
+            require('cmdline').setup()
+        end,
+    },
+    {
         'MeanderingProgrammer/render-markdown.nvim',
         opts = {},
         config = function()
