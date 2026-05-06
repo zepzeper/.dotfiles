@@ -98,23 +98,23 @@ return {
       },
     },
     -- Themes.
-    -- {
-    --     "vague-theme/vague.nvim",
-    --     lazy = false,
-    --     priority = 1000,
-    --     config = function()
-    --         vim.cmd.colorscheme("vague")
-    --     end
-    -- },
     {
-        "rose-pine/neovim",
-        name = "rose-pine",
+        "vague-theme/vague.nvim",
+        lazy = false,
+        priority = 1000,
         config = function()
-            vim.cmd("colorscheme rose-pine")
-            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+            vim.cmd.colorscheme("vague")
         end
     },
+    -- {
+    --     "rose-pine/neovim",
+    --     name = "rose-pine",
+    --     config = function()
+    --         vim.cmd("colorscheme rose-pine")
+    --         vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    --         vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    --     end
+    -- },
     -- git
     {
         "NeogitOrg/neogit",
