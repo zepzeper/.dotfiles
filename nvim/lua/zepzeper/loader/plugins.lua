@@ -1,4 +1,5 @@
 return {
+    { "nvim-tree/nvim-web-devicons", opts = {} },
     {
         "nvim-treesitter/nvim-treesitter",
         dependencies = {
