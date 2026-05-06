@@ -185,6 +185,7 @@ end
 function M.tabs()
     keymap(n, "<C-t>c", ":tabclose<CR>", { desc = "Close tab" })
     keymap(n, "<C-t>o", ":tabnew<CR>", { desc = "Open tab" })
+    keymap(n, "<C-t>h", ":tabnew %<CR>", { desc = "Open current file in new tab" })
     keymap(n, "<C-t>n", ":tabnext<CR>", { desc = "Next tab" })
     keymap(n, "<C-t>p", ":tabprevious<CR>", { desc = "Previous tab" })
 end
