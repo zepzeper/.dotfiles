@@ -132,10 +132,9 @@ return {
         "nvim-neotest/neotest",
         dependencies = {
             "nvim-neotest/nvim-nio",
-            "nvim-lua/plenary.nvim",
             "antoinemadec/FixCursorHold.nvim",
-            "nvim-treesitter/nvim-treesitter",
             "olimorris/neotest-phpunit",
+            "praem90/neotest-docker-phpunit.nvim",
         },
         config = function()
             require("zepzeper.plugins.neotest")
@@ -153,15 +152,6 @@ return {
         keys = {
             { "<BS>u", "<cmd>lua require('undotree').toggle()<cr>" },
         },
-    },
-    {
-        'tomiis4/Hypersonic.nvim',
-        event = "CmdlineEnter",
-        cmd = "Hypersonic",
-        config = function()
-            require('hypersonic').setup({
-            })
-        end
     },
     -- Personal
     -- {

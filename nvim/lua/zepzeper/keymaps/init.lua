@@ -16,6 +16,7 @@ function M.init()
     M.quickfix()
     M.tabs()
     M.dap()
+    M.neotest()
     M.dev_utils()
     M.command_aliases()
 end
@@ -215,11 +216,19 @@ function M.dap()
     end, { desc = "DAP show scopes" })
 end
 
+function M.neotest()
+    keymap("n", "<leader>tr", function() require("neotest").run.run() end, { desc = "Run nearest test" })
+    keymap("n", "<leader>tf", function() require("neotest").run.run(vim.fn.expand("%")) end, { desc = "Run test file" })
+    keymap("n", "<leader>ts", function() require("neotest").summary.toggle() end, { desc = "Toggle test summary" })
+    keymap("n", "<leader>to", function() require("neotest").output.open({ enter = true }) end, { desc = "Open test output" })
+    keymap("n", "<leader>tp", function() require("neotest").output_panel.toggle() end, { desc = "Toggle output panel" })
+    keymap("n", "<leader>tx", function() require("neotest").run.stop() end, { desc = "Stop test run" })
+end
+
 function M.dev_utils()
     -- Source and execute Lua code
     keymap(n, "<space><space>x", "<cmd>source %<CR>", { desc = "Source current file" })
     keymap(n, "<space>x", ":.lua<CR>", { desc = "Execute line as Lua" })
-    keymap(v, "<leader>s", ":Hypersonic<CR>", { desc = "Show regex explanation" })
 
     -- Reload custom plugins
     keymap(n, "<leader>rr", function()

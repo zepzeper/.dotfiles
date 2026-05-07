@@ -1,130 +1,79 @@
+-- require("neotest").setup({
+--     adapters = {
+--         require("neotest-phpunit")({
+--             phpunit_cmd = function()
+--                 local file = vim.fn.expand("%")
+--                 local ok, lines = pcall(vim.fn.readfile, file)
+--                 local config = "/data/www/useracademy/codebase/tools/phpunit/unit/phpunit.xml.dist"
+--
+--                 if ok then
+--                     local content = table.concat(lines, "\n")
+--                     if content:match("#%[Group%(['\"]integration['\"]%)%]") then
+--                         config = "/data/www/useracademy/codebase/tools/phpunit/integration/phpunit.xml.dist"
+--                     end
+--                 end
+--
+--                 local cmd = {
+--                     "docker",
+--                     "exec",
+--                     "probase-webserver",
+--                     "php",
+--                     "/data/www/useracademy/codebase/vendor/bin/phpunit",
+--                     "--configuration",
+--                     config,
+--                 }
+--                 print(vim.inspect(cmd))
+--                 return cmd
+--             end,
+--             root_files = { "composer.json", "phpunit.xml.dist", ".gitignore" },
+--         })
+--     },
+-- })
+
+local phpunit = require("neotest-phpunit")({
+    root_files = { "composer.json", "phpunit.xml.dist", ".gitignore" },
+})
+
+local original_build_spec = phpunit.build_spec
+
+phpunit.build_spec = function(args)
+    local spec = original_build_spec(args)
+    if not spec then return nil end
+
+    -- Find and rewrite the --log-junit path to be inside the shared volume
+    for i, arg in ipairs(spec.command) do
+        if type(arg) == "string" and arg:match("^--log%-junit=") then
+            local host_path = arg:match("^--log%-junit=(.+)$")
+            local container_path = host_path:gsub("^/tmp/", "/data/www/useracademy/codebase/.phpunit.cache/neotest-")
+            spec.command[i] = "--log-junit=" .. container_path
+            -- Tell neotest where to read it back on the host
+            spec.context.results_path = container_path:gsub(
+                "^/data/www/useracademy/codebase",
+                "/data/probase.git"
+            )
+            break
+        end
+    end
+
+    -- Prepend docker exec + rewrite position path
+    for i, arg in ipairs(spec.command) do
+        if type(arg) == "string" and arg:match("^/data/probase%.git") then
+            spec.command[i] = arg:gsub("^/data/probase%.git", "/data/www/useracademy/codebase")
+        end
+    end
+
+    -- Prepend docker exec and phpunit binary
+    spec.command = vim.tbl_flatten({
+        "docker", "exec", "probase-webserver",
+        "php", "/data/www/useracademy/codebase/vendor/bin/phpunit",
+        "--configuration", "/data/www/useracademy/codebase/tools/phpunit/unit/phpunit.xml.dist",
+        -- skip original program (index 1) and keep rest
+        vim.list_slice(spec.command, 2),
+    })
+
+    return spec
+end
+
 require("neotest").setup({
-    adapters = {
-        require("neotest-phpunit")
-    },
-    benchmark = {
-      enabled = true
-    },
-    consumers = {},
-    default_strategy = "integrated",
-    diagnostic = {
-      enabled = true,
-      severity = 1
-    },
-    discovery = {
-      concurrent = 0,
-      enabled = true
-    },
-    floating = {
-      max_height = 0.6,
-      max_width = 0.6,
-      options = {}
-    },
-    highlights = {
-      adapter_name = "NeotestAdapterName",
-      border = "NeotestBorder",
-      dir = "NeotestDir",
-      expand_marker = "NeotestExpandMarker",
-      failed = "NeotestFailed",
-      file = "NeotestFile",
-      focused = "NeotestFocused",
-      indent = "NeotestIndent",
-      marked = "NeotestMarked",
-      namespace = "NeotestNamespace",
-      passed = "NeotestPassed",
-      running = "NeotestRunning",
-      select_win = "NeotestWinSelect",
-      skipped = "NeotestSkipped",
-      target = "NeotestTarget",
-      test = "NeotestTest",
-      unknown = "NeotestUnknown",
-      watching = "NeotestWatching"
-    },
-    icons = {
-      child_indent = "│",
-      child_prefix = "├",
-      collapsed = "─",
-      expanded = "╮",
-      failed = "",
-      final_child_indent = " ",
-      final_child_prefix = "╰",
-      non_collapsible = "─",
-      notify = "",
-      passed = "",
-      running = "",
-      running_animated = { "/", "|", "\\", "-", "/", "|", "\\", "-" },
-      skipped = "",
-      test = "",
-      unknown = "",
-      watching = ""
-    },
-    jump = {
-      enabled = true
-    },
-    log_level = 3,
-    output = {
-      enabled = true,
-      open_on_run = "short"
-    },
-    output_panel = {
-      enabled = true,
-      open = "botright split | resize 15"
-    },
-    projects = {},
-    quickfix = {
-      enabled = true,
-      open = false
-    },
-    run = {
-      enabled = true
-    },
-    running = {
-      concurrent = true
-    },
-    state = {
-      enabled = true
-    },
-    status = {
-      enabled = true,
-      signs = true,
-      virtual_text = false
-    },
-    strategies = {
-      integrated = {
-        height = 40,
-        width = 120
-      }
-    },
-    summary = {
-      animated = true,
-      count = true,
-      enabled = true,
-      expand_errors = true,
-      follow = true,
-      mappings = {
-        attach = "a",
-        clear_marked = "M",
-        clear_target = "T",
-        debug = "d",
-        debug_marked = "D",
-        expand = { "<CR>", "<2-LeftMouse>" },
-        expand_all = "e",
-        help = "?",
-        jumpto = "i",
-        mark = "m",
-        next_failed = "J",
-        next_sibling = ">",
-        output = "o",
-        parent = "P",
-        prev_failed = "K",
-        prev_sibling = "<",
-        run = "r",
-        run_marked = "R",
-        short = "O",
-        stop = "u",
-        target = "t",
-        watch = "w"
-      },
-      open = "botright vsplit | vertical resize 50"
-    },
+    adapters = { phpunit },
 })
