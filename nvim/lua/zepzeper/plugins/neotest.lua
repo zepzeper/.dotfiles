@@ -36,17 +36,33 @@ local phpunit = require("neotest-phpunit")({
 
 local original_build_spec = phpunit.build_spec
 
+local function get_phpunit_config(path)
+    if not path then
+        return "/data/www/useracademy/codebase/tools/phpunit/unit/phpunit.xml.dist"
+    end
+    local ok, lines = pcall(vim.fn.readfile, path)
+    if ok then
+        local content = table.concat(lines, "\n")
+        if content:match("#%[Group%(['\"]integration['\"]%)%]") then
+            return "/data/www/useracademy/codebase/tools/phpunit/integration/phpunit.xml.dist"
+        end
+    end
+    return "/data/www/useracademy/codebase/tools/phpunit/unit/phpunit.xml.dist"
+end
+
 phpunit.build_spec = function(args)
     local spec = original_build_spec(args)
     if not spec then return nil end
 
-    -- Find and rewrite the --log-junit path to be inside the shared volume
+    local path = args.tree and args.tree:data().path
+    local config = get_phpunit_config(path)
+
+    -- rewrite --log-junit to container volume path
     for i, arg in ipairs(spec.command) do
         if type(arg) == "string" and arg:match("^--log%-junit=") then
             local host_path = arg:match("^--log%-junit=(.+)$")
             local container_path = host_path:gsub("^/tmp/", "/data/www/useracademy/codebase/.phpunit.cache/neotest-")
             spec.command[i] = "--log-junit=" .. container_path
-            -- Tell neotest where to read it back on the host
             spec.context.results_path = container_path:gsub(
                 "^/data/www/useracademy/codebase",
                 "/data/probase.git"
@@ -55,19 +71,18 @@ phpunit.build_spec = function(args)
         end
     end
 
-    -- Prepend docker exec + rewrite position path
+    -- rewrite host paths to container paths
     for i, arg in ipairs(spec.command) do
         if type(arg) == "string" and arg:match("^/data/probase%.git") then
             spec.command[i] = arg:gsub("^/data/probase%.git", "/data/www/useracademy/codebase")
         end
     end
 
-    -- Prepend docker exec and phpunit binary
+    -- prepend docker exec with the correct config
     spec.command = vim.tbl_flatten({
         "docker", "exec", "probase-webserver",
         "php", "/data/www/useracademy/codebase/vendor/bin/phpunit",
-        "--configuration", "/data/www/useracademy/codebase/tools/phpunit/unit/phpunit.xml.dist",
-        -- skip original program (index 1) and keep rest
+        "--configuration", config,
         vim.list_slice(spec.command, 2),
     })
 
@@ -76,4 +91,15 @@ end
 
 require("neotest").setup({
     adapters = { phpunit },
+    watch = { enabled = false },
+    diagnostic = { enabled = false },
+    discovery = { enabled = false },
+    status = { enabled = false },
+})
+
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function()
+        pcall(vim.api.nvim_del_augroup_by_name, "neotest.Client")
+    end,
 })
