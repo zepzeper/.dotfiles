@@ -91,15 +91,13 @@ end
 
 require("neotest").setup({
     adapters = { phpunit },
-    watch = { enabled = false },
-    diagnostic = { enabled = false },
-    discovery = { enabled = false },
-    status = { enabled = false },
 })
-
 
 vim.api.nvim_create_autocmd("BufEnter", {
     callback = function()
-        pcall(vim.api.nvim_del_augroup_by_name, "neotest.Client")
+        local ft = vim.bo.filetype
+        if ft ~= "php" then
+            pcall(vim.api.nvim_del_augroup_by_name, "neotest.Client")
+        end
     end,
 })
