@@ -7,8 +7,12 @@ require("nvim-treesitter").setup({
     indent = { enable = true },
 })
 
-vim.api.nvim_create_autocmd({'BufReadPost', 'BufNewFile'}, {
-    callback = function()
-        vim.treesitter.start()
-    end,
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*",
+  callback = function()
+    local ok, _ = pcall(vim.treesitter.start)
+    if not ok then
+      -- silently ignore filetypes with no parser
+    end
+  end,
 })

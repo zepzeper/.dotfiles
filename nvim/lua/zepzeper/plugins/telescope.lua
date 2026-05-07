@@ -93,7 +93,6 @@ TS.setup({
         buffers = U.merge(baseline, {
             ignore_current_buffer = true,
             file_ignore_patterns = { 
-                "\\.",
                 "%.git/",
                 "node_modules/",
             },

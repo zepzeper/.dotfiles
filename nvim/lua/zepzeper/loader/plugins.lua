@@ -99,13 +99,36 @@ return {
     },
     -- Themes.
     {
-        "vague-theme/vague.nvim",
-        lazy = false,
+        "catppuccin/nvim",
+        name = "catppuccin",
         priority = 1000,
         config = function()
-            vim.cmd.colorscheme("vague")
+            require("catppuccin").setup({
+                flavour = "macchiato",
+                transparent_background = true,
+            })
+            vim.cmd.colorscheme("catppuccin")
         end
     },
+    -- {
+    --     "nyoom-engineering/oxocarbon.nvim",
+    --     config = function()
+    --         vim.opt.background = "dark" -- set this to dark or light
+    --         vim.cmd("colorscheme oxocarbon")
+    --
+    --         vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    --         vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    --         vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+    --     end,
+    -- },
+    -- {
+    --     "vague-theme/vague.nvim",
+    --     lazy = false,
+    --     priority = 1000,
+    --     config = function()
+    --         vim.cmd.colorscheme("vague")
+    --     end
+    -- },
     -- {
     --     "rose-pine/neovim",
     --     name = "rose-pine",
@@ -170,12 +193,12 @@ return {
     --         require("zepzeper.plugins.bicycle")
     --     end,
     -- },
-    {
-        "vzze/cmdline.nvim",
-        config = function()
-            require('cmdline').setup()
-        end,
-    },
+    -- {
+    --     "vzze/cmdline.nvim",
+    --     config = function()
+    --         require('cmdline').setup()
+    --     end,
+    -- },
     {
         'MeanderingProgrammer/render-markdown.nvim',
         opts = {},
