@@ -7,7 +7,7 @@ local util = require("lspconfig.util")
 --vim.lsp.enable("gopls")
 --vim.lsp.enable("buf_ls")
 --vim.lsp.enable("clangd")
---vim.lsp.enable("ts_ls")
+vim.lsp.enable("ts_ls")
 --vim.lsp.enable("cmake")
 --vim.lsp.enable("html")
 --vim.lsp.enable("jsonls")
@@ -31,11 +31,3 @@ vim.lsp.config("intelephense", {
         licenceKey = "00YNPEL2NKC5IE5",
     },
 })
-
--- vim.lsp.config("phpactor", {
---     cmd = { "phpactor", "language-server" },
---     filetypes = { "php" },
---     init_options = {
---         ["language_server_phpstan.enabled"] = true,
---     },
--- })

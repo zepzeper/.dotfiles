@@ -1,4 +1,5 @@
 return {
+    { "mason-org/mason.nvim", opts = {} },
     { "nvim-tree/nvim-web-devicons", opts = {} },
     {
         "nvim-treesitter/nvim-treesitter",
@@ -37,8 +38,23 @@ return {
         "mfussenegger/nvim-dap",
         event = "VeryLazy",
         dependencies = {
-            "rcarriga/nvim-dap-ui",
-            "nvim-neotest/nvim-nio",
+            {
+                "igorlfs/nvim-dap-view",
+                -- no lazy = false here
+                opts = {
+                    winbar = {
+                        sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl" },
+                        controls = { enabled = true, position = "left" },
+                    },
+                    windows = {
+                        position = "right",  -- vertical split on the right
+                            size = 0.3,          -- 30% of screen width
+                            terminal = {
+                                position = "below",  -- terminal below the main view panel
+                            },
+                    },
+                },
+            },
             {
                 "jay-babu/mason-nvim-dap.nvim",
                 dependencies = {
@@ -55,6 +71,12 @@ return {
         -- Loaded by the native config.
         "neovim/nvim-lspconfig",
         lazy = true,
+    },
+    {
+        "nvimtools/none-ls.nvim",
+        config = function()
+            require("zepzeper.plugins.nonels")
+        end
     },
     {
         'nvim-telescope/telescope.nvim', version = '*',
@@ -98,18 +120,18 @@ return {
       },
     },
     -- Themes.
-    {
-        "catppuccin/nvim",
-        name = "catppuccin",
-        priority = 1000,
-        config = function()
-            require("catppuccin").setup({
-                flavour = "macchiato",
-                transparent_background = true,
-            })
-            vim.cmd.colorscheme("catppuccin")
-        end
-    },
+    -- {
+    --     "catppuccin/nvim",
+    --     name = "catppuccin",
+    --     priority = 1000,
+    --     config = function()
+    --         require("catppuccin").setup({
+    --             flavour = "macchiato",
+    --             transparent_background = true,
+    --         })
+    --         vim.cmd.colorscheme("catppuccin")
+    --     end
+    -- },
     -- {
     --     "nyoom-engineering/oxocarbon.nvim",
     --     config = function()
@@ -129,15 +151,15 @@ return {
     --         vim.cmd.colorscheme("vague")
     --     end
     -- },
-    -- {
-    --     "rose-pine/neovim",
-    --     name = "rose-pine",
-    --     config = function()
-    --         vim.cmd("colorscheme rose-pine")
-    --         vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-    --         vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-    --     end
-    -- },
+    {
+        "rose-pine/neovim",
+        name = "rose-pine",
+        config = function()
+            vim.cmd("colorscheme rose-pine")
+            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+        end
+    },
     -- git
     {
         "NeogitOrg/neogit",
@@ -193,12 +215,18 @@ return {
     --         require("zepzeper.plugins.bicycle")
     --     end,
     -- },
-    -- {
-    --     "vzze/cmdline.nvim",
-    --     config = function()
-    --         require('cmdline').setup()
-    --     end,
-    -- },
+    {
+        "zepzeper/regexplain",
+        config = function()
+            require("regexplain").setup()
+        end,
+    },
+    {
+        "smolck/command-completion.nvim",
+        config = function()
+            require('command-completion').setup()
+        end,
+    },
     {
         'MeanderingProgrammer/render-markdown.nvim',
         opts = {},
