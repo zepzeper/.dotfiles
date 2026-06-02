@@ -56,12 +56,10 @@ TS.setup({
             auto_quoting = true, -- quotes search term so trailing tokens become rg args
             mappings = {
                 i = U.merge(ACTIONS, {
-                    -- wrap current prompt in quotes (lets you start adding args)
-                    ["<C-k>"] = lga_actions.quote_prompt(),
                     -- quote + append a file glob:  "<search>" --iglob *
                     ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
                     -- quote + append a directory glob: "<search>" --iglob **/
-                    ["<C-d>"] = lga_actions.quote_prompt({ postfix = " --iglob **/" }),
+                    ["<C-k>"] = lga_actions.quote_prompt({ postfix = " --iglob **/" }),
                     -- freeze grep results, then fuzzy-filter them (the "subquery")
                     ["<C-space>"] = lga_actions.to_fuzzy_refine,
                 }),

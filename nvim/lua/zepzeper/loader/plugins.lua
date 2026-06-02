@@ -40,7 +40,6 @@ return {
         dependencies = {
             {
                 "igorlfs/nvim-dap-view",
-                -- no lazy = false here
                 opts = {
                     winbar = {
                         sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl" },
@@ -97,9 +96,6 @@ return {
         dependencies = { "nvim-lua/plenary.nvim" }
     },
     {
-        "FabijanZulj/blame.nvim",
-    },
-    {
         "tpope/vim-surround"
     },
     {
@@ -109,15 +105,6 @@ return {
         -- your configuration comes here
         -- or leave it empty to use the default settings
         -- refer to the configuration section below
-      },
-      keys = {
-        {
-          "<leader>?",
-          function()
-            require("which-key").show({ global = false })
-          end,
-          desc = "Buffer Local Keymaps (which-key)",
-        },
       },
     },
     -- Themes.
@@ -232,5 +219,5 @@ return {
         config = function()
             require('render-markdown').setup({ latex = { enabled = false } })
         end,
-    }
+    },
 }
