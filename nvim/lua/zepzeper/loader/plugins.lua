@@ -85,6 +85,7 @@ return {
             -- optional but recommended
             { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
             'nvim-telescope/telescope-ui-select.nvim',
+            'nvim-telescope/telescope-live-grep-args.nvim',
         },
         config = function()
             require("zepzeper.plugins.telescope")
@@ -155,6 +156,10 @@ return {
         "rose-pine/neovim",
         name = "rose-pine",
         config = function()
+            require("rose-pine").setup({
+                variant = "moon", -- auto, main, moon, or dawn
+                dark_variant = "moon", -- main, moon, or dawn
+            })
             vim.cmd("colorscheme rose-pine")
             vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
             vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
@@ -215,18 +220,12 @@ return {
     --         require("zepzeper.plugins.bicycle")
     --     end,
     -- },
-    {
-        "zepzeper/regexplain",
-        config = function()
-            require("regexplain").setup()
-        end,
-    },
-    {
-        "smolck/command-completion.nvim",
-        config = function()
-            require('command-completion').setup()
-        end,
-    },
+    -- {
+    --     "zepzeper/regexplain",
+    --     config = function()
+    --         require("regexplain").setup()
+    --     end,
+    -- },
     {
         'MeanderingProgrammer/render-markdown.nvim',
         opts = {},

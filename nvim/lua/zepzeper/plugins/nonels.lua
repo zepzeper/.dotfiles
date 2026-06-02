@@ -37,3 +37,7 @@ null_ls.setup({
         end
     end,
 })
+
+vim.api.nvim_create_user_command("PhpstanToggle", function()
+    null_ls.toggle({ name = "phpstan" })
+end, {})

@@ -9,7 +9,7 @@ local default_opts = { noremap = true, silent = true }
 local M = {}
 
 function M.init()
-    M.core() -- Keymaps migrated from old config
+    M.core()
     M.telescope()
     M.lsp()
     M.harpoon()
@@ -28,10 +28,6 @@ function M.core()
     keymap(n, "<C-c>", "<Nop>", default_opts)
     keymap(n, "<C-z>", "<Nop>", default_opts)
 
-    -- Source and execute Lua
-    keymap(n, "<space><space>x", "<cmd>source %<CR>", { desc = "Source current file" })
-    keymap(n, "<space>x", ":.lua<CR>", { desc = "Execute line as Lua" })
-
     -- Keep cursor centered when jumping
     keymap(n, "<C-u>", "<C-u>zz", default_opts)
     keymap(n, "<C-d>", "<C-d>zz", default_opts)
@@ -48,15 +44,9 @@ function M.core()
     -- Toggle search highlighting
     keymap(n, "<leader>;h", ":set hlsearch!<CR>", { desc = "Toggle search highlight" })
     keymap(n, "<leader>ts", "<Cmd>TSContext toggle<CR>", default_opts)
-
-    -- Diffview toggle
-    keymap(n, "<leader>v", function()
-        require("zepzeper.keymaps.utils").toggle_diffview()
-    end, { desc = "Toggle diffview" })
 end
 
 function M.telescope()
-    -- Matching old config style with <leader> prefixes
     keymap(n, "<leader>ff", function()
         require("telescope.builtin").find_files()
     end, { desc = "Find files" })
@@ -64,7 +54,7 @@ function M.telescope()
         require("telescope.builtin").git_files()
     end, { desc = "Git files" })
     keymap(n, "<leader>lg", function()
-        require("telescope.builtin").live_grep()
+        require("telescope").extensions.live_grep_args.live_grep_args()
     end, { desc = "Live grep" })
     keymap(n, "<leader>fw", function()
         require("telescope.builtin").grep_string()
@@ -81,8 +71,15 @@ function M.telescope()
         require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
     end, { desc = "Edit Neovim config" })
 
+
+    keymap(n, "<leader>wd", function()
+        vim.cmd("tabedit ~/personal/docs/work.md")
+    end, { desc = "Open work documentation" })
+
     keymap(n, "<C-n>", "<Cmd>Telescope buffers previewer=false<CR>", { desc = "Telescope buffers" })
     keymap(n, "<leader>E", "<Cmd>Telescope diagnostics line_width=full bufnr=0<CR>", { desc = "Buffer diagnostics" })
+
+    keymap(i, '<C-k>', vim.lsp.buf.signature_help, { desc = 'Signature help' })
 
     -- TODO: I don't want this to jump if there is only one entry.
     keymap(n, "gr", "<Cmd>Telescope lsp_references<CR>", { desc = "LSP references" })

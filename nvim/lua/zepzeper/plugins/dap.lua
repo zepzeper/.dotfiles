@@ -32,16 +32,16 @@ dap.adapters.php = {
 
 dap.configurations.php = {
     {
-        name = "Listen (Local)",
-        type = "php",
-        request = "launch",
-        port = 9003,
-    },
-    {
         name = "Listen (Remote)",
         type = "php",
         request = "launch",
         port = 9000,
+    },
+    {
+        name = "Listen (Local)",
+        type = "php",
+        request = "launch",
+        port = 9003,
     }
 }
 
