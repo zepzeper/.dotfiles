@@ -17,6 +17,8 @@ vim.lsp.enable("intelephense")
 --vim.lsp.enable("zls")          
 --vim.lsp.enable("glslls")       
 --vim.lsp.enable("rnix-lsp")
+-- Experimental LSP support
+-- vim.lsp.enable('org')
 
 -- Override some of the configs.
 --vim.lsp.config("cmake", {
