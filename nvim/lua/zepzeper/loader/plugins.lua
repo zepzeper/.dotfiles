@@ -1,6 +1,24 @@
 return {
-    { "mason-org/mason.nvim", opts = {} },
+    -- Colorscheme
+    {
+        "rose-pine/neovim",
+        name = "rose-pine",
+        priority = 1000,
+        config = function()
+            require("zepzeper.plugins.colorscheme")
+        end,
+    },
+
+    -- Core UI
     { "nvim-tree/nvim-web-devicons", opts = {} },
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        opts = {},
+    },
+    { "mason-org/mason.nvim", opts = {} },
+
+    -- Treesitter
     {
         "nvim-treesitter/nvim-treesitter",
         dependencies = {
@@ -10,8 +28,22 @@ return {
         branch = "main",
         config = function()
             require("zepzeper.plugins.treesitter")
-            end,
+        end,
     },
+
+    -- LSP
+    {
+        "neovim/nvim-lspconfig",
+        lazy = true,
+    },
+    {
+        "nvimtools/none-ls.nvim",
+        config = function()
+            require("zepzeper.plugins.nonels")
+        end,
+    },
+
+    -- Completion
     {
         "hrsh7th/nvim-cmp",
         event = { "VeryLazy" },
@@ -19,8 +51,7 @@ return {
             require("zepzeper.plugins.completion")
         end,
         dependencies = {
-            'nvim-telescope/telescope.nvim',
-            'hrsh7th/cmp-nvim-lsp-signature-help',
+            "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-omni",
             "hrsh7th/cmp-nvim-lsp",
             "hrsh7th/cmp-buffer",
@@ -34,25 +65,37 @@ return {
             },
         },
     },
+
+    -- Fuzzy finder
+    {
+        "IgorOffline/dmtrKovalenko-fff.nvim",
+        build = function()
+            require("fff.download").download_or_build_binary()
+        end,
+        lazy = false,
+        opts = {},
+        config = function()
+            require("zepzeper.plugins.fff")
+        end,
+    },
+
+    -- LSP picker
+    {
+        "folke/trouble.nvim",
+        cmd = { "Trouble", "TroubleToggle" },
+        config = function()
+            require("zepzeper.plugins.trouble")
+        end,
+    },
+
+    -- Debugging
     {
         "mfussenegger/nvim-dap",
         event = "VeryLazy",
         dependencies = {
             {
                 "igorlfs/nvim-dap-view",
-                opts = {
-                    winbar = {
-                        sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl" },
-                        controls = { enabled = true, position = "left" },
-                    },
-                    windows = {
-                        position = "right",  -- vertical split on the right
-                            size = 0.3,          -- 30% of screen width
-                            terminal = {
-                                position = "below",  -- terminal below the main view panel
-                            },
-                    },
-                },
+                opts = {},
             },
             {
                 "jay-babu/mason-nvim-dap.nvim",
@@ -64,111 +107,10 @@ return {
         },
         config = function()
             require("zepzeper.plugins.dap")
-        end
-    },
-    {
-        -- Loaded by the native config.
-        "neovim/nvim-lspconfig",
-        lazy = true,
-    },
-    {
-        "nvimtools/none-ls.nvim",
-        config = function()
-            require("zepzeper.plugins.nonels")
-        end
-    },
-    {
-        'nvim-telescope/telescope.nvim', version = '*',
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-            -- optional but recommended
-            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-            'nvim-telescope/telescope-ui-select.nvim',
-            'nvim-telescope/telescope-live-grep-args.nvim',
-        },
-        config = function()
-            require("zepzeper.plugins.telescope")
         end,
     },
-    {
-        "ThePrimeagen/harpoon",
-        branch = "harpoon2",
-        dependencies = { "nvim-lua/plenary.nvim" }
-    },
-    {
-        "tpope/vim-surround"
-    },
-    {
-      "folke/which-key.nvim",
-      event = "VeryLazy",
-      opts = {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      },
-    },
-    -- Themes.
-    -- {
-    --     "catppuccin/nvim",
-    --     name = "catppuccin",
-    --     priority = 1000,
-    --     config = function()
-    --         require("catppuccin").setup({
-    --             flavour = "macchiato",
-    --             transparent_background = true,
-    --         })
-    --         vim.cmd.colorscheme("catppuccin")
-    --     end
-    -- },
-    -- {
-    --     "nyoom-engineering/oxocarbon.nvim",
-    --     config = function()
-    --         vim.opt.background = "dark" -- set this to dark or light
-    --         vim.cmd("colorscheme oxocarbon")
-    --
-    --         vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-    --         vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-    --         vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-    --     end,
-    -- },
-    -- {
-    --     "vague-theme/vague.nvim",
-    --     lazy = false,
-    --     priority = 1000,
-    --     config = function()
-    --         vim.cmd.colorscheme("vague")
-    --     end
-    -- },
-    {
-        "rose-pine/neovim",
-        name = "rose-pine",
-        config = function()
-            require("rose-pine").setup({
-                variant = "moon", -- auto, main, moon, or dawn
-                dark_variant = "moon", -- main, moon, or dawn
-            })
-            vim.cmd("colorscheme rose-pine")
-            vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-            vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-            vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-        end
-    },
-    -- git
-    {
-        "NeogitOrg/neogit",
-        lazy = true,
-        dependencies = {
-            "nvim-lua/plenary.nvim", 
-            "sindrets/diffview.nvim",
-        },
-        cmd = "Neogit",
-        keys = {
-            { "<leader>gs", "<cmd>Neogit<cr>", desc = "Show Neogit UI" }
-        },
-        config = function()
-            require("zepzeper.plugins.neogit")
-        end,
-    },
+
+    -- Testing
     {
         "nvim-neotest/neotest",
         dependencies = {
@@ -181,20 +123,96 @@ return {
             require("zepzeper.plugins.neotest")
         end,
     },
+
+    -- Git
     {
-        'FabijanZulj/blame.nvim',
-        lazy = false,
+        "NeogitOrg/neogit",
+        lazy = true,
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "sindrets/diffview.nvim",
+        },
+        cmd = "Neogit",
         config = function()
-            require('blame').setup {}
+            require("zepzeper.plugins.neogit")
         end,
     },
     {
-        "jiaoshijie/undotree",
-        keys = {
-            { "<BS>u", "<cmd>lua require('undotree').toggle()<cr>" },
-        },
+        "FabijanZulj/blame.nvim",
+        lazy = false,
+        config = function()
+            require("zepzeper.plugins.blame")
+        end,
     },
-    -- Personal
+
+    -- Editor UX
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
+    { "tpope/vim-surround" },
+    {
+        "jiaoshijie/undotree",
+        module = "undotree",
+    },
+    {
+        "MeanderingProgrammer/render-markdown.nvim",
+        config = function()
+            require("zepzeper.plugins.render-markdown")
+        end,
+    },
+
+    -- Tools
+    {
+        "kopecmaciej/vi-sql.nvim",
+        cmd = { "ViSQL", "ViSQLJump" },
+        config = function()
+            require("zepzeper.plugins.vi-sql")
+        end,
+    },
+    {
+        "nvim-orgmode/orgmode",
+        event = "VeryLazy",
+        ft = { "org" },
+        config = function()
+            require("zepzeper.plugins.orgmode")
+        end,
+    },
+
+    -- Disabled themes
+    -- {
+    --     "catppuccin/nvim",
+    --     name = "catppuccin",
+    --     priority = 1000,
+    --     config = function()
+    --         require("catppuccin").setup({
+    --             flavour = "macchiato",
+    --             transparent_background = true,
+    --         })
+    --         vim.cmd.colorscheme("catppuccin")
+    --     end,
+    -- },
+    -- {
+    --     "nyoom-engineering/oxocarbon.nvim",
+    --     config = function()
+    --         vim.opt.background = "dark"
+    --         vim.cmd("colorscheme oxocarbon")
+    --         vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    --         vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    --         vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+    --     end,
+    -- },
+    -- {
+    --     "vague-theme/vague.nvim",
+    --     lazy = false,
+    --     priority = 1000,
+    --     config = function()
+    --         vim.cmd.colorscheme("vague")
+    --     end,
+    -- },
+
+    -- Disabled personal plugins
     -- {
     --     "zepzeper/zemac",
     --     dir = "~/personal/zemac",
@@ -217,37 +235,4 @@ return {
     --         require("regexplain").setup()
     --     end,
     -- },
-    {
-        "kopecmaciej/vi-sql.nvim",
-        config = function()
-            require("vi-sql").setup({
-                -- Press this inside vi-sql to hide the window (change to taste)
-                hide_key = "<C-q>",
-            })
-        end,
-        cmd = { "ViSQL", "ViSQLJump" },
-        keys = {
-            { "<leader>vs", "<cmd>ViSQL<cr>", desc = "Open vi-sql" },
-            -- { "<leader>vj", ":ViSQLJump ", desc = "vi-sql: jump to table", silent = false },
-        },
-    },
-    {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {},
-        config = function()
-            require('render-markdown').setup({ latex = { enabled = false } })
-        end,
-    },
-    {
-        'nvim-orgmode/orgmode',
-        event = 'VeryLazy',
-        ft = { 'org' },
-        config = function()
-            -- Setup orgmode
-            require('orgmode').setup({
-                org_agenda_files = '~/orgfiles/**/*',
-                org_default_notes_file = '~/orgfiles/refile.org',
-            })
-        end,
-    }
 }

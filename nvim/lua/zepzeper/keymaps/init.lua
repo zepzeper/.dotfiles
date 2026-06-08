@@ -10,13 +10,18 @@ local M = {}
 
 function M.init()
     M.core()
-    M.telescope()
+    M.fff()
     M.lsp()
+    M.trouble()
+    M.neogit()
+    M.undotree()
+    M.vi_sql()
     M.harpoon()
     M.quickfix()
     M.tabs()
     M.dap()
     M.neotest()
+    M.cmdline()
     M.dev_utils()
     M.command_aliases()
 end
@@ -46,46 +51,43 @@ function M.core()
     keymap(n, "<leader>ts", "<Cmd>TSContext toggle<CR>", default_opts)
 end
 
-function M.telescope()
+function M.fff()
     keymap(n, "<leader>ff", function()
-        require("telescope.builtin").find_files()
+        require("fff").find_files()
     end, { desc = "Find files" })
     keymap(n, "<C-p>", function()
-        require("telescope.builtin").git_files()
-    end, { desc = "Git files" })
+        require("fff").find_files()
+    end, { desc = "Find files (git-aware)" })
     keymap(n, "<leader>lg", function()
-        require("telescope").extensions.live_grep_args.live_grep_args()
+        require("fff").live_grep()
     end, { desc = "Live grep" })
     keymap(n, "<leader>fw", function()
-        require("telescope.builtin").grep_string()
+        require("fff").live_grep({ query = vim.fn.expand("<cword>") })
     end, { desc = "Find word" })
     keymap(n, "<leader>fh", function()
-        require("telescope.builtin").help_tags({})
+        vim.cmd("help " .. vim.fn.input("Help: "))
     end, { desc = "Help tags" })
     keymap(n, "<leader>fm", function()
-        require("telescope.builtin").man_pages({ sections = { "ALL" } })
+        vim.cmd("Man " .. vim.fn.input("Man page: "))
     end, { desc = "Man pages" })
 
     -- Edit Neovim config
     keymap(n, "<leader>ec", function()
-        require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+        require("fff").find_files_in_dir(vim.fn.stdpath("config"))
     end, { desc = "Edit Neovim config" })
-
 
     keymap(n, "<leader>wd", function()
         vim.cmd("tabedit ~/personal/docs/work.md")
     end, { desc = "Open work documentation" })
 
-    keymap(n, "<C-n>", "<Cmd>Telescope buffers previewer=false<CR>", { desc = "Telescope buffers" })
-    keymap(n, "<leader>E", "<Cmd>Telescope diagnostics line_width=full bufnr=0<CR>", { desc = "Buffer diagnostics" })
+    keymap(n, "<C-n>", function()
+        require("fff").find_files()
+    end, { desc = "Find files" })
+    keymap(n, "<leader>E", function()
+        vim.diagnostic.open_float()
+    end, { desc = "Buffer diagnostics" })
 
     keymap(i, '<C-k>', vim.lsp.buf.signature_help, { desc = 'Signature help' })
-
-    -- TODO: I don't want this to jump if there is only one entry.
-    keymap(n, "gr", "<Cmd>Telescope lsp_references<CR>", { desc = "LSP references" })
-    keymap(n, "gd", "<Cmd>Telescope lsp_definitions<CR>", { desc = "LSP definitions" })
-    keymap(n, "gi", "<Cmd>Telescope lsp_implementations<CR>", { desc = "LSP implementations" })
-    keymap(n, "gt", "<Cmd>Telescope lsp_type_definitions<CR>", { desc = "LSP type definitions" })
 end
 
 function M.lsp()
@@ -124,26 +126,31 @@ function M.lsp()
     end, { desc = "Toggle inlay hints" })
 end
 
-function M.completion()
-    local cmp = require("cmp")
-
-    cmp.setup({
-        mapping = cmp.mapping.preset.insert({
-            ["<C-u>"] = cmp.mapping.scroll_docs(-4),
-            ["<C-d>"] = cmp.mapping.scroll_docs(4),
-            ["<C-Space>"] = cmp.mapping.complete(),
-            ["<C-e>"] = cmp.mapping.abort(),
-            ["<CR>"] = cmp.mapping.confirm({
-                select = false,
-                behavior = cmp.ConfirmBehavior.Insert,
-            }),
-        }),
-    })
-
-    -- Command-line completion
+function M.cmdline()
     keymap("c", "<C-Space>", function()
         require("cmp").complete()
     end, default_opts)
+end
+
+function M.trouble()
+    keymap(n, "gr", "<cmd>Trouble lsp_references<cr>", { desc = "LSP references" })
+    keymap(n, "gd", "<cmd>Trouble lsp_definitions<cr>", { desc = "LSP definitions" })
+    keymap(n, "gi", "<cmd>Trouble lsp_implementations<cr>", { desc = "LSP implementations" })
+    keymap(n, "gt", "<cmd>Trouble lsp_type_definitions<cr>", { desc = "LSP type definitions" })
+end
+
+function M.neogit()
+    keymap(n, "<leader>gs", "<cmd>Neogit<cr>", { desc = "Neogit status" })
+end
+
+function M.undotree()
+    keymap(n, "<BS>u", function()
+        require("undotree").toggle()
+    end, { desc = "Toggle undotree" })
+end
+
+function M.vi_sql()
+    keymap(n, "<leader>vs", "<cmd>ViSQL<cr>", { desc = "Open vi-sql" })
 end
 
 function M.harpoon()

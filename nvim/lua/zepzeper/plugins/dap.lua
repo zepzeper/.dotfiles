@@ -11,6 +11,13 @@ dap_view.setup({
         sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl" },
         controls = { enabled = true, position = "left" },
     },
+    windows = {
+        position = "right",
+        size = 0.3,
+        terminal = {
+            position = "below",
+        },
+    },
 })
 
 mason_dap.setup({
