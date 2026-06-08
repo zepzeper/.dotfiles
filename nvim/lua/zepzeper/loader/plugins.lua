@@ -163,7 +163,10 @@ return {
         cmd = "Neogit",
         keys = {
             { "<leader>gs", "<cmd>Neogit<cr>", desc = "Show Neogit UI" }
-        }
+        },
+        config = function()
+            require("zepzeper.plugins.neogit")
+        end,
     },
     {
         "nvim-neotest/neotest",
