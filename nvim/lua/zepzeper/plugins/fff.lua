@@ -3,11 +3,11 @@ local FFF = require("fff")
 FFF.setup({
     prompt = "> ",
     layout = {
-        height = 0.55,
-        width = 0.95,
-        prompt_position = "top",
+        height = 0.45,
+        width = 1.0,
+        anchor = "bottom",          -- ← was `position = "bottom"` (not a real key)
+        prompt_position = "bottom",
         preview_position = "right",
-        preview_size = 0.5,
     },
     keymaps = {
         close = "<Esc>",

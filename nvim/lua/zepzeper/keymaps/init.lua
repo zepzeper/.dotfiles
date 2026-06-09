@@ -76,10 +76,6 @@ function M.fff()
         require("fff").find_files_in_dir(vim.fn.stdpath("config"))
     end, { desc = "Edit Neovim config" })
 
-    keymap(n, "<leader>wd", function()
-        vim.cmd("tabedit ~/personal/docs/work.md")
-    end, { desc = "Open work documentation" })
-
     keymap(n, "<C-n>", function()
         require("fff").find_files()
     end, { desc = "Find files" })
