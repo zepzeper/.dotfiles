@@ -234,4 +234,16 @@ return {
     --         require("regexplain").setup()
     --     end,
     -- },
+    -- {
+    --     'nvimdev/dashboard-nvim',
+    --     event = 'VimEnter',
+    --     config = function()
+    --         require("zepzeper.plugins.dashboard")
+    --     end,
+    --     dependencies = { {'nvim-tree/nvim-web-devicons'}}
+    -- },
+    {
+        'stevearc/dressing.nvim',
+        opts = {},
+    },
 }

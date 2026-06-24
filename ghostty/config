@@ -3,13 +3,18 @@ font-family = "JetBrainsMonoNL Nerd Font Mono"
 font-style = Regular
 font-size = 12
 
-theme = vague
-
+theme = Rose Pine Moon
+background = 000000
 #background-opacity = 0.85
+background-blur = true
+confirm-close-surface=false
+
+gtk-titlebar = false
 window-decoration = none
 
-window-padding-x = 10
-window-padding-y = 5
+# window-padding-x = 10
+# window-padding-y = 5
 
 # Disable Ctrl+Enter fullscreen keybind
 keybind = ctrl+enter=unbind
+

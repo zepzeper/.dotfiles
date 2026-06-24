@@ -48,7 +48,7 @@ function M.core()
 
     -- Toggle search highlighting
     keymap(n, "<leader>;h", ":set hlsearch!<CR>", { desc = "Toggle search highlight" })
-    keymap(n, "<leader>ts", "<Cmd>TSContext toggle<CR>", default_opts)
+    keymap(n, "<leader>tt", "<Cmd>TSContext toggle<CR>", default_opts)
 end
 
 function M.fff()
@@ -89,14 +89,19 @@ end
 function M.lsp()
     keymap(n, "<leader>rn", function()
         pcall(vim.lsp.buf.rename)
-    end, default_opts)
+    end, vim.tbl_deep_extend("force", default_opts, {
+        desc = "LSP rename",
+    }))
 
     -- Diagnostics navigation (keep fast native + your custom)
     keymap(n, "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
     keymap(n, "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
     keymap(n, "<leader>ca", function()
         vim.lsp.buf.code_action()
-    end, default_opts)
+    end, vim.tbl_deep_extend("force", default_opts, {
+        desc = "Code actions",
+    }))
+
 
     keymap(n, "[e", function()
         require("zepzeper.native.lsp").prev_diag()
@@ -157,11 +162,6 @@ function M.harpoon()
     keymap(n, "<leader>a", function()
         list:add()
     end, { desc = "Harpoon add file" })
-
-    -- Git blame
-    keymap(n, "<leader>gb", function()
-        require("blame").toggle()
-    end, { desc = "Git blame" })
 
     -- Quick menu
     keymap(n, "<C-e>", function()
@@ -231,14 +231,6 @@ function M.dev_utils()
         end
         vim.notify("Plugins reloaded: " .. table.concat(plugins, ", "), vim.log.levels.INFO)
     end, { desc = "Reload custom plugins" })
-
-    -- C/C++ header/source switching
-    keymap(n, "<leader>oh", function()
-        vim.cmd.edit(vim.fn.expand("%:r") .. ".h")
-    end, { desc = "Open header file" })
-    keymap(n, "<leader>oc", function()
-        vim.cmd.edit(vim.fn.expand("%:r") .. ".c")
-    end, { desc = "Open source file" })
 end
 
 function M.command_aliases()

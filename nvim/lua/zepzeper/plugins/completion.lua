@@ -1,54 +1,42 @@
-vim.lsp.completion.enable(false)
-
 local CMP = require("cmp")
 
--- Format the completion menu. Yes, I am that pedantic.
-local function format(_, item)
-    local MAX_LABEL_WIDTH = 55
-    local function whitespace(max, len)
-        return (" "):rep(max - len)
-    end
-
-    -- Limit content width.
-    local content = item.abbr
-    if #content > MAX_LABEL_WIDTH then
-        item.abbr = vim.fn.strcharpart(content, 0, MAX_LABEL_WIDTH) .. "…"
-    else
-        item.abbr = content .. whitespace(MAX_LABEL_WIDTH, #content)
-    end
-
-    -- Remove gibberish.
-    item.menu = nil
-    return item
-end
-
-local formatting = {
-    fields = { "kind", "abbr" },
-    format = format,
-}
-
-local window = {
-    completion = CMP.config.window.bordered({
-        winhighlight = "Normal:Pmenu,FloatBorder:SpecialCmpBorder,Search:None",
-        scrollbar = true,
-        border = "rounded",
-        col_offset = -1,
-        side_padding = 0,
-    }),
-    documentation = CMP.config.window.bordered({
-        winhighlight = "Normal:Pmenu,FloatBorder:SpecialCmpBorder,Search:None",
-        scrollbar = true,
-        border = "rounded",
-    }),
-}
-
-window.documentation.max_height = 18
-window.documentation.max_width = 80
-window.documentation.side_padding = 1
-
 CMP.setup({
-    formatting = formatting,
-    window = window,
+    snippets = { preset = "default" },
+    signature = { enabled = true },
+    appearance = {
+        use_nvim_cmp_as_default = false,
+        nerd_font_variant = "normal",
+    },
+    cmdline = {
+        enabled = false,
+        completion = { menu = { auto_show = true } },
+    },
+    completion = {
+        menu = {
+            border = "rounded",
+            scrolloff = 1,
+            scrollbar = false,
+            draw = {
+                padding = 1,
+                gap = 1,
+                columns = {
+                    { "kind_icon" },
+                    { "label", "label_description", gap = 1 },
+                    { "kind" },
+                    { "source_name" },
+                },
+            },
+        },
+        documentation = {
+            window = {
+                border = "rounded",
+                scrollbar = false,
+                winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,EndOfBuffer:BlinkCmpDoc",
+            },
+            auto_show = true,
+            auto_show_delay_ms = 500,
+        },
+    },
     mapping = {
         ["<C-n>"] = CMP.mapping.select_next_item(),
         ["<C-p>"] = CMP.mapping.select_prev_item(),
@@ -57,10 +45,10 @@ CMP.setup({
     performance = {
         debounce = 50,
     },
-    sources = {
+    sources = CMP.config.sources({
         { name = "nvim_lsp" },
-        { name = "nvim_lsp_signature_help" }, 
+        { name = "nvim_lsp_signature_help" },
         { name = "buffer" },
         { name = "path" },
-    },
+    }),
 })
