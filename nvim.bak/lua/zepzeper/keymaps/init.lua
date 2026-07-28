@@ -151,6 +151,13 @@ function M.undotree()
 end
 
 function M.vi_sql()
+    keymap("n", "<leader>ql", function()
+        vim.cmd.tabnew()
+        vim.bo.filetype = "sql"
+    end, {
+    desc = "Open SQL tab",
+})
+
     keymap(n, "<leader>vs", "<cmd>ViSQL<cr>", { desc = "Open vi-sql" })
 end
 

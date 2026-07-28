@@ -1,5 +1,12 @@
 {
     "diagnostics.globals": [
-        "vim"
+        "vim",
+        "Snacks"
+    ],
+    "diagnostics.disable": [
+        "inject-field",
+        "undefined-field",
+        "missing-fields",
+        "undefined-doc-name"
     ]
 }

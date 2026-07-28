@@ -14,6 +14,7 @@ vim.lsp.enable("ts_ls")
 --vim.lsp.enable("lua_ls")
 -- vim.lsp.enable("phpactor")     
 vim.lsp.enable("intelephense")     
+-- vim.lsp.enable('php_lsp')
 --vim.lsp.enable("zls")          
 --vim.lsp.enable("glslls")       
 --vim.lsp.enable("rnix-lsp")
@@ -33,3 +34,15 @@ vim.lsp.config("intelephense", {
         licenceKey = "00YNPEL2NKC5IE5",
     },
 })
+--
+--
+-- vim.lsp.config("php_lsp", {
+--     cmd = { '/usr/local/bin/php-lsp' },
+--     filetypes = { 'php' },
+--     root_markers = { 'composer.json', '.git' },
+--     workspace_required = true,
+--     init_options = {
+--         phpVersion = '8.5',
+--         excludePaths = {},
+--     },
+-- })

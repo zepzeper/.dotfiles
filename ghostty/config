@@ -3,8 +3,8 @@ font-family = "JetBrainsMonoNL Nerd Font Mono"
 font-style = Regular
 font-size = 12
 
-theme = Rose Pine Moon
-background = 000000
+#theme = Rose Pine Moon
+theme = Vesper
 #background-opacity = 0.85
 background-blur = true
 confirm-close-surface=false
