@@ -6,8 +6,8 @@ return {
       update_interval = 1000,
       set_dark_mode = function()
         -- vim.cmd([[colorscheme flexoki-dark]])
-        require("github-theme").load({ theme = "github_dark_high_contrast" })
-        -- vim.cmd([[colorscheme yukinord]])
+        -- require("github-theme").load({ theme = "github_dark_high_contrast" })
+        vim.cmd([[colorscheme nordic]])
       end,
       set_light_mode = function()
         -- vim.cmd([[colorscheme flexoki-light]])
@@ -43,7 +43,7 @@ return {
   },
 
   -- ════════════════════════════════════════════════════════════════════════════
-  -- Yukinord (default)
+  -- Yukinord
   -- ════════════════════════════════════════════════════════════════════════════
   {
     "adibhanna/yukinord.nvim",

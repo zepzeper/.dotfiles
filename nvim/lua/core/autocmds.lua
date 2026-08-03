@@ -105,6 +105,32 @@ api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Fold PHP use statements into a block
+do
+  local function php_use_foldexpr()
+    local line = vim.fn.getline(vim.v.lnum)
+    local prev = vim.fn.getline(vim.v.lnum - 1)
+    if line:match("^use%s") then
+      return "1"
+    elseif prev:match("^use%s") then
+      return "<1"
+    else
+      return "0"
+    end
+  end
+  _G.__php_use_foldexpr = php_use_foldexpr
+end
+
+api.nvim_create_autocmd("BufWinEnter", {
+  pattern = "*.php",
+  callback = function(ev)
+    vim.cmd("setlocal foldmethod=expr")
+    vim.cmd("setlocal foldexpr=v:lua.__php_use_foldexpr()")
+    vim.cmd("setlocal foldlevel=0")
+    vim.cmd("normal! zx")
+  end,
+})
+
 -- Check for external file changes (works with Claude Code)
 api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, { -- CursorHold
   callback = function()
@@ -113,3 +139,5 @@ api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, { -- CursorHold
     end
   end,
 })
+
+

@@ -73,20 +73,6 @@ return {
       end,
       desc = "Find Files",
     },
-    {
-      "<C-n>",
-      function()
-        Snacks.picker.files()
-      end,
-      desc = "Find Files",
-    },
-    {
-      "<leader>,",
-      function()
-        Snacks.picker.buffers()
-      end,
-      desc = "Buffers",
-    },
 
     -- Terminal
     {
@@ -95,13 +81,6 @@ return {
         Snacks.terminal.toggle()
       end,
       desc = "Terminal",
-    },
-    {
-      "<C-_>",
-      function()
-        Snacks.terminal.toggle()
-      end,
-      desc = "which_key_ignore",
     },
     {
       "<C-/>",
@@ -249,13 +228,6 @@ return {
       desc = "Config Files",
     },
     {
-      "<leader>fp",
-      function()
-        Snacks.picker.projects()
-      end,
-      desc = "Projects",
-    },
-    {
       "<leader>fR",
       function()
         Snacks.rename.rename_file()
@@ -272,27 +244,6 @@ return {
         require("neogit").open()
       end,
       desc = "Neogit",
-    },
-    {
-      "<leader>gl",
-      function()
-        Snacks.picker.git_log()
-      end,
-      desc = "Log",
-    },
-    {
-      "<leader>gL",
-      function()
-        Snacks.picker.git_log_line()
-      end,
-      desc = "Log (line)",
-    },
-    {
-      "<leader>gf",
-      function()
-        Snacks.picker.git_log_file()
-      end,
-      desc = "Log (file)",
     },
     {
       "<leader>gs",
@@ -430,13 +381,6 @@ return {
       desc = "Grep Buffers",
     },
     {
-      "<leader>sh",
-      function()
-        Snacks.picker.help()
-      end,
-      desc = "Help",
-    },
-    {
       "<leader>sm",
       function()
         Snacks.picker.marks()
@@ -559,15 +503,10 @@ return {
     -- Other toggles defined in init function below
 
     -- ════════════════════════════════════════════════════════════════════
-    -- <leader>w = Windows (verbose, but useful for discoverability)
+    -- Zoom
     -- ════════════════════════════════════════════════════════════════════
-    { "<leader>wd", "<C-w>c", desc = "Close Window" },
-    { "<leader>ws", "<C-w>s", desc = "Split Horizontal" },
-    { "<leader>wv", "<C-w>v", desc = "Split Vertical" },
-    { "<leader>ww", "<C-w>w", desc = "Other Window" },
-    { "<leader>w=", "<C-w>=", desc = "Equal Size" },
     {
-      "<leader>wm",
+      "<C-w>z",
       function()
         Snacks.zen.zoom()
       end,

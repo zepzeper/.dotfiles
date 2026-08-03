@@ -4,7 +4,7 @@ font-style = Regular
 font-size = 12
 
 #theme = Rose Pine Moon
-theme = Vesper
+theme = Nord
 #background-opacity = 0.85
 background-blur = true
 confirm-close-surface=false

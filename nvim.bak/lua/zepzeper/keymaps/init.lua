@@ -140,10 +140,6 @@ function M.trouble()
     keymap(n, "gt", "<cmd>Trouble lsp_type_definitions<cr>", { desc = "LSP type definitions" })
 end
 
-function M.neogit()
-    keymap(n, "<leader>gs", "<cmd>Neogit<cr>", { desc = "Neogit status" })
-end
-
 function M.undotree()
     keymap(n, "<BS>u", function()
         require("undotree").toggle()

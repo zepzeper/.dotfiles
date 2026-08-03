@@ -10,7 +10,7 @@ local function setup_keymaps(bufnr)
   map("n", "K", function()
     vim.lsp.buf.hover({ border = "rounded", max_height = 25, max_width = 120 })
   end, "Hover")
-  map({ "n", "i" }, "<C-k>", vim.lsp.buf.signature_help, "Signature Help")
+  map({ "i" }, "<C-k>", vim.lsp.buf.signature_help, "Signature Help")
 
   -- gd, gD, gr, gi, gy handled by Snacks picker (snacks.lua)
 
@@ -109,6 +109,7 @@ vim.lsp.enable({
   "bashls",
   "jsonls",
   "yamlls",
+  "ols"
 })
 
 -- ════════════════════════════════════════════════════════════════════════════
@@ -146,8 +147,6 @@ return {
         "htmlhint",
         "stylelint",
         "phpstan",
-        "ruff",
-        "mypy",
         -- Formatters
         "stylua",
         "goimports",
@@ -156,6 +155,7 @@ return {
         "isort",
         "shfmt",
         "phpcs",
+        "ols"
       },
     },
   },

@@ -1,49 +1,50 @@
 -- Harpoon: Quick file navigation
--- return {
---   "ThePrimeagen/harpoon",
---   lazy = true,
---   keys = {
---     {
---       "<leader>a",
---       function()
---         require("harpoon"):list():add()
---       end,
---       desc = "Harpoon Add File",
---     },
---     {
---       "<C-e>",
---       function()
---         require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
---       end,
---       desc = "Harpoon Menu",
---     },
---     {
---       "<C-h>",
---       function()
---         require("harpoon"):list():select(1)
---       end,
---       desc = "Harpoon File 1",
---     },
---     {
---       "<C-j>",
---       function()
---         require("harpoon"):list():select(2)
---       end,
---       desc = "Harpoon File 2",
---     },
---     {
---       "<C-k>",
---       function()
---         require("harpoon"):list():select(3)
---       end,
---       desc = "Harpoon File 3",
---     },
---     {
---       "<C-l>",
---       function()
---         require("harpoon"):list():select(4)
---       end,
---       desc = "Harpoon File 4",
---     },
---   },
--- }
+return {
+  "ThePrimeagen/harpoon",
+  dependencies = { "nvim-lua/plenary.nvim" },
+  branch = "harpoon2",
+  keys = {
+    {
+      "<leader>a",
+      function()
+        require("harpoon"):list():add()
+      end,
+      desc = "Harpoon Add File",
+    },
+    {
+      "<C-e>",
+      function()
+        require("harpoon").ui:toggle_quick_menu(require("harpoon"):list())
+      end,
+      desc = "Harpoon Menu",
+    },
+    {
+      "<C-h>",
+      function()
+        require("harpoon"):list():select(1)
+      end,
+      desc = "Harpoon File 1",
+    },
+    {
+      "<C-j>",
+      function()
+        require("harpoon"):list():select(2)
+      end,
+      desc = "Harpoon File 2",
+    },
+    {
+      "<C-k>",
+      function()
+        require("harpoon"):list():select(3)
+      end,
+      desc = "Harpoon File 3",
+    },
+    {
+      "<C-l>",
+      function()
+        require("harpoon"):list():select(4)
+      end,
+      desc = "Harpoon File 4",
+    },
+  },
+}

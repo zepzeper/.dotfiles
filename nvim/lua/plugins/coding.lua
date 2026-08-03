@@ -72,15 +72,39 @@ return {
   -- ════════════════════════════════════════════════════════════════════════════
   {
     "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-context",
+    },
     build = ":TSUpdate",
     lazy = false,
     config = function()
       local parsers = {
-        "bash", "c", "css", "go", "gomod", "gosum", "gowork",
-        "html", "javascript", "json", "latex", "lua", "luadoc", "luap",
-        "markdown", "markdown_inline", "php", "proto", "python", "query",
-        "regex", "rust", "scss", "svelte", "swift", "terraform",
-        "tsx", "typescript", "vim", "vimdoc", "vue", "yaml", "zig",
+        "bash",
+        "c",
+        "go",
+        "gomod",
+        "gosum",
+        "gowork",
+        "html",
+        "javascript",
+        "json",
+        "latex",
+        "lua",
+        "luadoc",
+        "luap",
+        "markdown",
+        "markdown_inline",
+        "odin",
+        "php",
+        "query",
+        "regex",
+        "rust",
+        "terraform",
+        "typescript",
+        "vim",
+        "vimdoc",
+        "yaml",
+        "zig",
       }
       require("nvim-treesitter").install(parsers)
 
