@@ -3,6 +3,22 @@ return {
   "ThePrimeagen/harpoon",
   dependencies = { "nvim-lua/plenary.nvim" },
   branch = "harpoon2",
+  config = function()
+    local harpoon = require("harpoon")
+
+    harpoon:setup({
+      settings = {
+        key = function()
+          local cwd = vim.loop.cwd()
+          local branch = vim.fn.system("git rev-parse --abbrev-ref HEAD"):gsub("\n", "")
+          if vim.v.shell_error == 0 then
+            return cwd .. "-" .. branch
+          end
+          return cwd
+        end,
+      },
+    })
+  end,
   keys = {
     {
       "<leader>a",

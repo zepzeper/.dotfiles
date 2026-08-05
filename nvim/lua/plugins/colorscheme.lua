@@ -56,23 +56,6 @@ return {
   },
 
   -- ════════════════════════════════════════════════════════════════════════════
-  -- Gruvbox Material
-  -- ════════════════════════════════════════════════════════════════════════════
-  {
-    "ellisonleao/gruvbox.nvim",
-    priority = 1000,
-    config = function()
-      -- vim.g.gruvbox_material_transparent_background = 1
-      -- vim.g.gruvbox_material_foreground = "mix"
-      -- vim.g.gruvbox_material_background = "hard"
-      -- vim.g.gruvbox_material_ui_contrast = "high"
-      -- vim.g.gruvbox_material_float_style = "bright"
-      -- vim.g.gruvbox_material_statusline_style = "mix"
-      -- vim.g.gruvbox_material_cursor = "auto"
-    end,
-  },
-
-  -- ════════════════════════════════════════════════════════════════════════════
   -- Forest Night
   -- ════════════════════════════════════════════════════════════════════════════
   {
@@ -603,7 +586,7 @@ return {
         terminal_colors = true, -- add neovim terminal colors
         undercurl = true,
         underline = true,
-        bold = false,
+        bold = true,
         italic = {
           strings = false,
           emphasis = false,
@@ -616,12 +599,12 @@ return {
         invert_signs = false,
         invert_tabline = false,
         inverse = true, -- invert background for search, diffs, statuslines and errors
-        contrast = "hard", -- can be "hard", "soft" or empty string
+        contrast = "", -- can be "hard", "soft" or empty string
         palette_overrides = {},
         overrides = {
           SignColumn = { bg = "#ff9900" },
         },
-        dim_inactive = false,
+        dim_inactive = true,
         transparent_mode = false,
       })
     end,

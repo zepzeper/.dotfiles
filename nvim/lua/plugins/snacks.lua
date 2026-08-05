@@ -281,35 +281,6 @@ return {
       desc = "Open in Browser",
       mode = { "n", "v" },
     },
-    -- GitHub
-    {
-      "<leader>gi",
-      function()
-        Snacks.picker.gh_issue()
-      end,
-      desc = "Issues",
-    },
-    {
-      "<leader>gI",
-      function()
-        Snacks.picker.gh_issue({ state = "all" })
-      end,
-      desc = "Issues (all)",
-    },
-    {
-      "<leader>gp",
-      function()
-        Snacks.picker.gh_pr()
-      end,
-      desc = "Pull Requests",
-    },
-    {
-      "<leader>gP",
-      function()
-        Snacks.picker.gh_pr({ state = "all" })
-      end,
-      desc = "Pull Requests (all)",
-    },
     -- Hunk operations defined in git.lua: gh, ga, gu, gr, gR, gB, gD
 
     -- ════════════════════════════════════════════════════════════════════
