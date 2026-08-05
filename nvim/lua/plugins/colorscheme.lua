@@ -7,12 +7,11 @@ return {
       set_dark_mode = function()
         -- vim.cmd([[colorscheme flexoki-dark]])
         -- require("github-theme").load({ theme = "github_dark_high_contrast" })
-        vim.cmd([[colorscheme nordic]])
+        vim.cmd([[colorscheme gruvbox]])
       end,
       set_light_mode = function()
         -- vim.cmd([[colorscheme flexoki-light]])
-        require("yukinord").setup({ style = "light" })
-        vim.cmd([[colorscheme github_light_default]])
+        vim.cmd([[colorscheme gruvbox]])
       end,
     },
     init = function()
@@ -27,11 +26,10 @@ return {
               end,
               set = function(state)
                 if state then
-                  require("github-theme").load({ theme = "github_dark_high_contrast" })
+                  vim.cmd([[colorscheme gruvbox]])
                   vim.o.background = "dark"
                 else
-                  require("yukinord").setup({ style = "light" })
-                  vim.cmd([[colorscheme flexoki-light]])
+                  vim.cmd([[colorscheme gruvbox]])
                   vim.o.background = "light"
                 end
               end,
@@ -61,16 +59,16 @@ return {
   -- Gruvbox Material
   -- ════════════════════════════════════════════════════════════════════════════
   {
-    "sainnhe/gruvbox-material",
+    "ellisonleao/gruvbox.nvim",
     priority = 1000,
     config = function()
       -- vim.g.gruvbox_material_transparent_background = 1
-      vim.g.gruvbox_material_foreground = "mix"
-      vim.g.gruvbox_material_background = "hard"
-      vim.g.gruvbox_material_ui_contrast = "high"
-      vim.g.gruvbox_material_float_style = "bright"
-      vim.g.gruvbox_material_statusline_style = "mix"
-      vim.g.gruvbox_material_cursor = "auto"
+      -- vim.g.gruvbox_material_foreground = "mix"
+      -- vim.g.gruvbox_material_background = "hard"
+      -- vim.g.gruvbox_material_ui_contrast = "high"
+      -- vim.g.gruvbox_material_float_style = "bright"
+      -- vim.g.gruvbox_material_statusline_style = "mix"
+      -- vim.g.gruvbox_material_cursor = "auto"
     end,
   },
 
