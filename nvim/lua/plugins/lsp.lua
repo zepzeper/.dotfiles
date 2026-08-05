@@ -146,14 +146,11 @@ return {
         "yamllint",
         "jsonlint",
         "htmlhint",
-        "stylelint",
         "phpstan",
         -- Formatters
         "stylua",
         "goimports",
         "prettier",
-        "black",
-        "isort",
         "shfmt",
         "phpcs",
         "ols"

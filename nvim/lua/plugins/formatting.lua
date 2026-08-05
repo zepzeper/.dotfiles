@@ -34,9 +34,6 @@ return {
       markdown = { "prettier" },
       html = { "prettier" },
 
-      -- Python
-      python = { "isort", "black" },
-
       -- PHPCS
       -- php = { "phpcs" },
 
