@@ -1,5 +1,5 @@
 return {
-  cmd = { "slang" },
+  cmd = { "slangd" },
   filetypes = { "slang" },
   root_markers = { ".git" },
 }
