@@ -47,6 +47,8 @@ return {
       -- Other
       rust = { "rustfmt" },
       odin = { "ols" },
+
+      xml = { "xmlformatter"}
     },
     -- default_format_opts = {
     --   lsp_format = "fallback",

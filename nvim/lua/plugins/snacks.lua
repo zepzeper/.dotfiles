@@ -76,14 +76,14 @@ return {
 
     -- Terminal
     {
-      "<C-/>",
+      "<M-/>",
       function()
         Snacks.terminal.toggle()
       end,
       desc = "Terminal",
     },
     {
-      "<C-/>",
+      "<M-/>",
       function()
         Snacks.terminal.toggle()
       end,
