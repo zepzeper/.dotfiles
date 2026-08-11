@@ -7,7 +7,7 @@ return {
       set_dark_mode = function()
         -- vim.cmd([[colorscheme flexoki-dark]])
         -- require("github-theme").load({ theme = "github_dark_high_contrast" })
-        vim.cmd([[colorscheme gruvbox]])
+        vim.cmd.colorscheme("rose-pine")
       end,
       set_light_mode = function()
         -- vim.cmd([[colorscheme flexoki-light]])
@@ -577,13 +577,26 @@ return {
 
   { "kepano/flexoki-neovim" },
   { "datsfilipe/vesper.nvim" },
+  { "navarasu/onedark.nvim" },
+  {
+    "rose-pine/neovim",
+    name = "rose-pine",
+    config = function()
+      require('rose-pine').setup({
+        disable_background = true,
+        styles = {
+          italic = false,
+        },
+      })
+    end
+  },
   {
     "ellisonleao/gruvbox.nvim",
     priority = 1000,
     config = function()
       -- Default options:
       require("gruvbox").setup({
-        terminal_colors = true, -- add neovim terminal colors
+        terminal_colors = false, -- add neovim terminal colors
         undercurl = true,
         underline = true,
         bold = true,
