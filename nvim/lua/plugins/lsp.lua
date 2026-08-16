@@ -106,6 +106,7 @@ vim.lsp.enable({
   "zls",
   "rust_analyzer",
   "intelephense",
+  "clangd",
   "bashls",
   "jsonls",
   "yamlls",

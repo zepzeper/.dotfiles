@@ -66,7 +66,7 @@ return {
       tf = { "tflint", "tfsec" },
       sql = { "sqlfluff" },
       make = { "checkmake" },
-      c = { "cppcheck", "cpplint" },
+      c = { "cpplint" },
     }
 
     -- ══════════════════════════════════════════════════════════════════════════
