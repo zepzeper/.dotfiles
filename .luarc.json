@@ -1,7 +1,8 @@
 {
     "diagnostics.globals": [
         "vim",
-        "Snacks"
+        "Snacks",
+        "hl"
     ],
     "diagnostics.disable": [
         "inject-field",
