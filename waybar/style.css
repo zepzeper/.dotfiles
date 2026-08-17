@@ -5,7 +5,9 @@
   border: none;
   border-radius: 0;
   min-height: 0;
-  font-family: 'JetBrainsMono Nerd Font';
+  /* Iosevka Term has no icon glyphs; pango falls back per-glyph to
+     JetBrainsMono Nerd Font for the module icons. */
+  font-family: 'Iosevka Term', 'JetBrainsMono Nerd Font';
   font-size: 12px;
 }
 
